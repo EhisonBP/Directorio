@@ -1,0 +1,5 @@
+# Ignorando estos archivos:
+build/
+dist/
+test/
+
