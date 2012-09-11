@@ -26,6 +26,7 @@ public class Limpiador {
            indiceI = dato.indexOf(ini);
            indiceF = dato.indexOf(fin);
            if (indiceI > 0 || indiceF >0){
+               try{
                 String borrar = dato.substring(indiceI, (indiceF+1));
                 Pattern p = Pattern.compile(borrar);
                 Matcher m = p.matcher(dato);
@@ -34,6 +35,10 @@ public class Limpiador {
                     dato = limpio;
                     dato.trim();
                 }
+               }catch (Exception e){
+                   System.out.println("Error de formato en dato");
+                   dato = "No disponible";
+               }
 
            }
         } while( indiceI > 0 || indiceF > 0);

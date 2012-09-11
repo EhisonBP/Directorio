@@ -563,7 +563,7 @@ public class DAO {
                     }
 
                     System.out.println(" DEV :: Tramite :: " + resultado.getInt("identifier")
-                            + " " + resultado.getString("text1"));
+                            + " " + resultado.getString("text1")+ " "+ requisitos);
 
                     Tramite tramite = new Tramite(resultado.getInt("identifier"),
                             nombre,
@@ -574,7 +574,7 @@ public class DAO {
                             costo,
                             requisitos,
                             resultado.getString("mod_date").substring(0, 10),
-                            12345);
+                            1);
 
 
                     tramites.add(tramite);
