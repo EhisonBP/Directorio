@@ -38,10 +38,10 @@ public class Conexion {
     private static String NOMBRE_BD = "dotcms";
     
     // Usuario de la Base de Datos
-    private static String USUARIO = "dotcms";
+    private static String USUARIO = "postgres";
     
     // Contraseña del usuario de la Base de Datos
-    private static String CONTRASEÑA = "dotcms";
+    private static String CONTRASEÑA = "123456";
     
     
     public static Connection iniciarConexion() throws SQLException {
