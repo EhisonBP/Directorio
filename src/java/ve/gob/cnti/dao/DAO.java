@@ -1,20 +1,22 @@
 package ve.gob.cnti.dao;
 
-import ve.gob.cnti.falla.sistema.ListarInstitucionesPorPoderErrorSistema;
-import ve.gob.cnti.falla.sistema.ListarPoderesErrorSistema;
-import ve.gob.cnti.modelo.Institucion;
-import ve.gob.cnti.modelo.Alcaldia;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import ve.gob.cnti.falla.*;
+import ve.gob.cnti.falla.FallasAplicacion;
+import ve.gob.cnti.falla.FallasSistema;
+import ve.gob.cnti.falla.TipoError;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorPoderErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarPoderesErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorPerfilesErrorAplicacion;
+import ve.gob.cnti.falla.sistema.ListarInstitucionesPorPoderErrorSistema;
+import ve.gob.cnti.falla.sistema.ListarPoderesErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarTramitesPorPerfilesErrorSistema;
+import ve.gob.cnti.modelo.Alcaldia;
+import ve.gob.cnti.modelo.Institucion;
 import ve.gob.cnti.modelo.Tramite;
 import ve.gob.cnti.servicio.ServicioDirectorioEstadoVenezolano;
 
@@ -42,6 +44,7 @@ import ve.gob.cnti.servicio.ServicioDirectorioEstadoVenezolano;
  */
 public class DAO {
 
+    public static Limpiador limpiar = new Limpiador();
     /**
      *
      * Encargado de listar los objetos tipo {@link Poder}, para ello debe
@@ -62,31 +65,32 @@ public class DAO {
         ResultSet resultado = null;
         String query = " select ino.identifier, c.title, c.text3, c.text6, c.text5, c.text8, c.text7, t.parent, c.mod_date "
                 + " from contentlet c, tree t, inode ino "
-                + " where (t.parent = 131910 "
-                + " or t.parent = 131912 "
-                + " or t.parent = 131914 "
-                + " or t.parent = 131915 "
-                + " or t.parent = 131916 "
-                + " or t.parent = 131917 "
-                + " or t.parent = 131918 "
-                + " or t.parent = 131919 "
-                + " or t.parent = 131920 "
-                + " or t.parent = 131921 "
-                + " or t.parent = 131922 "
-                + " or t.parent = 131923 "
-                + " or t.parent = 131924 "
-                + " or t.parent = 131925 "
-                + " or t.parent = 131926 "
-                + " or t.parent = 131927 "
-                + " or t.parent = 131928 "
-                + " or t.parent = 131929 "
-                + " or t.parent = 131930 "
-                + " or t.parent = 131931 "
-                + " or t.parent = 131932 "
-                + " or t.parent = 131933 "
-                + " or t.parent = 131934 "
-                + " or t.parent = 131935) and c.inode = t.child and c.bool1 = true and c.live = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
-                + " order by c.mod_date";
+                + " where (t.parent = 131910 "  // Distrito Capital
+                + " or t.parent = 131912 "      // Amazonas
+                + " or t.parent = 131914 "      // Anzoategui
+                + " or t.parent = 131915 "      // Apure
+                + " or t.parent = 131916 "      // Aragua
+                + " or t.parent = 131917 "      // Barinas   
+                + " or t.parent = 131918 "      // Bolivar
+                + " or t.parent = 131919 "      // Carabobo
+                + " or t.parent = 131920 "      // Cojedes 
+                + " or t.parent = 131921 "      // Delta Amacuro
+                + " or t.parent = 131922 "      // Falcon 
+                + " or t.parent = 131923 "      // Guarico 
+                + " or t.parent = 131924 "      // Lara
+                + " or t.parent = 131925 "      // Merida
+                + " or t.parent = 131926 "      // Miranda
+                + " or t.parent = 131927 "      // Monagas
+                + " or t.parent = 131928 "      // Nueva Esparta
+                + " or t.parent = 131929 "      // Potuguesa
+                + " or t.parent = 131930 "      // Sucre
+                + " or t.parent = 131931 "      // Tachira
+                + " or t.parent = 131932 "      // Trujillo
+                + " or t.parent = 131933 "      // Vargas 
+                + " or t.parent = 131934 "      // Yaracuy
+                + " or t.parent = 131935)"     // Zulia
+                + " and c.inode = t.child and c.bool1 = true and c.live = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
+                + " order by t.parent";
 
 
         try {
@@ -135,6 +139,82 @@ public class DAO {
 
                 while (resultado.next()) {
                     try {
+                        int estado = resultado.getInt("parent");
+                        switch (estado){
+                            case 131910:
+                                estado = 1;
+                                break;
+                            case 131912:
+                                estado = 2;
+                                break;
+                            case 131914:
+                                estado= 3;
+                                break;
+                            case 131915:
+                                estado= 4;
+                                break;
+                            case 131916:
+                                estado= 5;
+                                break;
+                            case 131917:
+                                estado= 6;
+                                break;
+                            case 131918:
+                                estado= 7;
+                                break;
+                            case 131919:
+                                estado= 8;
+                                break;
+                            case 131920:
+                                estado= 9;
+                                break;
+                            case 131921:
+                                estado= 10;
+                                break;
+                            case 131922:
+                                estado= 11;
+                                break;
+                            case 131923:
+                                estado= 12;
+                                break;
+                            case 131924:
+                                estado= 13;
+                                break;
+                            case 131925:
+                                estado= 14;
+                                break;
+                            case 131926:
+                                estado= 15;
+                                break;
+                            case 131927:
+                                estado= 16;
+                                break;
+                            case 131928:
+                                estado= 17;
+                                break;
+                            case 131929:
+                                estado= 18;
+                                break;
+                            case 131930:
+                                estado= 19;
+                                break;
+                            case 131931:
+                                estado= 20;
+                                break;
+                            case 131932:
+                                estado= 21;
+                                break;
+                            case 131933:
+                                estado= 22;
+                                break;
+                            case 131934:
+                                estado= 23;
+                                break;
+                            case 131935:
+                                estado= 24;
+                                break;
+                        }
+                        
                         String director = resultado.getString("text3");
                         String nombre = resultado.getString("title");
                         String direccion = resultado.getString("text6");
@@ -143,9 +223,11 @@ public class DAO {
                         String web = resultado.getString("text8");
                         if (director.equals("")) {
                             director = "No disponible";
-                        }
+                        } 
                         if (nombre.equals("")) {
                             nombre = "No disponible";
+                        }else{
+                            
                         }
                         if (direccion.equals("")) {
                             direccion = "No disponible";
@@ -173,7 +255,7 @@ public class DAO {
                                 correo,
                                 resultado.getString("mod_date").substring(0, 10),
                                 7,
-                                resultado.getInt("parent"));
+                                estado);
                         poderes.add(poder);
                     } catch (Exception e) {
                         e.getMessage();
@@ -251,20 +333,20 @@ public class DAO {
         Connection conexion = null;
         Statement sentencia = null;
         ResultSet resultado = null;
-//        String query = "select c.inode, c.title, c.text_area2 "
-//                + "from \"public\".contentlet c, \"public\".tree t "
-//                + "where t.parent = " + idPoder + " and c.inode = t.child";
 
-        String query = " select ino.identifier, c.title, c.text3, c.text6, c.text5, c.text8, c.text7, t.parent, c.mod_date "
-                + " from contentlet c, tree t, inode ino "
-                + " where (t.parent = 128987 "
-                + " or t.parent = 131345 "
-                + " or t.parent = 131346 "
-                + " or t.parent = 131347 "
-                + " or t.parent = 131348 "
-                + " or t.parent = 131349 "
-                + " or t.parent = 143210) and c.inode = t.child and c.live = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
-                + " order by c.mod_date";
+        String query =  "select ino.identifier," 
+                       +" replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(c.title, 'de la República Bolivariana de Venezuela', ''), 'Gobernación del Estado ', ''), 'Gobernación del ', ''), 'Ministerio del Poder Popular para la ', ''), 'Ministerio del Poder Popular de ', ''), 'Ministerio del Poder Popular del ', ''), 'Ministerio del Poder Popular para el ', ''), 'Ministerio del Poder Popular para los ', ''), 'Ministerio del Poder Popular para las ', ''), 'Ministerio del Poder Popular para ', '')"
+                       +" ,c.title , c.text3, c.text6, c.text5, c.text8, c.text7, t.parent, c.mod_date"
+                       +" from contentlet c, tree t, inode ino" 
+                       +" where (t.parent = 128987" 
+                       +" or t.parent = 131345" 
+                       +"or t.parent = 131346" 
+                       +"or t.parent = 131347" 
+                       +"or t.parent = 131348" 
+                       +"or t.parent = 131349" 
+                       +"or t.parent = 143210) and c.inode = t.child and c.live = true and language_id = 2 and ino.inode = c.inode and c.mod_date > '2000-01-01'" 
+                       +"order by replace"; 
+              
         try {
             //Iniciando conexion
             conexion = Conexion.iniciarConexion();
@@ -309,49 +391,46 @@ public class DAO {
                 boolean existe = false;
                 while (resultado.next()) {
                     String director = resultado.getString("text3");
-                    String nombre = resultado.getString("title");
+                    String nombreInstitucion = resultado.getString("title");
                     String direccion = resultado.getString("text6");
                     String telefono = resultado.getString("text5");
                     String correo = resultado.getString("text7");
                     String web = resultado.getString("text8");
                     int poder = resultado.getInt("parent");
-                    if (poder == 131345) {
-                        poder = 1;
+                    
+                    switch (poder){
+                        case 131345:
+                            poder = 1;
+                            break;
+                        case 131347:
+                            poder = 2;
+                            break;
+                        case 131346:
+                            poder = 3;
+                            break;
+                        case 131348:
+                            poder = 4;
+                            break;
+                        case 131349:
+                            poder = 5;
+                            break;
+                        case 128987:
+                            poder = 6;
+                            break;
+                        case 143210:
+                            poder = 8;
+                            break;   
                     }
 
-                    if (poder == 131347) {
-                        poder = 2;
-                    }
-
-                    if (poder == 131346) {
-                        poder = 3;
-                    }
-                    if (poder == 131348) {
-                        poder = 4;
-                    }
-                    if (poder == 131349) {
-                        poder = 5;
-                    }
-                    if (poder == 128987) {
-                        poder = 6;
-                    }
-                    if (poder == 143210) {
-                        poder = 8;
-                    }
                     if (director.equals("")) {
                         director = "No disponible";
                     }
-                    if (nombre.equals("")) {
-                        nombre = "No disponible";
-                    } else {
-                        nombre = nombre.toString().replace("Ministerio del Poder Popular para la ", "");
-                        nombre = nombre.toString().replace("Ministerio del Poder Popular para las ", "");
-                        nombre = nombre.toString().replace("Ministerio del Poder Popular para los ", "");
-                        nombre = nombre.toString().replace("Ministerio del Poder Popular para el ", "");
-                        nombre = nombre.toString().replace("Ministerio del Poder Popular del ", "");
-                        nombre = nombre.toString().replace("Ministerio del Poder Popular de ", "");
-                        nombre = nombre.toString().replace("Ministerio del Poder Popular para ", "");
+                    if (nombreInstitucion.equals("")) {
+                        nombreInstitucion = "No disponible";
                     }
+               /**     if (nombreSector.equals("")) {
+                        nombreSector = "No disponible";
+                    }          */              
                     if (direccion.equals("")) {
                         direccion = "No disponible";
                     }
@@ -364,12 +443,13 @@ public class DAO {
                     if (web.equals("")) {
                         web = "No disponible";
                     }
+                   
                     existe = true;
                     System.out.println(" DEV :: Institución :: " + resultado.getInt("identifier")
-                            + " " + nombre);
+                            + " " +resultado.getInt("title"));
                     Institucion institucion = new Institucion(resultado.getInt("identifier"),
-                            nombre,
                             director,
+                            nombreInstitucion, 
                             direccion,
                             telefono,
                             web,
@@ -445,7 +525,7 @@ public class DAO {
             System.out.println("El valor Ingresado es: " + fecha);
         }
 
-        Limpiador limpiar = new Limpiador();
+        limpiar = new Limpiador();
         Connection conexion = null;
         Statement sentencia = null;
         ResultSet resultado = null;
@@ -468,7 +548,7 @@ public class DAO {
                 + " and i.inode = c.inode"
                 + " and c.inode = t.child"
                 + " and c.live = true and c.mod_date >'" + fecha + "' order by c.mod_date";
-
+                
         try {
             //Iniciando conexion
             conexion = Conexion.iniciarConexion();

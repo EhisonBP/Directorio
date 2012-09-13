@@ -58,5 +58,17 @@ public class Limpiador {
         dato = dato.replaceAll("&Ntilde;", "Ñ");
         return dato;
     }
+    String limpiarInstituciones (String dato){
+        dato = dato.toString().replace("Ministerio del Poder Popular para la ", "");
+        dato = dato.toString().replace("Ministerio del Poder Popular para las ", "");
+        dato = dato.toString().replace("Ministerio del Poder Popular para los ", "");
+        dato = dato.toString().replace("Ministerio del Poder Popular para el ", "");
+        dato = dato.toString().replace("Ministerio del Poder Popular del ", "");
+        dato = dato.toString().replace("Ministerio del Poder Popular de ", "");
+        dato = dato.toString().replace("Ministerio del Poder Popular para ", "");
+        dato = dato.toString().replace("Gobernación del Estado ", "");
+        dato = dato.toString().replace("República Bolivariana de Venezuela", "");
+        return dato;
+    }
 
 }

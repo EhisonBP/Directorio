@@ -35,7 +35,7 @@ public class Conexion {
     private static String DRIVER = "jdbc:postgresql";
     
     // Nombre de la Base de Datos
-    private static String NOMBRE_BD = "dotcms";
+    private static String NOMBRE_BD = "dotcmsEhis";
     
     // Usuario de la Base de Datos
     private static String USUARIO = "postgres";
