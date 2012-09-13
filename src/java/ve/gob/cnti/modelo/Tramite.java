@@ -41,9 +41,6 @@ public class Tramite {
     private String requisitos;
     private String fecha;
 
-
-
-
     public Tramite() {
     }
     
