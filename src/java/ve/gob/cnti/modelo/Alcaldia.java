@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TipoAlcaldia", propOrder = {
         "idAlcaldia",
+        "nombreMunicipio",
         "nombreAlcaldia",
         "directorAlcaldia",
         "direccionAlcaldia",
@@ -33,6 +34,7 @@ import javax.xml.bind.annotation.XmlType;
 public class Alcaldia {
     
     private int idAlcaldia;
+    private String nombreMunicipio;
     private String nombreAlcaldia;
     private String directorAlcaldia;
     private String direccionAlcaldia;
@@ -47,10 +49,11 @@ public class Alcaldia {
     public Alcaldia() {
     }
 
-    public Alcaldia(int idAlcaldia, String nombreAlcaldia, String directorAlcaldia, String direccionAlcaldia
+    public Alcaldia(int idAlcaldia, String nombreAlcaldia, String nombreMunicipio, String directorAlcaldia, String direccionAlcaldia
             , String telefonoAlcaldia, String webAlcaldia, String correoAlcaldia, String fecha, int poder, int estado) {
         this.idAlcaldia = idAlcaldia;
         this.nombreAlcaldia = nombreAlcaldia;
+        this.nombreMunicipio = nombreMunicipio;
         this.directorAlcaldia = directorAlcaldia;
         this.direccionAlcaldia = direccionAlcaldia;
         this.telefonoAlcaldia = telefonoAlcaldia;
@@ -142,8 +145,16 @@ public class Alcaldia {
         this.idAlcaldia = idPoder;
     }
 
-    public void setNombreAlcaldia(String nombrePoder) {
-        this.nombreAlcaldia = nombrePoder;
+    public void setNombreAlcaldia(String nombreAlcaldia) {
+        this.nombreAlcaldia = nombreAlcaldia;
+    }
+
+
+    public String getNombreMunicipio() {
+        return nombreMunicipio;
+    }
+    public void setNombreMunicipio(String nombreMunicipio) {
+        this.nombreMunicipio = nombreMunicipio;
     }
 
     @Override

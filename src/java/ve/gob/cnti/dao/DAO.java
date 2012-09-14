@@ -89,7 +89,7 @@ public class DAO {
                 + " or t.parent = 131933 "      // Vargas 
                 + " or t.parent = 131934 "      // Yaracuy
                 + " or t.parent = 131935)"     // Zulia
-                + " and c.inode = t.child and c.bool1 = true and c.live = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
+                + " and c.inode = t.child and c.bool1 = true and c.live = true and c.working = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
                 + " order by t.parent";
 
 
@@ -216,7 +216,8 @@ public class DAO {
                         }
                         
                         String director = resultado.getString("text3");
-                        String nombre = resultado.getString("title");
+                        String municipio=resultado.getString("title");
+                        String alcaldia=resultado.getString("title");
                         String direccion = resultado.getString("text6");
                         String telefono = resultado.getString("text5");
                         String correo = resultado.getString("text7");
@@ -224,10 +225,15 @@ public class DAO {
                         if (director.equals("")) {
                             director = "No disponible";
                         } 
-                        if (nombre.equals("")) {
-                            nombre = "No disponible";
+                        if (municipio.equals("")) {
+                            municipio = "No disponible";
                         }else{
-                            
+                            municipio = limpiar.nombreMunicipio(municipio);
+                        }
+                        if (alcaldia.equals("")) {
+                            alcaldia = "No disponible";
+                        }else{
+                            alcaldia = limpiar.nombreAlcaldia(alcaldia);
                         }
                         if (direccion.equals("")) {
                             direccion = "No disponible";
@@ -247,7 +253,8 @@ public class DAO {
                                 + " " + resultado.getString("title"));
 
                         Alcaldia poder = new Alcaldia(resultado.getInt("identifier"),
-                                nombre,
+                                alcaldia,
+                                municipio,
                                 director,
                                 direccion,
                                 telefono,
@@ -344,7 +351,7 @@ public class DAO {
                        +"or t.parent = 131347" 
                        +"or t.parent = 131348" 
                        +"or t.parent = 131349" 
-                       +"or t.parent = 143210) and c.inode = t.child and c.live = true and language_id = 2 and ino.inode = c.inode and c.mod_date > '2000-01-01'" 
+                       +"or t.parent = 143210) and c.inode = t.child and c.live = true and c.working = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
                        +"order by replace"; 
               
         try {
@@ -391,6 +398,7 @@ public class DAO {
                 boolean existe = false;
                 while (resultado.next()) {
                     String director = resultado.getString("text3");
+                    String nombreSector = resultado.getString("replace");
                     String nombreInstitucion = resultado.getString("title");
                     String direccion = resultado.getString("text6");
                     String telefono = resultado.getString("text5");
@@ -446,10 +454,11 @@ public class DAO {
                    
                     existe = true;
                     System.out.println(" DEV :: Institución :: " + resultado.getInt("identifier")
-                            + " " +resultado.getInt("title"));
+                            + " " +resultado.getString("replace"));
                     Institucion institucion = new Institucion(resultado.getInt("identifier"),
+                            nombreInstitucion,
+                            nombreSector,
                             director,
-                            nombreInstitucion, 
                             direccion,
                             telefono,
                             web,
@@ -525,7 +534,6 @@ public class DAO {
             System.out.println("El valor Ingresado es: " + fecha);
         }
 
-        limpiar = new Limpiador();
         Connection conexion = null;
         Statement sentencia = null;
         ResultSet resultado = null;
@@ -539,7 +547,7 @@ public class DAO {
         //+ " tree.relation_type = 'Directorio-Tramite') "
         // + " and (c.live is true) and c.mod_date >'" +fecha+ "' order by c.mod_date";
 
-        String query = "select i.identifier, c.text1, c.text_area5,c.text_area8, c.text5, c.text4, c.text_area4, c.text_area1, c.mod_date"
+        String query = "select i.identifier, c.text1, c.text_area5, replace(c.text_area8,'*',''), c.text5, c.text4, c.text_area4, c.text_area1, c.mod_date"
                 + " from contentlet c, tree t, inode i"
                 + " where c.structure_inode = 107379"
                 + " and t.parent = i.identifier"
@@ -597,7 +605,7 @@ public class DAO {
                     String nombre = resultado.getString("text1");
                     String direccion = resultado.getString("text_area5");
                     String telefono = resultado.getString("text4");
-                    String requisitos = resultado.getString("text_area8");
+                    String requisitos = resultado.getString("replace");
                     String descripcion = resultado.getString("text_area1");
                     String horarios = resultado.getString("text5");
                     if (costo.equals("")) {

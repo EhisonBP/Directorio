@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "TipoInstitucion", propOrder = {
         "idInstitucion",
         "director",
+        "nombreSector",
         "nombreInstitucion",
         "direccion",
         "telefono",
@@ -43,10 +44,11 @@ public class Institucion {
     public Institucion() {
     }
 
-    public Institucion(int idInstituto, String director, String nombreInstituto 
+    public Institucion(int idInstituto, String nombreInstituto, String nombreSector, String director
             , String direccion, String telefono, String web, String correoElect, int poder,String fecha) {
         this.idInstitucion = idInstituto;
         this.director = director;
+        this.nombreSector = nombreSector;
         this.nombreInstitucion = nombreInstituto;
         this.direccion = direccion;
         this.telefono = telefono;
@@ -106,6 +108,14 @@ public class Institucion {
         this.idInstitucion = idInstituto;
     }
 
+    public String getNombreSector() {
+        return nombreSector;
+    }
+
+    public void setNombreSector(String nombreSector) {
+        this.nombreSector = nombreSector;
+    }
+
     public String getNombreInstitucion() {
         return nombreInstitucion;
     }
@@ -113,15 +123,7 @@ public class Institucion {
     public void setNombreInstitucion(String nombreInstituto) {
         this.nombreInstitucion = nombreInstituto;
     }
-
-    public String getNombreSector() {
-        return nombreSector;
-    }
-
-    public void setNombreSector(String nombreSector) {
-        this.nombreInstitucion = nombreSector;
-    }
-
+    
     public String getTelefono() {
         return telefono;
     }
