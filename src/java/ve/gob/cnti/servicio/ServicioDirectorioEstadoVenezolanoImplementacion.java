@@ -11,10 +11,17 @@ import ve.gob.cnti.falla.aplicacion.ListarPoderesErrorAplicacion;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorPoderErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarPoderesErrorSistema;
 import ve.gob.cnti.modelo.Tramite;
+import ve.gob.cnti.modelo.Poder;
+import ve.gob.cnti.modelo.Tramite2;
+import ve.gob.cnti.modelo.Institucion2;
 
 import javax.annotation.Resource;
 import javax.jws.WebService;
 import javax.xml.ws.WebServiceContext;
+//import javax.xml.ws.handler.MessageContext;
+
+import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
+import ve.gob.cnti.falla.sistema.ListarTramitesPorInstitucionErrorSistema;
 
 
 /**
@@ -51,6 +58,66 @@ public class ServicioDirectorioEstadoVenezolanoImplementacion
 
     @Resource
     WebServiceContext wsctx;
+
+    /**
+     *
+     * Operacion del Servicio Web #listarPoderes
+     *
+     * Invoca al metodo getPoderes() de la clase {@link DAO}, para dar
+     * respuesta al cliente que genero la solicitud respecto al listado de
+     * poderes.
+     *
+     * @return el arreglo que contiene los objetos de tipo Poder.
+     * @throws ListarPoderesErrorSistema
+     * @throws ListarPoderesErrorAplicacion
+     */
+    @Override
+    public List<Poder> listadoPoderes() throws ListarPoderesErrorSistema,
+            ListarPoderesErrorAplicacion {
+        return DAO.getPoderes();
+    }
+
+    /**
+     *
+     * Operacion del Servicio Web #listarInstitucionesPorPoder
+     *
+     * Invoca al metodo getInstituciones(int) de la clase {@link DAO}, para dar
+     * respuesta al cliente que genero la solicitud respecto al listado de
+     * instituciones.
+     *
+     * @param idPoder es el identificador unico del poder, empleado para realizar
+     * la busqueda de instituciones asociadas al mismo.
+     * @return el arreglo que contiene los objetos de tipo Institucion.
+     * @throws ListarInstitucionesPorPoderErrorSistema
+     * @throws ListarInstitucionesPorPoderErrorAplicacion
+     */
+    @Override
+    public List<Institucion2> listadoInstituciones2(final int idPoder)
+            throws ListarInstitucionesPorPoderErrorSistema,
+            ListarInstitucionesPorPoderErrorAplicacion {
+        return DAO.getInstituciones2(idPoder);
+    }
+
+    /**
+     *
+     * Operacion del Servicio Web #listarTramitesPorInstitucion
+     *
+     * Invoca al metodo getTramites(int) de la clase {@link DAO}, para dar
+     * respuesta al cliente que genero la solicitud respecto al listado de
+     * tramites.
+     *
+     * @param idInstitucion es el identificador unico de la institucion,
+     * empleado para realizar la busqueda de los tramites asociadas a la misma.
+     * @return el arreglo que contiene los objetos de tipo Tramite.
+     * @throws ListarTramitesPorInstitucionErrorSistema
+     * @throws ListarTramitesPorInstitucionErrorAplicacion
+     */
+    @Override
+    public List<Tramite2> listadoTramites2(final int idInstitucion)
+            throws ListarTramitesPorInstitucionErrorSistema,
+            ListarTramitesPorInstitucionErrorAplicacion {
+        return DAO.getTramites2(idInstitucion);
+    }
 
     /**
      * 

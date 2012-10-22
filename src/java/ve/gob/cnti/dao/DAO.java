@@ -9,15 +9,20 @@ import java.util.List;
 import ve.gob.cnti.falla.FallasAplicacion;
 import ve.gob.cnti.falla.FallasSistema;
 import ve.gob.cnti.falla.TipoError;
+import ve.gob.cnti.falla.sistema.ListarTramitesPorInstitucionErrorSistema;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorPoderErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarPoderesErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorPerfilesErrorAplicacion;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorPoderErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarPoderesErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarTramitesPorPerfilesErrorSistema;
+import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
 import ve.gob.cnti.modelo.Alcaldia;
+import ve.gob.cnti.modelo.Poder;
 import ve.gob.cnti.modelo.Institucion;
+import ve.gob.cnti.modelo.Institucion2;
 import ve.gob.cnti.modelo.Tramite;
+import ve.gob.cnti.modelo.Tramite2;
 import ve.gob.cnti.servicio.ServicioDirectorioEstadoVenezolano;
 
 /**
@@ -43,6 +48,403 @@ import ve.gob.cnti.servicio.ServicioDirectorioEstadoVenezolano;
  *
  */
 public class DAO {
+
+    private static final int ID_CATEGORIA_PODER = 123836;
+    /**
+     *
+     * Encargado de listar los objetos tipo {@link Poder}, para ello
+     * debe invocar la clase {@link Conexion} para realizar la conexión
+     * con la base de datos, ejecutar la consulta a la base de datos
+     * y listar la respuesta (de haberla) en un arreglo.
+     *
+     * @return el arreglo que posee la lista de poderes
+     * @throws ListarPoderesErrorSistema
+     * @throws ListarPoderesErrorAplicacion
+     */
+    public static List<Poder> getPoderes() throws ListarPoderesErrorSistema,
+            ListarPoderesErrorAplicacion {
+
+
+        Connection conexion = null;
+        Statement sentencia = null;
+        ResultSet resultado = null;
+        String query = "select c.inode, c.category_name "
+                + "from \"public\".category c, \"public\".tree t "
+                + "where c.active is true "
+                + "and t.parent = " + ID_CATEGORIA_PODER
+                + "and c.inode = t.child";
+
+        try {
+            //Iniciando conexion
+            conexion = Conexion.iniciarConexion();
+        } catch (SQLException e) {
+            //Error al iniciar conexion
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasSistema.FALLA_2_CODIGO);
+            tipoError.setDescripcion(FallasSistema.FALLA_2_DESCRIPCION + " - " + e.getMessage());
+            tipoError.setDetallesTecnicos(e.getClass().toString());
+            throw new ListarPoderesErrorSistema("SQL Exception", tipoError);
+        }
+
+
+        try {
+            //Inicializando la sentencia sql
+            sentencia = conexion.createStatement();
+        } catch (SQLException e) {
+            //Error inicializando la sentencia sql
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasSistema.FALLA_3_CODIGO);
+            tipoError.setDescripcion(FallasSistema.FALLA_3_DESCRIPCION + " - " + e.getMessage());
+            tipoError.setDetallesTecnicos(e.getClass().toString());
+            throw new ListarPoderesErrorSistema("SQL Exception", tipoError);
+        }
+
+        try {
+            //Ejecutando el query contra la Base de Datos
+            resultado = sentencia.executeQuery(query);
+        } catch (SQLException e) {
+            //Error ejecutando el query contra la Base de Datos
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasSistema.FALLA_4_CODIGO);
+            tipoError.setDescripcion(FallasSistema.FALLA_4_DESCRIPCION + " - " + e.getMessage());
+            tipoError.setDetallesTecnicos(e.getClass().toString());
+            throw new ListarPoderesErrorSistema("SQL Exception", tipoError);
+        }
+
+        if (resultado != null) {
+
+            //Leer respuesta
+            ArrayList<Poder> poderes = new ArrayList<Poder>();
+            try {
+                boolean existe = false;
+                while (resultado.next()) {
+                    existe = true;
+                    System.out.println(" DEV :: Poder :: " + resultado.getInt("inode")
+                            + " " + resultado.getString("category_name"));
+                    Poder poder = new Poder(resultado.getInt("inode"), resultado.getString("category_name"), "Descripcion");
+                    poderes.add(poder);
+                }
+
+                if (!existe) {
+                    //Respuesta vacia
+                    TipoError tipoError = new TipoError();
+                    tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_2);
+                    tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_2);
+                    tipoError.setDetallesTecnicos("Detalles Tecnicos");
+                    throw new ListarPoderesErrorSistema("Exception", tipoError);
+                }
+
+            } catch (SQLException e) {
+                //Error al leer respuesta
+                TipoError tipoError = new TipoError();
+                tipoError.setCodigo(FallasSistema.FALLA_5_CODIGO);
+                tipoError.setDescripcion(FallasSistema.FALLA_5_DESCRIPCION + " - " + e.getMessage());
+                tipoError.setDetallesTecnicos(e.getClass().toString());
+                throw new ListarPoderesErrorSistema("SQL Exception", tipoError);
+            }
+
+            try {
+                conexion.close();
+            } catch (SQLException e) {
+                //Error al cerrar conexion con la Base de Datos
+                TipoError tipoError = new TipoError();
+                tipoError.setCodigo(FallasSistema.FALLA_6_CODIGO);
+                tipoError.setDescripcion(FallasSistema.FALLA_6_DESCRIPCION + " - " + e.getMessage());
+                tipoError.setDetallesTecnicos(e.getClass().toString());
+                throw new ListarPoderesErrorSistema("SQL Exception", tipoError);
+            }
+
+            return poderes;
+
+        } else {
+            //Respuesta vacia
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_2);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_2);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarPoderesErrorSistema("Exception", tipoError);
+        }
+
+
+    }
+
+    /**
+     *
+     * Encargado de listar los objetos tipo {@link Institucion}, para ello
+     * debe invocar la clase {@link Conexion} para realizar la conexión
+     * con la base de datos, ejecutar la consulta a la base de datos
+     * y listar la respuesta (de haberla) en un arreglo.
+     *
+     *
+     * @param idPoder identificador unico del poder del cual se desea
+     *      obtener sus instituciones.
+     * @return el arreglo que posee la lista de instituciones
+     * @throws ListarInstitucionesPorPoderErrorSistema
+     * @throws ListarInstitucionesPorPoderErrorAplicacion
+     */
+    public static List<Institucion2> getInstituciones2(int idPoder)
+            throws ListarInstitucionesPorPoderErrorSistema,
+            ListarInstitucionesPorPoderErrorAplicacion {
+
+        System.out.println(" DEV :: Listar Instituciones");
+
+        Connection conexion = null;
+        Statement sentencia = null;
+        ResultSet resultado = null;
+//        String query = "select c.inode, c.title, c.text_area2 "
+//                + "from \"public\".contentlet c, \"public\".tree t "
+//                + "where t.parent = " + idPoder + " and c.inode = t.child";
+        String query = "select c.inode, c.title, c.text_area2 "
+                + "from \"public\".contentlet c, \"public\".tree t "
+                + "where t.parent = " + idPoder + " and c.inode = t.child and c.live = true";
+
+        if (idPoder <= 0) {
+            //Parametro invalido
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_1);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_1);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarInstitucionesPorPoderErrorAplicacion("Exception", tipoError);
+        }
+
+        try {
+            //Iniciando conexion
+            conexion = Conexion.iniciarConexion();
+        } catch (SQLException e) {
+            //Error al iniciar conexion
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasSistema.FALLA_2_CODIGO);
+            tipoError.setDescripcion(FallasSistema.FALLA_2_DESCRIPCION + " - " + e.getMessage());
+            tipoError.setDetallesTecnicos(e.getClass().toString());
+            throw new ListarInstitucionesPorPoderErrorSistema("SQL Exception", tipoError);
+        }
+
+        try {
+            //Inicializando la sentencia sql
+            sentencia = conexion.createStatement();
+        } catch (SQLException e) {
+            //Error inicializando la sentencia sql
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasSistema.FALLA_3_CODIGO);
+            tipoError.setDescripcion(FallasSistema.FALLA_3_DESCRIPCION + " - " + e.getMessage());
+            tipoError.setDetallesTecnicos(e.getClass().toString());
+            throw new ListarInstitucionesPorPoderErrorSistema("SQL Exception", tipoError);
+        }
+
+        try {
+            //Ejecutando el query contra la Base de Datos
+            resultado = sentencia.executeQuery(query);
+        } catch (SQLException e) {
+            //Error ejecutando el query contra la Base de Datos
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasSistema.FALLA_4_CODIGO);
+            tipoError.setDescripcion(FallasSistema.FALLA_4_DESCRIPCION + " - " + e.getMessage());
+            tipoError.setDetallesTecnicos(e.getClass().toString());
+            throw new ListarInstitucionesPorPoderErrorSistema("SQL Exception", tipoError);
+        }
+
+
+        if (resultado != null) {
+            //Leer respuesta
+            ArrayList<Institucion2> instituciones = new ArrayList<Institucion2>();
+            try {
+                boolean existe = false;
+                while (resultado.next()) {
+                    existe = true;
+                    System.out.println(" DEV :: Institución :: " + resultado.getInt("inode")
+                            + " " + resultado.getString("title"));
+                    Institucion2 institucion = new Institucion2(resultado.getInt("inode"), resultado.getString("title"), resultado.getString("text_area2"), "Dirección Institución", 5555555, "www.institucion.gob.ve");
+                    instituciones.add(institucion);
+                }
+
+                if (!existe) {
+                    //Respuesta vacia
+                    TipoError tipoError = new TipoError();
+                    tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_3);
+                    tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_3 + " (" + idPoder + ")");
+                    tipoError.setDetallesTecnicos("Detalles Tecnicos");
+                    throw new ListarInstitucionesPorPoderErrorAplicacion("Exception", tipoError);
+                }
+            } catch (SQLException e) {
+                //Error al leer respuesta
+                TipoError tipoError = new TipoError();
+                tipoError.setCodigo(FallasSistema.FALLA_5_CODIGO);
+                tipoError.setDescripcion(FallasSistema.FALLA_5_DESCRIPCION + " - " + e.getMessage());
+                tipoError.setDetallesTecnicos(e.getClass().toString());
+                throw new ListarInstitucionesPorPoderErrorSistema("SQL Exception", tipoError);
+            }
+
+            try {
+                conexion.close();
+            } catch (SQLException e) {
+                //Error al cerrar conexion con la Base de Datos
+                TipoError tipoError = new TipoError();
+                tipoError.setCodigo(FallasSistema.FALLA_6_CODIGO);
+                tipoError.setDescripcion(FallasSistema.FALLA_6_DESCRIPCION + " - " + e.getMessage());
+                tipoError.setDetallesTecnicos(e.getClass().toString());
+                throw new ListarInstitucionesPorPoderErrorSistema("SQL Exception", tipoError);
+            }
+
+            return instituciones;
+
+        } else {
+            //Respuesta vacia
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_3);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_3 + " (" + idPoder + ")");
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarInstitucionesPorPoderErrorAplicacion("Exception", tipoError);
+        }
+
+
+    }
+
+    /**
+     * Encargado de listar los objetos tipo {@link Tramite}, para ello
+     * debe invocar la clase {@link Conexion} para realizar la conexión
+     * con la base de datos, ejecutar la consulta a la base de datos
+     * y listar la respuesta (de haberla) en un arreglo.
+     *
+
+     * @param idInstitucion identificador unico de la institucion del cual
+     *          se desea obtener sus instituciones.
+     * @return el arreglo que posee la lista de tramites
+     * @throws ListarTramitesPorInstitucionErrorSistema
+     * @throws ListarTramitesPorInstitucionErrorAplicacion
+     */
+    public static List<Tramite2> getTramites2(int idInstitucion)
+            throws ListarTramitesPorInstitucionErrorSistema,
+            ListarTramitesPorInstitucionErrorAplicacion {
+
+
+        Connection conexion = null;
+        Statement sentencia = null;
+        ResultSet resultado = null;
+//        String query = "select c.inode, c.title, c.text4, c.text_area1, c.text_area5, c.text_area7, c.text_area8, c.text_area9, c.bool2 from \"public\".inode i, \"public\".tree t, \"public\".inode i2, \"public\".contentlet c "
+//                + " where i.inode = " + idInstitucion
+//                + " and t.child = i.identifier"
+//                + " and t.relation_type = 'Tramite-Directorio'"
+//                + " and i2.identifier = t.parent"
+//                + " and c.inode = i2.inode"
+//                + " and c.live is true";
+        String query = "select c.inode, c.title, c.text4, c.text_area1, c.text_area5, c.text_area7, c.text_area8, c.text_area9, c.bool2 from \"public\".contentlet c inner join \"public\".inode i on i.inode = c.inode"
+                + " where (c.structure_inode = 107379)"
+                + " and i.identifier in"
+                + " (select tree.child from tree where (tree.parent = (select inode.identifier FROM inode INNER JOIN tree ON inode.inode = tree.child WHERE (tree.parent = " + idInstitucion + "))"
+                + " and (tree.relation_type = 'Directorio-Tramite'))) "
+                + " and (c.live is true)";
+
+        if (idInstitucion <= 0) {
+            //Parametro invalido
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_1);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_1);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarTramitesPorInstitucionErrorAplicacion("Exception", tipoError);
+        }
+
+        try {
+            //Iniciando conexion
+            conexion = Conexion.iniciarConexion();
+        } catch (SQLException e) {
+            //Error al iniciar conexion
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasSistema.FALLA_2_CODIGO);
+            tipoError.setDescripcion(FallasSistema.FALLA_2_DESCRIPCION + " - " + e.getMessage());
+            tipoError.setDetallesTecnicos(e.getClass().toString());
+            throw new ListarTramitesPorInstitucionErrorSistema("SQL Exception", tipoError);
+        }
+
+        try {
+            //Inicializando la sentencia sql
+            sentencia = conexion.createStatement();
+        } catch (SQLException e) {
+            //Error inicializando la sentencia sql
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasSistema.FALLA_3_CODIGO);
+            tipoError.setDescripcion(FallasSistema.FALLA_3_DESCRIPCION + " - " + e.getMessage());
+            tipoError.setDetallesTecnicos(e.getClass().toString());
+            throw new ListarTramitesPorInstitucionErrorSistema("SQL Exception", tipoError);
+        }
+
+        try {
+            //Ejecutando el query contra la Base de Datos
+            resultado = sentencia.executeQuery(query);
+        } catch (SQLException e) {
+            //Error ejecutando el query contra la Base de Datos
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasSistema.FALLA_4_CODIGO);
+            tipoError.setDescripcion(FallasSistema.FALLA_4_DESCRIPCION + " - " + e.getMessage());
+            tipoError.setDetallesTecnicos(e.getClass().toString());
+            throw new ListarTramitesPorInstitucionErrorSistema("SQL Exception", tipoError);
+        }
+
+        if (resultado != null) {
+
+            //Leer respuesta
+            ArrayList<Tramite2> tramites = new ArrayList<Tramite2>();
+            try {
+                boolean existe = false;
+                while (resultado.next()) {
+                    existe = true;
+                    System.out.println(" DEV :: Tramite :: " + resultado.getInt("inode")
+                            + " " + resultado.getString("title"));
+
+                    Tramite2 tramite = new Tramite2(resultado.getInt("inode"),
+                            resultado.getString("title"), 123,
+                            resultado.getString("text_area5"),
+                            resultado.getString("text_area7"),
+                            "www.institucion.gob.ve/tramite/id_tramite");
+                    tramites.add(tramite);
+                }
+
+                if (!existe) {
+                    //Respuesta vacia
+                    TipoError tipoError = new TipoError();
+                    tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_4);
+                    tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_4 + " (" + idInstitucion + ")");
+                    tipoError.setDetallesTecnicos("Detalles Tecnicos");
+                    throw new ListarTramitesPorInstitucionErrorAplicacion("Exception", tipoError);
+                }
+            } catch (SQLException e) {
+                //Error al leer respuesta
+                TipoError tipoError = new TipoError();
+                tipoError.setCodigo(FallasSistema.FALLA_5_CODIGO);
+                tipoError.setDescripcion(FallasSistema.FALLA_5_DESCRIPCION + " - " + e.getMessage());
+                tipoError.setDetallesTecnicos(e.getClass().toString());
+                throw new ListarTramitesPorInstitucionErrorSistema("SQL Exception", tipoError);
+            }
+
+            try {
+                conexion.close();
+            } catch (SQLException e) {
+                //Error al cerrar conexion con la Base de Datos
+                TipoError tipoError = new TipoError();
+                tipoError.setCodigo(FallasSistema.FALLA_6_CODIGO);
+                tipoError.setDescripcion(FallasSistema.FALLA_6_DESCRIPCION + " - " + e.getMessage());
+                tipoError.setDetallesTecnicos(e.getClass().toString());
+                throw new ListarTramitesPorInstitucionErrorSistema("SQL Exception", tipoError);
+            }
+
+            return tramites;
+
+        } else {
+            //Respuesta vacia
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_4);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_4 + " (" + idInstitucion + ")");
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarTramitesPorInstitucionErrorAplicacion("Exception", tipoError);
+        }
+
+    }
+
+
+    /**Metodos Implementados para Android
+     *
+     *
+     */
+
 
     public static Limpiador limpiar = new Limpiador();
     /**

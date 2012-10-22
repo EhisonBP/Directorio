@@ -26,22 +26,22 @@ import java.sql.SQLException;
 public class Conexion {
     
     // Dirección ip donde esta ubicada la Base de Datos
-    private static String HOST = "127.0.0.1";
-    
+    private static String HOST = "localhost";
+
     // Puerto por el cual se accede a la Base de Datos
     private static int PUERTO = 5432;
-    
+
     // Driver empleado para establecer la conexion y procesar las solicitudes a la Base de Datos
     private static String DRIVER = "jdbc:postgresql";
-    
+
     // Nombre de la Base de Datos
-    private static String NOMBRE_BD = "dotcmsEhis";
-    
+    private static String NOMBRE_BD = "dotcms";
+
     // Usuario de la Base de Datos
-    private static String USUARIO = "postgres";
-    
+    private static String USUARIO = "dotcms";
+
     // Contraseña del usuario de la Base de Datos
-    private static String CONTRASEÑA = "123456";
+    private static String CONTRASEÑA = "dotcms";
     
     
     public static Connection iniciarConexion() throws SQLException {
