@@ -1,6 +1,5 @@
 package ve.gob.cnti.servicio;
 
-import java.util.Date;
 import ve.gob.cnti.dao.DAO;
 import ve.gob.cnti.modelo.Institucion;
 import ve.gob.cnti.modelo.Alcaldia;
@@ -23,7 +22,6 @@ import javax.xml.ws.WebServiceContext;
 
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
 import ve.gob.cnti.falla.sistema.ListarTramitesPorInstitucionErrorSistema;
-
 
 /**
  * Implementacion de la interfaz ServicioDirectorioEstadoVenezolano
@@ -179,7 +177,4 @@ public class ServicioDirectorioEstadoVenezolanoImplementacion
             ListarTramitesPorPerfilesErrorAplicacion {
         return DAO.getTramites(fecha);
     }
-
-
-
 }

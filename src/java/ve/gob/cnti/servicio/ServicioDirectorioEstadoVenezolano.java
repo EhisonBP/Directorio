@@ -1,6 +1,5 @@
 package ve.gob.cnti.servicio;
 
-import java.util.Date;
 import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
