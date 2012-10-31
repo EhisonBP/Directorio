@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import ve.gob.cnti.falla.FallasAplicacion;
 import ve.gob.cnti.falla.FallasSistema;
@@ -492,7 +493,7 @@ public class DAO {
                 + " or t.parent = 131934 "      // Yaracuy
                 + " or t.parent = 131935)"     // Zulia
                 + " and c.inode = t.child and c.bool1 = true and c.live = true and c.working = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
-                + " order by t.parent";
+                + " order by c.mod_date";
 
 
         try {
@@ -662,7 +663,7 @@ public class DAO {
                                 telefono,
                                 web,
                                 correo,
-                                resultado.getString("mod_date").substring(0, 10),
+                                resultado.getString("mod_date"),
                                 7,
                                 estado);
                         poderes.add(poder);
@@ -754,7 +755,7 @@ public class DAO {
                        +"or t.parent = 131348" 
                        +"or t.parent = 131349" 
                        +"or t.parent = 143210) and c.inode = t.child and c.live = true and c.working = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
-                       +"order by replace"; 
+                       +"order by c.mod_date";
               
         try {
             //Iniciando conexion
@@ -866,7 +867,7 @@ public class DAO {
                             web,
                             correo,
                             poder,
-                            resultado.getString("mod_date").substring(0, 10));
+                            resultado.getString("mod_date"));
                     instituciones.add(institucion);
                 }
 
@@ -1063,7 +1064,7 @@ public class DAO {
                             descripcion,
                             costo,
                             requisitos,
-                            resultado.getString("mod_date").substring(0, 10),
+                            resultado.getString("mod_date"),
                             1);
 
 

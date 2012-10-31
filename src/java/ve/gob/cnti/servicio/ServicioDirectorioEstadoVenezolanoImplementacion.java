@@ -1,5 +1,6 @@
 package ve.gob.cnti.servicio;
 
+import java.util.Date;
 import ve.gob.cnti.dao.DAO;
 import ve.gob.cnti.modelo.Institucion;
 import ve.gob.cnti.modelo.Alcaldia;
