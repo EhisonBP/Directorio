@@ -7,17 +7,17 @@ import ve.gob.cnti.falla.TipoError;
  *
  * @author Danielle Mariani
  */
-@WebFault(name="ListarTramitesPorPerfilesErrorSistema")
-public class ListarTramitesPorPerfilesErrorSistema extends Exception {
+@WebFault(name="ListarAlcaldiasPorFechaErrorSistema")
+public class ListarAlcaldiasPorFechaErrorSistema extends Exception {
     
     private TipoError error;
 
-    public ListarTramitesPorPerfilesErrorSistema(String message, TipoError error) {
+    public ListarAlcaldiasPorFechaErrorSistema(String message, TipoError error) {
         super(message);
         this.error = error;
     }
 
-    public ListarTramitesPorPerfilesErrorSistema(String message, TipoError error, Throwable cause) {
+    public ListarAlcaldiasPorFechaErrorSistema(String message, TipoError error, Throwable cause) {
         super(message, cause);
         this.error = error;
     }

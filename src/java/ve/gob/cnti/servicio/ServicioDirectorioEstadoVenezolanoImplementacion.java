@@ -1,27 +1,26 @@
 package ve.gob.cnti.servicio;
 
-import ve.gob.cnti.dao.DAO;
-import ve.gob.cnti.modelo.Institucion;
-import ve.gob.cnti.modelo.Alcaldia;
 import java.util.List;
-import ve.gob.cnti.falla.aplicacion.ListarTramitesPorPerfilesErrorAplicacion;
-import ve.gob.cnti.falla.sistema.ListarTramitesPorPerfilesErrorSistema;
-import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorPoderErrorAplicacion;
-import ve.gob.cnti.falla.aplicacion.ListarPoderesErrorAplicacion;
-import ve.gob.cnti.falla.sistema.ListarInstitucionesPorPoderErrorSistema;
-import ve.gob.cnti.falla.sistema.ListarPoderesErrorSistema;
-import ve.gob.cnti.modelo.Tramite;
-import ve.gob.cnti.modelo.Poder;
-import ve.gob.cnti.modelo.Tramite2;
-import ve.gob.cnti.modelo.Institucion2;
-
 import javax.annotation.Resource;
 import javax.jws.WebService;
 import javax.xml.ws.WebServiceContext;
-//import javax.xml.ws.handler.MessageContext;
-
+import ve.gob.cnti.dao.DAO;
+import ve.gob.cnti.falla.aplicacion.ListarAlcaldiasPorFechaErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorFechaErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorPoderesErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarPoderesErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarTramitesPorFechaErrorAplicacion;
+import ve.gob.cnti.falla.sistema.ListarAlcaldiasPorFechaErrorSistema;
+import ve.gob.cnti.falla.sistema.ListarInstitucionesPorFechaErrorSistema;
+import ve.gob.cnti.falla.sistema.ListarInstitucionesPorPoderErrorSistema;
+import ve.gob.cnti.falla.sistema.ListarPoderesErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarTramitesPorInstitucionErrorSistema;
+import ve.gob.cnti.falla.sistema.ListarTramitesPorFechaErrorSistema;
+import ve.gob.cnti.modelo.Alcaldia;
+import ve.gob.cnti.modelo.Institucion;
+import ve.gob.cnti.modelo.Poder;
+import ve.gob.cnti.modelo.Tramite;
 
 /**
  * Implementacion de la interfaz ServicioDirectorioEstadoVenezolano
@@ -88,13 +87,13 @@ public class ServicioDirectorioEstadoVenezolanoImplementacion
      * la busqueda de instituciones asociadas al mismo.
      * @return el arreglo que contiene los objetos de tipo Institucion.
      * @throws ListarInstitucionesPorPoderErrorSistema
-     * @throws ListarInstitucionesPorPoderErrorAplicacion
+     * @throws ListarInstitucionesPorPoderesErrorAplicacion
      */
     @Override
-    public List<Institucion2> listadoInstituciones2(final int idPoder)
+    public List<Institucion> listadoInstitucionesPorPoderes(final int idPoder)
             throws ListarInstitucionesPorPoderErrorSistema,
-            ListarInstitucionesPorPoderErrorAplicacion {
-        return DAO.getInstituciones2(idPoder);
+            ListarInstitucionesPorPoderesErrorAplicacion {
+        return DAO.getInstitucionesPorPoderes(idPoder);
     }
 
     /**
@@ -112,49 +111,10 @@ public class ServicioDirectorioEstadoVenezolanoImplementacion
      * @throws ListarTramitesPorInstitucionErrorAplicacion
      */
     @Override
-    public List<Tramite2> listadoTramites2(final int idInstitucion)
+    public List<Tramite> listadoTramitesPorInstitucion(final int idInstitucion)
             throws ListarTramitesPorInstitucionErrorSistema,
             ListarTramitesPorInstitucionErrorAplicacion {
-        return DAO.getTramites2(idInstitucion);
-    }
-
-    /**
-     * 
-     * Operacion del Servicio Web #listarPoderes
-     * 
-     * Invoca al metodo getPoderes() de la clase {@link DAO}, para dar 
-     * respuesta al cliente que genero la solicitud respecto al listado de 
-     * poderes.
-     *
-     * @return el arreglo que contiene los objetos de tipo Poder.
-     * @throws ListarPoderesErrorSistema
-     * @throws ListarPoderesErrorAplicacion 
-     */
-    @Override
-    public List<Alcaldia> listadoAlcaldias(final String fecha) throws ListarPoderesErrorSistema,
-            ListarPoderesErrorAplicacion {
-        return DAO.getAlcaldias(fecha);
-    }
-
-    /**
-     * 
-     * Operacion del Servicio Web #listarInstitucionesPorPoder
-     * 
-     * Invoca al metodo getInstituciones(int) de la clase {@link DAO}, para dar 
-     * respuesta al cliente que genero la solicitud respecto al listado de 
-     * instituciones.
-     *
-     * @param idPoder es el identificador unico del poder, empleado para realizar
-     * la busqueda de instituciones asociadas al mismo.
-     * @return el arreglo que contiene los objetos de tipo Institucion.
-     * @throws ListarInstitucionesPorPoderErrorSistema
-     * @throws ListarInstitucionesPorPoderErrorAplicacion 
-     */
-    @Override
-    public List<Institucion> listadoInstituciones(final String fecha)
-            throws ListarInstitucionesPorPoderErrorSistema,
-            ListarInstitucionesPorPoderErrorAplicacion {
-        return DAO.getInstituciones(fecha);
+        return DAO.getTramitesPorInstitucion(idInstitucion);
     }
 
     /**
@@ -172,9 +132,42 @@ public class ServicioDirectorioEstadoVenezolanoImplementacion
      * @throws ListarTramitesPorInstitucionErrorAplicacion 
      */
     @Override
-    public List<Tramite> listadoTramites(String fecha)
-            throws ListarTramitesPorPerfilesErrorSistema,
-            ListarTramitesPorPerfilesErrorAplicacion {
-        return DAO.getTramites(fecha);
+    public List<Tramite> listadoTramitesPorFecha(String fecha)
+            throws ListarTramitesPorFechaErrorSistema,
+            ListarTramitesPorFechaErrorAplicacion {
+        return DAO.getTramitesPorFecha(fecha);
     }
+    /**
+     * 
+     * Operacion del Servicio Web #listarTramitesPorInstitucion
+     * 
+     * Invoca al metodo getInstitucionesPorFecha(fecha) de la clase {@link DAO}, para dar 
+     * respuesta al cliente que genero la solicitud respecto al listado de 
+     * instituciones.
+     * 
+     * @param fecha esta va ser el parametro para implementar la busqueda dentro 
+     * de las instituciones que sean mayor a la fecha ingresada
+     * @return
+     * @throws ListarInstitucionesPorFechaErrorSistema
+     * @throws ListarInstitucionesPorFechaErrorAplicacion 
+     */
+    @Override
+    public List<Institucion> listadoInstitucionesPorFecha(final String fecha) 
+            throws ListarInstitucionesPorFechaErrorSistema, 
+            ListarInstitucionesPorFechaErrorAplicacion {
+        return DAO.getInstitucionesPorFecha(fecha);
+    }
+    /**
+     * 
+     * @param fecha
+     * @return
+     * @throws ListarAlcaldiasPorFechaErrorSistema
+     * @throws ListarAlcaldiasPorFechaErrorAplicacion 
+     */
+    public List<Alcaldia> listadoAlcaldiasPorFechas(final String fecha) 
+            throws ListarAlcaldiasPorFechaErrorSistema, 
+            ListarAlcaldiasPorFechaErrorAplicacion {
+        return DAO.getAlcaldiasPorFecha(fecha);
+    }
+
 }

@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
  * Define la estructura del tipo de dato #TipoError
  * para el archivo XSD en la definicion del esquema del WSDL.
  * 
- * @author Danielle Mariani
+ * @author Ehison Perez
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TipoError", 

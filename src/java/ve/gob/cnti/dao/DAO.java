@@ -5,25 +5,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import ve.gob.cnti.falla.FallasAplicacion;
 import ve.gob.cnti.falla.FallasSistema;
 import ve.gob.cnti.falla.TipoError;
-import ve.gob.cnti.falla.sistema.ListarTramitesPorInstitucionErrorSistema;
-import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorPoderErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarAlcaldiasPorFechaErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorFechaErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorPoderesErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarPoderesErrorAplicacion;
-import ve.gob.cnti.falla.aplicacion.ListarTramitesPorPerfilesErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarTramitesPorFechaErrorAplicacion;
+import ve.gob.cnti.falla.sistema.ListarAlcaldiasPorFechaErrorSistema;
+import ve.gob.cnti.falla.sistema.ListarInstitucionesPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorPoderErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarPoderesErrorSistema;
-import ve.gob.cnti.falla.sistema.ListarTramitesPorPerfilesErrorSistema;
-import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
+import ve.gob.cnti.falla.sistema.ListarTramitesPorInstitucionErrorSistema;
+import ve.gob.cnti.falla.sistema.ListarTramitesPorFechaErrorSistema;
 import ve.gob.cnti.modelo.Alcaldia;
-import ve.gob.cnti.modelo.Poder;
 import ve.gob.cnti.modelo.Institucion;
-import ve.gob.cnti.modelo.Institucion2;
+import ve.gob.cnti.modelo.Poder;
 import ve.gob.cnti.modelo.Tramite;
-import ve.gob.cnti.modelo.Tramite2;
 import ve.gob.cnti.servicio.ServicioDirectorioEstadoVenezolano;
 
 /**
@@ -44,13 +45,13 @@ import ve.gob.cnti.servicio.ServicioDirectorioEstadoVenezolano;
  * Si el usuario desea obtener el listado de Tramites asociados a una
  * Institucion debe invocar a {@link #getTramites(int) }
  *
- * @author Danielle Mariani
  * @author Ehison Perez
  *
  */
 public class DAO {
 
     private static final int ID_CATEGORIA_PODER = 123836;
+    public static Limpiador limpiar = new Limpiador();
     /**
      *
      * Encargado de listar los objetos tipo {@link Poder}, para ello
@@ -181,11 +182,11 @@ public class DAO {
      *      obtener sus instituciones.
      * @return el arreglo que posee la lista de instituciones
      * @throws ListarInstitucionesPorPoderErrorSistema
-     * @throws ListarInstitucionesPorPoderErrorAplicacion
+     * @throws ListarInstitucionesPorPoderesErrorAplicacion
      */
-    public static List<Institucion2> getInstituciones2(int idPoder)
+    public static List<Institucion> getInstitucionesPorPoderes(int idPoder)
             throws ListarInstitucionesPorPoderErrorSistema,
-            ListarInstitucionesPorPoderErrorAplicacion {
+            ListarInstitucionesPorPoderesErrorAplicacion {
 
         System.out.println(" DEV :: Listar Instituciones");
 
@@ -205,7 +206,7 @@ public class DAO {
             tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_1);
             tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_1);
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
-            throw new ListarInstitucionesPorPoderErrorAplicacion("Exception", tipoError);
+            throw new ListarInstitucionesPorPoderesErrorAplicacion("Exception", tipoError);
         }
 
         try {
@@ -247,14 +248,18 @@ public class DAO {
 
         if (resultado != null) {
             //Leer respuesta
-            ArrayList<Institucion2> instituciones = new ArrayList<Institucion2>();
+            ArrayList<Institucion> instituciones = new ArrayList<Institucion>();
             try {
                 boolean existe = false;
                 while (resultado.next()) {
                     existe = true;
                     System.out.println(" DEV :: Institución :: " + resultado.getInt("inode")
                             + " " + resultado.getString("title"));
-                    Institucion2 institucion = new Institucion2(resultado.getInt("inode"), resultado.getString("title"), resultado.getString("text_area2"), "Dirección Institución", 5555555, "www.institucion.gob.ve");
+                    Institucion institucion = new Institucion(resultado.getInt("inode"), 
+                                                              resultado.getString("title"), 
+                                                              resultado.getString("text_area2"), 
+                                                              "Dirección Institución", "5555555", 
+                                                              "www.institucion.gob.ve");
                     instituciones.add(institucion);
                 }
 
@@ -264,7 +269,7 @@ public class DAO {
                     tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_3);
                     tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_3 + " (" + idPoder + ")");
                     tipoError.setDetallesTecnicos("Detalles Tecnicos");
-                    throw new ListarInstitucionesPorPoderErrorAplicacion("Exception", tipoError);
+                    throw new ListarInstitucionesPorPoderesErrorAplicacion("Exception", tipoError);
                 }
             } catch (SQLException e) {
                 //Error al leer respuesta
@@ -294,7 +299,7 @@ public class DAO {
             tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_3);
             tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_3 + " (" + idPoder + ")");
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
-            throw new ListarInstitucionesPorPoderErrorAplicacion("Exception", tipoError);
+            throw new ListarInstitucionesPorPoderesErrorAplicacion("Exception", tipoError);
         }
 
 
@@ -313,7 +318,7 @@ public class DAO {
      * @throws ListarTramitesPorInstitucionErrorSistema
      * @throws ListarTramitesPorInstitucionErrorAplicacion
      */
-    public static List<Tramite2> getTramites2(int idInstitucion)
+    public static List<Tramite> getTramitesPorInstitucion(int idInstitucion)
             throws ListarTramitesPorInstitucionErrorSistema,
             ListarTramitesPorInstitucionErrorAplicacion {
 
@@ -383,7 +388,7 @@ public class DAO {
         if (resultado != null) {
 
             //Leer respuesta
-            ArrayList<Tramite2> tramites = new ArrayList<Tramite2>();
+            ArrayList<Tramite> tramites = new ArrayList<Tramite>();
             try {
                 boolean existe = false;
                 while (resultado.next()) {
@@ -391,8 +396,8 @@ public class DAO {
                     System.out.println(" DEV :: Tramite :: " + resultado.getInt("inode")
                             + " " + resultado.getString("title"));
 
-                    Tramite2 tramite = new Tramite2(resultado.getInt("inode"),
-                            resultado.getString("title"), 123,
+                    Tramite tramite = new Tramite(resultado.getInt("inode"),
+                            resultado.getString("title"), "123",
                             resultado.getString("text_area5"),
                             resultado.getString("text_area7"),
                             "www.institucion.gob.ve/tramite/id_tramite");
@@ -447,7 +452,7 @@ public class DAO {
      */
 
 
-    public static Limpiador limpiar = new Limpiador();
+   
     /**
      *
      * Encargado de listar los objetos tipo {@link Poder}, para ello debe
@@ -459,8 +464,8 @@ public class DAO {
      * @throws ListarPoderesErrorSistema
      * @throws ListarPoderesErrorAplicacion
      */
-    public static List<Alcaldia> getAlcaldias(String fecha) throws ListarPoderesErrorSistema,
-            ListarPoderesErrorAplicacion {
+    public static List<Alcaldia> getAlcaldiasPorFecha(String fecha) throws ListarAlcaldiasPorFechaErrorSistema,
+            ListarAlcaldiasPorFechaErrorAplicacion {
 
 
         Connection conexion = null;
@@ -505,7 +510,7 @@ public class DAO {
             tipoError.setCodigo(FallasSistema.FALLA_2_CODIGO);
             tipoError.setDescripcion(FallasSistema.FALLA_2_DESCRIPCION + " - " + e.getMessage());
             tipoError.setDetallesTecnicos(e.getClass().toString());
-            throw new ListarPoderesErrorSistema("SQL Exception", tipoError);
+            throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
         }
 
 
@@ -518,7 +523,7 @@ public class DAO {
             tipoError.setCodigo(FallasSistema.FALLA_3_CODIGO);
             tipoError.setDescripcion(FallasSistema.FALLA_3_DESCRIPCION + " - " + e.getMessage());
             tipoError.setDetallesTecnicos(e.getClass().toString());
-            throw new ListarPoderesErrorSistema("SQL Exception", tipoError);
+            throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
         }
 
         try {
@@ -530,7 +535,7 @@ public class DAO {
             tipoError.setCodigo(FallasSistema.FALLA_4_CODIGO);
             tipoError.setDescripcion(FallasSistema.FALLA_4_DESCRIPCION + " - " + e.getMessage());
             tipoError.setDetallesTecnicos(e.getClass().toString());
-            throw new ListarPoderesErrorSistema("SQL Exception", tipoError);
+            throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
         }
 
         if (resultado != null) {
@@ -675,10 +680,10 @@ public class DAO {
                 if (!existe) {
                     //Respuesta vacia
                     TipoError tipoError = new TipoError();
-                    tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_2);
-                    tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_2);
+                    tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_6);
+                    tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_6);
                     tipoError.setDetallesTecnicos("Detalles Tecnicos");
-                    throw new ListarPoderesErrorSistema("Exception", tipoError);
+                    throw new ListarAlcaldiasPorFechaErrorAplicacion("Exception", tipoError);
                 }
 
             } catch (SQLException e) {
@@ -687,7 +692,7 @@ public class DAO {
                 tipoError.setCodigo(FallasSistema.FALLA_5_CODIGO);
                 tipoError.setDescripcion(FallasSistema.FALLA_5_DESCRIPCION + " - " + e.getMessage());
                 tipoError.setDetallesTecnicos(e.getClass().toString());
-                throw new ListarPoderesErrorSistema("SQL Exception", tipoError);
+                throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
             }
 
             try {
@@ -698,7 +703,7 @@ public class DAO {
                 tipoError.setCodigo(FallasSistema.FALLA_6_CODIGO);
                 tipoError.setDescripcion(FallasSistema.FALLA_6_DESCRIPCION + " - " + e.getMessage());
                 tipoError.setDetallesTecnicos(e.getClass().toString());
-                throw new ListarPoderesErrorSistema("SQL Exception", tipoError);
+                throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
             }
 
             return poderes;
@@ -706,10 +711,10 @@ public class DAO {
         } else {
             //Respuesta vacia
             TipoError tipoError = new TipoError();
-            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_2);
-            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_2);
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_6);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_6);
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
-            throw new ListarPoderesErrorSistema("Exception", tipoError);
+            throw new ListarAlcaldiasPorFechaErrorAplicacion("Exception", tipoError);
         }
 
 
@@ -727,11 +732,11 @@ public class DAO {
      * sus instituciones.
      * @return el arreglo que posee la lista de instituciones
      * @throws ListarInstitucionesPorPoderErrorSistema
-     * @throws ListarInstitucionesPorPoderErrorAplicacion
+     * @throws ListarInstitucionesPorPoderesErrorAplicacion
      */
-    public static List<Institucion> getInstituciones(String fecha)
-            throws ListarInstitucionesPorPoderErrorSistema,
-            ListarInstitucionesPorPoderErrorAplicacion {
+    public static List<Institucion> getInstitucionesPorFecha(String fecha)
+            throws ListarInstitucionesPorFechaErrorSistema,
+            ListarInstitucionesPorFechaErrorAplicacion {
 
         String h = null;
         if (fecha == null) {
@@ -766,7 +771,7 @@ public class DAO {
             tipoError.setCodigo(FallasSistema.FALLA_2_CODIGO);
             tipoError.setDescripcion(FallasSistema.FALLA_2_DESCRIPCION + " - " + e.getMessage());
             tipoError.setDetallesTecnicos(e.getClass().toString());
-            throw new ListarInstitucionesPorPoderErrorSistema("SQL Exception", tipoError);
+            throw new ListarInstitucionesPorFechaErrorSistema("SQL Exception", tipoError);
         }
 
         try {
@@ -778,7 +783,7 @@ public class DAO {
             tipoError.setCodigo(FallasSistema.FALLA_3_CODIGO);
             tipoError.setDescripcion(FallasSistema.FALLA_3_DESCRIPCION + " - " + e.getMessage());
             tipoError.setDetallesTecnicos(e.getClass().toString());
-            throw new ListarInstitucionesPorPoderErrorSistema("SQL Exception", tipoError);
+            throw new ListarInstitucionesPorFechaErrorSistema("SQL Exception", tipoError);
         }
 
         try {
@@ -790,7 +795,7 @@ public class DAO {
             tipoError.setCodigo(FallasSistema.FALLA_4_CODIGO);
             tipoError.setDescripcion(FallasSistema.FALLA_4_DESCRIPCION + " - " + e.getMessage());
             tipoError.setDetallesTecnicos(e.getClass().toString());
-            throw new ListarInstitucionesPorPoderErrorSistema("SQL Exception", tipoError);
+            throw new ListarInstitucionesPorFechaErrorSistema("SQL Exception", tipoError);
         }
 
 
@@ -874,10 +879,10 @@ public class DAO {
                 if (!existe) {
                     //Respuesta vacia
                     TipoError tipoError = new TipoError();
-                    tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_3);
-                    tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_3);
+                    tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_5);
+                    tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_5);
                     tipoError.setDetallesTecnicos("Detalles Tecnicos");
-                    throw new ListarInstitucionesPorPoderErrorAplicacion("Exception", tipoError);
+                    throw new ListarInstitucionesPorFechaErrorAplicacion("Exception", tipoError);
                 }
             } catch (SQLException e) {
                 //Error al leer respuesta
@@ -885,7 +890,7 @@ public class DAO {
                 tipoError.setCodigo(FallasSistema.FALLA_5_CODIGO);
                 tipoError.setDescripcion(FallasSistema.FALLA_5_DESCRIPCION + " - " + e.getMessage());
                 tipoError.setDetallesTecnicos(e.getClass().toString());
-                throw new ListarInstitucionesPorPoderErrorSistema("SQL Exception", tipoError);
+                throw new ListarInstitucionesPorFechaErrorSistema("SQL Exception", tipoError);
             }
 
             try {
@@ -896,7 +901,7 @@ public class DAO {
                 tipoError.setCodigo(FallasSistema.FALLA_6_CODIGO);
                 tipoError.setDescripcion(FallasSistema.FALLA_6_DESCRIPCION + " - " + e.getMessage());
                 tipoError.setDetallesTecnicos(e.getClass().toString());
-                throw new ListarInstitucionesPorPoderErrorSistema("SQL Exception", tipoError);
+                throw new ListarInstitucionesPorFechaErrorSistema("SQL Exception", tipoError);
             }
 
             return instituciones;
@@ -904,10 +909,10 @@ public class DAO {
         } else {
             //Respuesta vacia
             TipoError tipoError = new TipoError();
-            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_3);
-            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_3);
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_5);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_5);
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
-            throw new ListarInstitucionesPorPoderErrorAplicacion("Exception", tipoError);
+            throw new ListarInstitucionesPorFechaErrorAplicacion("Exception", tipoError);
         }
 
 
@@ -926,9 +931,9 @@ public class DAO {
      * @throws ListarTramitesPorInstitucionErrorSistema
      * @throws ListarTramitesPorInstitucionErrorAplicacion
      */
-    public static List<Tramite> getTramites(String fecha)
-            throws ListarTramitesPorPerfilesErrorSistema,
-            ListarTramitesPorPerfilesErrorAplicacion {
+    public static List<Tramite> getTramitesPorFecha(String fecha)
+            throws ListarTramitesPorFechaErrorSistema,
+            ListarTramitesPorFechaErrorAplicacion {
 
         String h = null;
         if (fecha == null) {
@@ -969,7 +974,7 @@ public class DAO {
             tipoError.setCodigo(FallasSistema.FALLA_2_CODIGO);
             tipoError.setDescripcion(FallasSistema.FALLA_2_DESCRIPCION + " - " + e.getMessage());
             tipoError.setDetallesTecnicos(e.getClass().toString());
-            throw new ListarTramitesPorPerfilesErrorSistema("SQL Exception", tipoError);
+            throw new ListarTramitesPorFechaErrorSistema("SQL Exception", tipoError);
         }
 
         try {
@@ -981,7 +986,7 @@ public class DAO {
             tipoError.setCodigo(FallasSistema.FALLA_3_CODIGO);
             tipoError.setDescripcion(FallasSistema.FALLA_3_DESCRIPCION + " - " + e.getMessage());
             tipoError.setDetallesTecnicos(e.getClass().toString());
-            throw new ListarTramitesPorPerfilesErrorSistema("SQL Exception", tipoError);
+            throw new ListarTramitesPorFechaErrorSistema("SQL Exception", tipoError);
         }
 
         try {
@@ -993,7 +998,7 @@ public class DAO {
             tipoError.setCodigo(FallasSistema.FALLA_4_CODIGO);
             tipoError.setDescripcion(FallasSistema.FALLA_4_DESCRIPCION + " - " + e.getMessage());
             tipoError.setDetallesTecnicos(e.getClass().toString());
-            throw new ListarTramitesPorPerfilesErrorSistema("SQL Exception", tipoError);
+            throw new ListarTramitesPorFechaErrorSistema("SQL Exception", tipoError);
         }
 
         if (resultado != null) {
@@ -1074,10 +1079,10 @@ public class DAO {
                 if (!existe) {
                     //Respuesta vacia
                     TipoError tipoError = new TipoError();
-                    tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_4);
-                    tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_4);
+                    tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_7);
+                    tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_7);
                     tipoError.setDetallesTecnicos("Detalles Tecnicos");
-                    throw new ListarTramitesPorPerfilesErrorAplicacion("Exception", tipoError);
+                    throw new ListarTramitesPorFechaErrorAplicacion("Exception", tipoError);
                 }
             } catch (SQLException e) {
                 //Error al leer respuesta
@@ -1085,7 +1090,7 @@ public class DAO {
                 tipoError.setCodigo(FallasSistema.FALLA_5_CODIGO);
                 tipoError.setDescripcion(FallasSistema.FALLA_5_DESCRIPCION + " - " + e.getMessage());
                 tipoError.setDetallesTecnicos(e.getClass().toString());
-                throw new ListarTramitesPorPerfilesErrorSistema("SQL Exception", tipoError);
+                throw new ListarTramitesPorFechaErrorSistema("SQL Exception", tipoError);
             }
 
             try {
@@ -1096,7 +1101,7 @@ public class DAO {
                 tipoError.setCodigo(FallasSistema.FALLA_6_CODIGO);
                 tipoError.setDescripcion(FallasSistema.FALLA_6_DESCRIPCION + " - " + e.getMessage());
                 tipoError.setDetallesTecnicos(e.getClass().toString());
-                throw new ListarTramitesPorPerfilesErrorSistema("SQL Exception", tipoError);
+                throw new ListarTramitesPorFechaErrorSistema("SQL Exception", tipoError);
             }
             System.out.println("Lista enviada con exito");
             return tramites;
@@ -1104,10 +1109,10 @@ public class DAO {
         } else {
             //Respuesta vacia
             TipoError tipoError = new TipoError();
-            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_4);
-            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_4);
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_7);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_7);
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
-            throw new ListarTramitesPorPerfilesErrorAplicacion("Exception", tipoError);
+            throw new ListarTramitesPorFechaErrorAplicacion("Exception", tipoError);
         }
 
     }

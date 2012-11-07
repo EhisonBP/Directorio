@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlType;
         "costo",
         "requisitos",
         "fecha",
+        "paginaWeb",
         "idPerfil"},
         namespace = "http://www.cnti.gob.ve/schema/directorio/TipoTramite")
 public class Tramite {
@@ -40,6 +41,7 @@ public class Tramite {
     private String costo;
     private String requisitos;
     private String fecha;
+    private String paginaWeb;
 
     public Tramite() {
     }
@@ -58,6 +60,14 @@ public class Tramite {
         this.idPerfil = idPerfil;
     }
 
+    public Tramite(int idTramite, String nombreTramite, String telefono, String direccion, String requisitos, String paginaWeb) {
+        this.idTramite = idTramite;
+        this.nombreTramite = nombreTramite;
+        this.telefono = telefono;
+        this.direccion = direccion;
+        this.requisitos = requisitos;
+        this.paginaWeb = paginaWeb;
+    }
 
     public int getIdPerfil() {
         return idPerfil;
@@ -141,5 +151,12 @@ public class Tramite {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+    
+    public String getPaginaWeb() {
+        return paginaWeb;
+    }
 
+    public void setPaginaWeb(String paginaWeb) {
+        this.paginaWeb = paginaWeb;
+    }
 }

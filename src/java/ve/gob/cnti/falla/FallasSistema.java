@@ -5,7 +5,7 @@ package ve.gob.cnti.falla;
  * Posee atributos asociados a los distintos tipos de
  * Fallas de Sistema determinados.
  * 
- * @author Danielle Mariani
+ * @author Ehison Perez
  * 
  */
 public class FallasSistema {

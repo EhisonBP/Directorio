@@ -5,7 +5,7 @@ import ve.gob.cnti.falla.TipoError;
 
 /**
  *
- * @author Danielle Mariani
+ * @author Ehison Perez
  */
 @WebFault(name="ListarPoderesErrorAplicacion")
 public class ListarPoderesErrorAplicacion extends Exception {

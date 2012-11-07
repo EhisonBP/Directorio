@@ -7,17 +7,17 @@ import ve.gob.cnti.falla.TipoError;
  *
  * @author Ehison Perez
  */
-@WebFault(name="ListarTramitesPorInstitucionErrorAplicacion")
-public class ListarTramitesPorInstitucionErrorAplicacion extends Exception {
+@WebFault(name="ListarInstitucionesPorPoderesErrorAplicacion")
+public class ListarInstitucionesPorPoderesErrorAplicacion extends Exception {
     
     private TipoError error;
 
-    public ListarTramitesPorInstitucionErrorAplicacion(String message, TipoError error) {
+    public ListarInstitucionesPorPoderesErrorAplicacion(String message, TipoError error) {
         super(message);
         this.error = error;
     }
 
-    public ListarTramitesPorInstitucionErrorAplicacion(String message, TipoError error, Throwable cause) {
+    public ListarInstitucionesPorPoderesErrorAplicacion(String message, TipoError error, Throwable cause) {
         super(message, cause);
         this.error = error;
     }

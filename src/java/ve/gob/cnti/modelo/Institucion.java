@@ -20,6 +20,7 @@ import javax.xml.bind.annotation.XmlType;
         "director",
         "nombreSector",
         "nombreInstitucion",
+        "descripcion",
         "direccion",
         "telefono",
         "paginaWeb",
@@ -38,6 +39,7 @@ public class Institucion {
     private String telefono;
     private String paginaWeb;
     private String correoElect;
+    private String descripcion;
     private int poder;
     private String fecha;
 
@@ -56,6 +58,16 @@ public class Institucion {
         this.correoElect = correoElect;
         this.poder = poder;
         this.fecha = fecha;
+    }
+    
+    public Institucion(int idInstituto, String nombreInstituto,
+            String descripcion, String direccion, String telefono, String web) {
+        this.idInstitucion = idInstituto;
+        this.nombreInstitucion = nombreInstituto;
+        this.descripcion = descripcion;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.paginaWeb = web;
     }
 
 
@@ -132,7 +144,7 @@ public class Institucion {
         this.telefono = telefono;
     }
 
-    public String gePaginatWeb() {
+    public String getPaginatWeb() {
         return paginaWeb;
     }
 
@@ -143,5 +155,13 @@ public class Institucion {
     @Override
     public String toString() {
         return "instituto:" + idInstitucion + ":" + nombreInstitucion + ":" + director;
+    }
+    
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }

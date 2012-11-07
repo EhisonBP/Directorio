@@ -5,12 +5,9 @@
 
 package ve.gob.cnti.dao;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  *
- * @author pehison
+ * @author Ehison Perez
  */
 public class Limpiador {
 
@@ -48,7 +45,7 @@ public class Limpiador {
         dato = dato.replaceAll("&Oacute;","Ó");
         dato = dato.replaceAll("&Uacute;","Ú");
         dato = dato.replaceAll("&Ntilde;", "Ñ");
-        dato.trim();
+        dato = dato.trim();
         return dato;
 
     }
@@ -59,7 +56,7 @@ public class Limpiador {
         if (indiceF > 0){
         String s1 = dato.substring(0, (indiceF+2));
         dato = dato.replaceAll(s1, "");
-        dato.trim();
+        dato = dato.trim();
         }
         return dato;
     }
@@ -68,7 +65,7 @@ public class Limpiador {
         indiceF = dato.indexOf('-');
         if (indiceF > 0){
         dato = dato.substring(0, (indiceF-1));
-        dato.trim();
+        dato = dato.trim();
         }
         return dato;
     }
