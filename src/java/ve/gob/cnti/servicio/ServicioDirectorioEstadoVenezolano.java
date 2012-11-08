@@ -13,15 +13,17 @@ import javax.xml.ws.FaultAction;
 import ve.gob.cnti.falla.aplicacion.ListarAlcaldiasPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorPoderesErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarOperativosPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarPoderesErrorAplicacion;
-import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorFechaErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
 import ve.gob.cnti.falla.sistema.ListarAlcaldiasPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorPoderErrorSistema;
+import ve.gob.cnti.falla.sistema.ListarOperativosPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarPoderesErrorSistema;
-import ve.gob.cnti.falla.sistema.ListarTramitesPorInstitucionErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarTramitesPorFechaErrorSistema;
+import ve.gob.cnti.falla.sistema.ListarTramitesPorInstitucionErrorSistema;
 import ve.gob.cnti.modelo.*;
 
 /**
@@ -147,4 +149,20 @@ public interface ServicioDirectorioEstadoVenezolano {
             final String fecha)
             throws ListarTramitesPorFechaErrorSistema,
             ListarTramitesPorFechaErrorAplicacion;
+    /**
+    @WebMethod(operationName= "listarOperativosPorFecha")
+    @WebResult(name="tipoOperativo")
+    @Action(input = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarOperativosPorFechaEntrada",
+    output = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarOperativosPorFechaSalida",
+    fault = {
+        @FaultAction(className = ListarOperativosPorFechaErrorSistema.class,
+        value = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarTramitesPorInstitucion/error/ListarOperativosPorFechaErrorSistema"),
+        @FaultAction(className = ListarOperativosPorFechaErrorAplicacion.class,
+        value = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarTramitesPorInstitucion/error/ListarOperativosPorFechaErrorAplicacion")
+    })
+    public List<Operativo> listadoOperativosPorFecha(@WebParam(name = "fecha")
+            final String fecha)
+            throws ListarOperativosPorFechaErrorSistema,
+            ListarOperativosPorFechaErrorAplicacion;
+    */
 }

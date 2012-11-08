@@ -12,17 +12,20 @@ import ve.gob.cnti.falla.TipoError;
 import ve.gob.cnti.falla.aplicacion.ListarAlcaldiasPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorPoderesErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarOperativosPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarPoderesErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.sistema.ListarAlcaldiasPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorPoderErrorSistema;
+import ve.gob.cnti.falla.sistema.ListarOperativosPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarPoderesErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarTramitesPorInstitucionErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarTramitesPorFechaErrorSistema;
 import ve.gob.cnti.modelo.Alcaldia;
 import ve.gob.cnti.modelo.Institucion;
+import ve.gob.cnti.modelo.Operativo;
 import ve.gob.cnti.modelo.Poder;
 import ve.gob.cnti.modelo.Tramite;
 import ve.gob.cnti.servicio.ServicioDirectorioEstadoVenezolano;
@@ -1116,4 +1119,140 @@ public class DAO {
         }
 
     }
+    
+    public static List<Operativo> getOperativosPorFecha(String fecha)
+            throws ListarOperativosPorFechaErrorSistema,
+            ListarOperativosPorFechaErrorAplicacion{
+        
+        if (fecha == null) {
+            System.out.println("No se ingreso el parametro");
+        } else {
+            System.out.println("El valor Ingresado es: " + fecha);
+        }
+
+        Connection conexion = null;
+        Statement sentencia = null;
+        ResultSet resultado = null;
+//      Considerar eliminar el relation.type y considerar usarlo cuando se quiere saber a cuál institución pertenece
+
+        //String query = " select i.identifier, c.text1, c.text_area5,c.text_area8, c.text5, c.text4, c.text_area4, c.text_area1, c.mod_date "
+        //      + " from contentlet c inner join inode i on i.inode = c.inode "
+        //    + " where (c.structure_inode = 107379) "
+        //  + " and i.identifier in "
+        //+ " (select tree.child from tree where "
+        //+ " tree.relation_type = 'Directorio-Tramite') "
+        // + " and (c.live is true) and c.mod_date >'" +fecha+ "' order by c.mod_date";
+
+        String query = "select i.identifier, c.text1, c.text_area5, replace(c.text_area8,'*',''), c.text5, c.text4, c.text_area4, c.text_area1, c.mod_date"
+                + " from contentlet c, tree t, inode i"
+                + " where c.structure_inode = 107379"
+                + " and t.parent = i.identifier"
+                + " and c.working = true"
+                + " and c.language_id = 2 "
+                + " and i.inode = c.inode"
+                + " and c.inode = t.child"
+                + " and c.live = true and c.mod_date >'" + fecha + "' order by c.mod_date";
+                
+        try {
+            //Iniciando conexion
+            conexion = Conexion.iniciarConexion();
+        } catch (SQLException e) {
+            //Error al iniciar conexion
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasSistema.FALLA_2_CODIGO);
+            tipoError.setDescripcion(FallasSistema.FALLA_2_DESCRIPCION + " - " + e.getMessage());
+            tipoError.setDetallesTecnicos(e.getClass().toString());
+            throw new ListarOperativosPorFechaErrorSistema("SQL Exception", tipoError);
+        }
+
+        try {
+            //Inicializando la sentencia sql
+            sentencia = conexion.createStatement();
+        } catch (SQLException e) {
+            //Error inicializando la sentencia sql
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasSistema.FALLA_3_CODIGO);
+            tipoError.setDescripcion(FallasSistema.FALLA_3_DESCRIPCION + " - " + e.getMessage());
+            tipoError.setDetallesTecnicos(e.getClass().toString());
+            throw new ListarOperativosPorFechaErrorSistema("SQL Exception", tipoError);
+        }
+
+        try {
+            //Ejecutando el query contra la Base de Datos
+            resultado = sentencia.executeQuery(query);
+        } catch (SQLException e) {
+            //Error ejecutando el query contra la Base de Datos
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasSistema.FALLA_4_CODIGO);
+            tipoError.setDescripcion(FallasSistema.FALLA_4_DESCRIPCION + " - " + e.getMessage());
+            tipoError.setDetallesTecnicos(e.getClass().toString());
+            throw new ListarOperativosPorFechaErrorSistema("SQL Exception", tipoError);
+        }
+
+        if (resultado != null) {
+
+            //Leer respuesta
+            ArrayList<Operativo> operativos = new ArrayList<Operativo>();
+            try {
+                boolean existe = false;
+                while (resultado.next()) {
+                    existe = true;
+                    
+                    String nombre = resultado.getString("text1");
+                    String direccion = resultado.getString("text_area5");
+                    String fechaOperativo = resultado.getString("replace");
+                    String descripcion = resultado.getString("text_area1");
+ 
+                    System.out.println(" DEV :: Tramite :: " + resultado.getInt("identifier")
+                            + " " + resultado.getString("text1")+ " "+ nombre);
+                    
+                    Operativo operativo = new Operativo(resultado.getInt("identifier"), 
+                            nombre, 
+                            descripcion, 
+                            fechaOperativo,
+                            direccion, 
+                            resultado.getString("mod_date"));
+
+                    operativos.add(operativo);
+                }
+
+                if (!existe) {
+                    //Respuesta vacia
+                    TipoError tipoError = new TipoError();
+                    tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_8);
+                    tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_8);
+                    tipoError.setDetallesTecnicos("Detalles Tecnicos");
+                    throw new ListarOperativosPorFechaErrorAplicacion("Exception", tipoError);
+                }
+            } catch (SQLException e) {
+                //Error al leer respuesta
+                TipoError tipoError = new TipoError();
+                tipoError.setCodigo(FallasSistema.FALLA_5_CODIGO);
+                tipoError.setDescripcion(FallasSistema.FALLA_5_DESCRIPCION + " - " + e.getMessage());
+                tipoError.setDetallesTecnicos(e.getClass().toString());
+                throw new ListarOperativosPorFechaErrorSistema("SQL Exception", tipoError);
+            }
+
+            try {
+                conexion.close();
+            } catch (SQLException e) {
+                //Error al cerrar conexion con la Base de Datos
+                TipoError tipoError = new TipoError();
+                tipoError.setCodigo(FallasSistema.FALLA_6_CODIGO);
+                tipoError.setDescripcion(FallasSistema.FALLA_6_DESCRIPCION + " - " + e.getMessage());
+                tipoError.setDetallesTecnicos(e.getClass().toString());
+                throw new ListarOperativosPorFechaErrorSistema("SQL Exception", tipoError);
+            }
+            System.out.println("Lista enviada con exito");
+            return operativos;
+
+        } else {
+            //Respuesta vacia
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_8);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_8);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarOperativosPorFechaErrorAplicacion("Exception", tipoError);
+    }
+    }    
 }

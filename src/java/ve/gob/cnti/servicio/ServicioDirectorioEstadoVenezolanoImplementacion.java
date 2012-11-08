@@ -8,17 +8,20 @@ import ve.gob.cnti.dao.DAO;
 import ve.gob.cnti.falla.aplicacion.ListarAlcaldiasPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorPoderesErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarOperativosPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarPoderesErrorAplicacion;
-import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorFechaErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
 import ve.gob.cnti.falla.sistema.ListarAlcaldiasPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorPoderErrorSistema;
+import ve.gob.cnti.falla.sistema.ListarOperativosPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarPoderesErrorSistema;
-import ve.gob.cnti.falla.sistema.ListarTramitesPorInstitucionErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarTramitesPorFechaErrorSistema;
+import ve.gob.cnti.falla.sistema.ListarTramitesPorInstitucionErrorSistema;
 import ve.gob.cnti.modelo.Alcaldia;
 import ve.gob.cnti.modelo.Institucion;
+import ve.gob.cnti.modelo.Operativo;
 import ve.gob.cnti.modelo.Poder;
 import ve.gob.cnti.modelo.Tramite;
 
@@ -164,10 +167,18 @@ public class ServicioDirectorioEstadoVenezolanoImplementacion
      * @throws ListarAlcaldiasPorFechaErrorSistema
      * @throws ListarAlcaldiasPorFechaErrorAplicacion 
      */
+    @Override
     public List<Alcaldia> listadoAlcaldiasPorFechas(final String fecha) 
             throws ListarAlcaldiasPorFechaErrorSistema, 
             ListarAlcaldiasPorFechaErrorAplicacion {
         return DAO.getAlcaldiasPorFecha(fecha);
     }
-
+    /**
+    @Override
+    public List<Operativo> listadoOperativosPorFecha(final String fecha) 
+            throws ListarOperativosPorFechaErrorSistema, 
+            ListarOperativosPorFechaErrorAplicacion {
+        return DAO.getOperativosPorFecha(fecha);
+    }
+    */
 }
