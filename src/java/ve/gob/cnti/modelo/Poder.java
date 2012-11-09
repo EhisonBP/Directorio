@@ -30,10 +30,9 @@ public class Poder {
     public Poder() {
     }
 
-    public Poder(long idPoder, String nombrePoder, String descripcion) {
+    public Poder(long idPoder, String nombrePoder) {
         this.idPoder = idPoder;
         this.nombrePoder = nombrePoder;
-        this.descripcion = descripcion;
     }
 
     public String getDescripcion() {

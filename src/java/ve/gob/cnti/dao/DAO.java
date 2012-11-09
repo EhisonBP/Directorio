@@ -14,15 +14,15 @@ import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorPoderesErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarOperativosPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarPoderesErrorAplicacion;
-import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorFechaErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
 import ve.gob.cnti.falla.sistema.ListarAlcaldiasPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorPoderErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarOperativosPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarPoderesErrorSistema;
-import ve.gob.cnti.falla.sistema.ListarTramitesPorInstitucionErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarTramitesPorFechaErrorSistema;
+import ve.gob.cnti.falla.sistema.ListarTramitesPorInstitucionErrorSistema;
 import ve.gob.cnti.modelo.Alcaldia;
 import ve.gob.cnti.modelo.Institucion;
 import ve.gob.cnti.modelo.Operativo;
@@ -126,7 +126,7 @@ public class DAO {
                     existe = true;
                     System.out.println(" DEV :: Poder :: " + resultado.getInt("inode")
                             + " " + resultado.getString("category_name"));
-                    Poder poder = new Poder(resultado.getInt("inode"), resultado.getString("category_name"), "Descripcion");
+                    Poder poder = new Poder(resultado.getInt("inode"), resultado.getString("category_name"));
                     poderes.add(poder);
                 }
 
@@ -199,7 +199,7 @@ public class DAO {
 //        String query = "select c.inode, c.title, c.text_area2 "
 //                + "from \"public\".contentlet c, \"public\".tree t "
 //                + "where t.parent = " + idPoder + " and c.inode = t.child";
-        String query = "select c.inode, c.title, c.text_area2 "
+        String query = "select c.inode, c.title, c.text_area2, c.text6, c.text5, text8 "
                 + "from \"public\".contentlet c, \"public\".tree t "
                 + "where t.parent = " + idPoder + " and c.inode = t.child and c.live = true";
 
@@ -261,8 +261,9 @@ public class DAO {
                     Institucion institucion = new Institucion(resultado.getInt("inode"), 
                                                               resultado.getString("title"), 
                                                               resultado.getString("text_area2"), 
-                                                              "Dirección Institución", "5555555", 
-                                                              "www.institucion.gob.ve");
+                                                              resultado.getString("text6"), 
+                                                              resultado.getString("text5"), 
+                                                              resultado.getString("text8"));
                     instituciones.add(institucion);
                 }
 
@@ -400,10 +401,10 @@ public class DAO {
                             + " " + resultado.getString("title"));
 
                     Tramite tramite = new Tramite(resultado.getInt("inode"),
-                            resultado.getString("title"), "123",
+                            resultado.getString("title"), resultado.getString("text4"),
                             resultado.getString("text_area5"),
                             resultado.getString("text_area7"),
-                            "www.institucion.gob.ve/tramite/id_tramite");
+                            "Pagina Web");
                     tramites.add(tramite);
                 }
 
@@ -474,7 +475,7 @@ public class DAO {
         Connection conexion = null;
         Statement sentencia = null;
         ResultSet resultado = null;
-        String query = " select ino.identifier, c.title, c.text3, c.text6, c.text5, c.text8, c.text7, t.parent, c.mod_date "
+        String query = " select ino.identifier, c.title, c.text3, c.text6, c.text5, c.text8, t.parent, c.mod_date "
                 + " from contentlet c, tree t, inode ino "
                 + " where (t.parent = 131910 "  // Distrito Capital
                 + " or t.parent = 131912 "      // Amazonas
@@ -631,7 +632,7 @@ public class DAO {
                         String alcaldia=resultado.getString("title");
                         String direccion = resultado.getString("text6");
                         String telefono = resultado.getString("text5");
-                        String correo = resultado.getString("text7");
+                        String correo = "Correo Electronico";
                         String web = resultado.getString("text8");
                         if (director.equals("")) {
                             director = "No disponible";
@@ -651,9 +652,6 @@ public class DAO {
                         }
                         if (telefono.equals("")) {
                             telefono = "No disponible";
-                        }
-                        if (correo.equals("")) {
-                            correo = "No disponible";
                         }
                         if (web.equals("")) {
                             web = "No disponible";
@@ -741,7 +739,6 @@ public class DAO {
             throws ListarInstitucionesPorFechaErrorSistema,
             ListarInstitucionesPorFechaErrorAplicacion {
 
-        String h = null;
         if (fecha == null) {
             System.out.println("No se ingreso el parametro");
         } else {
@@ -754,7 +751,7 @@ public class DAO {
 
         String query =  "select ino.identifier," 
                        +" replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(c.title, 'de la República Bolivariana de Venezuela', ''), 'Gobernación del Estado ', ''), 'Gobernación del ', ''), 'Ministerio del Poder Popular para la ', ''), 'Ministerio del Poder Popular de ', ''), 'Ministerio del Poder Popular del ', ''), 'Ministerio del Poder Popular para el ', ''), 'Ministerio del Poder Popular para los ', ''), 'Ministerio del Poder Popular para las ', ''), 'Ministerio del Poder Popular para ', '')"
-                       +" ,c.title , c.text3, c.text6, c.text5, c.text8, c.text7, t.parent, c.mod_date"
+                       +" ,c.title , c.text3, c.text6, c.text5, c.text8, t.parent, c.mod_date"
                        +" from contentlet c, tree t, inode ino" 
                        +" where (t.parent = 128987" 
                        +" or t.parent = 131345" 
@@ -813,7 +810,7 @@ public class DAO {
                     String nombreInstitucion = resultado.getString("title");
                     String direccion = resultado.getString("text6");
                     String telefono = resultado.getString("text5");
-                    String correo = resultado.getString("text7");
+                    String correo = "Correo Electronico";
                     String web = resultado.getString("text8");
                     int poder = resultado.getInt("parent");
                     
@@ -846,10 +843,7 @@ public class DAO {
                     }
                     if (nombreInstitucion.equals("")) {
                         nombreInstitucion = "No disponible";
-                    }
-               /**     if (nombreSector.equals("")) {
-                        nombreSector = "No disponible";
-                    }          */              
+                    }             
                     if (direccion.equals("")) {
                         direccion = "No disponible";
                     }
@@ -938,7 +932,6 @@ public class DAO {
             throws ListarTramitesPorFechaErrorSistema,
             ListarTramitesPorFechaErrorAplicacion {
 
-        String h = null;
         if (fecha == null) {
             System.out.println("No se ingreso el parametro");
         } else {
@@ -958,7 +951,7 @@ public class DAO {
         //+ " tree.relation_type = 'Directorio-Tramite') "
         // + " and (c.live is true) and c.mod_date >'" +fecha+ "' order by c.mod_date";
 
-        String query = "select i.identifier, c.text1, c.text_area5, replace(c.text_area8,'*',''), c.text5, c.text4, c.text_area4, c.text_area1, c.mod_date"
+        String query = "select i.identifier, c.text1, c.text_area5, replace(c.text_area8,'*',''), c.text5, c.text4, c.text_area4, c.text_area10, c.mod_date"
                 + " from contentlet c, tree t, inode i"
                 + " where c.structure_inode = 107379"
                 + " and t.parent = i.identifier"
@@ -1017,7 +1010,7 @@ public class DAO {
                     String direccion = resultado.getString("text_area5");
                     String telefono = resultado.getString("text4");
                     String requisitos = resultado.getString("replace");
-                    String descripcion = resultado.getString("text_area1");
+                    String descripcion = resultado.getString("text_area10");
                     String horarios = resultado.getString("text5");
                     if (costo.equals("")) {
                         costo = "No disponible";
@@ -1143,15 +1136,10 @@ public class DAO {
         //+ " tree.relation_type = 'Directorio-Tramite') "
         // + " and (c.live is true) and c.mod_date >'" +fecha+ "' order by c.mod_date";
 
-        String query = "select i.identifier, c.text1, c.text_area5, replace(c.text_area8,'*',''), c.text5, c.text4, c.text_area4, c.text_area1, c.mod_date"
-                + " from contentlet c, tree t, inode i"
-                + " where c.structure_inode = 107379"
-                + " and t.parent = i.identifier"
-                + " and c.working = true"
-                + " and c.language_id = 2 "
-                + " and i.inode = c.inode"
-                + " and c.inode = t.child"
-                + " and c.live = true and c.mod_date >'" + fecha + "' order by c.mod_date";
+        /**
+         * Falata Ingresar el query que se va a ejecutar contra la base de datos del DOTCMS
+         */
+        String query = "";
                 
         try {
             //Iniciando conexion
@@ -1198,20 +1186,20 @@ public class DAO {
                 while (resultado.next()) {
                     existe = true;
                     
-                    String nombre = resultado.getString("text1");
-                    String direccion = resultado.getString("text_area5");
-                    String fechaOperativo = resultado.getString("replace");
-                    String descripcion = resultado.getString("text_area1");
- 
+                    String nombre = null;
+                    String direccion = null;
+                    String fechaOperativo = null;
+                    String descripcion = null;
+ /**
                     System.out.println(" DEV :: Tramite :: " + resultado.getInt("identifier")
                             + " " + resultado.getString("text1")+ " "+ nombre);
-                    
-                    Operativo operativo = new Operativo(resultado.getInt("identifier"), 
+                    */
+                    Operativo operativo = new Operativo(1, 
                             nombre, 
                             descripcion, 
                             fechaOperativo,
                             direccion, 
-                            resultado.getString("mod_date"));
+                            "Fecha");
 
                     operativos.add(operativo);
                 }
