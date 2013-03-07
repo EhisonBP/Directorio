@@ -1077,7 +1077,15 @@ public class DAO {
         /**
          * Falata Ingresar el query que se va a ejecutar contra la base de datos del DOTCMS
          */
-        String query = "";
+        String query = "select c.text1, c.text2 "
+                  +"from contentlet c, tree t, inode i "
+                  +"where c.structure_inode = 156654 "
+                  +"and t.parent = i.identifier "
+                  +"and c.working = true "
+                  +"and i.inode = c.inode "
+                  +"and c.inode = t.child "
+                  +"and c.live = true "
+                  +"and c.mod_date >'2008-01-01' order by c.mod_date; ";
                 
         try {
             //Iniciando conexion
