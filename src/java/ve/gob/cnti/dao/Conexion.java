@@ -41,7 +41,7 @@ public class Conexion {
     private static String USUARIO = "postgres";
 
     // Contraseña del usuario de la Base de Datos
-    private static String CONTRASEÑA = "123456";
+    private static String CONTRASEÑA = "22ks2009";
     
     
     public static Connection iniciarConexion() throws SQLException {

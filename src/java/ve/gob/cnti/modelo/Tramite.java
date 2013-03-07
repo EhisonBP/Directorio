@@ -25,14 +25,11 @@ import javax.xml.bind.annotation.XmlType;
         "descripcion",
         "costo",
         "requisitos",
-        "fecha",
-        "paginaWeb",
-        "idPerfil"},
+        "fecha"},
         namespace = "http://www.cnti.gob.ve/schema/directorio/TipoTramite")
 public class Tramite {
     
     private int idTramite;
-    private int idPerfil;
     private String nombreTramite;
     private String telefono;
     private String horarios;
@@ -41,13 +38,12 @@ public class Tramite {
     private String costo;
     private String requisitos;
     private String fecha;
-    private String paginaWeb;
 
     public Tramite() {
     }
     
     public Tramite(int idTramite, String nombreTramite, String telefono, String horarios, String direccion,
-             String descripcion, String costo, String requisitos, String fecha, int idPerfil){
+             String descripcion, String costo, String requisitos, String fecha){
         this.idTramite = idTramite;
         this.nombreTramite = nombreTramite;
         this.telefono = telefono;
@@ -57,26 +53,15 @@ public class Tramite {
         this.costo = costo;
         this.requisitos = requisitos;
         this.fecha = fecha;
-        this.idPerfil = idPerfil;
     }
 
-    public Tramite(int idTramite, String nombreTramite, String telefono, String direccion, String requisitos, String paginaWeb) {
+    public Tramite(int idTramite, String nombreTramite, String telefono, String direccion, String requisitos) {
         this.idTramite = idTramite;
         this.nombreTramite = nombreTramite;
         this.telefono = telefono;
         this.direccion = direccion;
         this.requisitos = requisitos;
-        this.paginaWeb = paginaWeb;
     }
-
-    public int getIdPerfil() {
-        return idPerfil;
-    }
-
-    public void setIdPerfil(int idPerfil) {
-        this.idPerfil = idPerfil;
-    }
-
 
     public String getFecha() {
         return fecha;
@@ -152,11 +137,4 @@ public class Tramite {
         this.telefono = telefono;
     }
     
-    public String getPaginaWeb() {
-        return paginaWeb;
-    }
-
-    public void setPaginaWeb(String paginaWeb) {
-        this.paginaWeb = paginaWeb;
-    }
 }

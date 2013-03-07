@@ -73,11 +73,11 @@ public class DAO {
         Connection conexion = null;
         Statement sentencia = null;
         ResultSet resultado = null;
-        String query = "select c.inode, c.category_name "
-                + "from \"public\".category c, \"public\".tree t "
-                + "where c.active is true "
-                + "and t.parent = " + ID_CATEGORIA_PODER
-                + "and c.inode = t.child";
+        String query = "select c.inode, c.category_name "+ 
+                "from category c, tree t "+
+                "where c.active = true "+
+                "and t.parent = "+ ID_CATEGORIA_PODER +" "+
+                "and c.inode = t.child ";
 
         try {
             //Iniciando conexion
@@ -403,8 +403,7 @@ public class DAO {
                     Tramite tramite = new Tramite(resultado.getInt("inode"),
                             resultado.getString("title"), resultado.getString("text4"),
                             resultado.getString("text_area5"),
-                            resultado.getString("text_area7"),
-                            "Pagina Web");
+                            resultado.getString("text_area7"));
                     tramites.add(tramite);
                 }
 
@@ -634,28 +633,6 @@ public class DAO {
                         String telefono = resultado.getString("text5");
                         String correo = "Correo Electronico";
                         String web = resultado.getString("text8");
-                        if (director.equals("")) {
-                            director = "No disponible";
-                        } 
-                        if (municipio.equals("")) {
-                            municipio = "No disponible";
-                        }else{
-                            municipio = limpiar.nombreMunicipio(municipio);
-                        }
-                        if (alcaldia.equals("")) {
-                            alcaldia = "No disponible";
-                        }else{
-                            alcaldia = limpiar.nombreAlcaldia(alcaldia);
-                        }
-                        if (direccion.equals("")) {
-                            direccion = "No disponible";
-                        }
-                        if (telefono.equals("")) {
-                            telefono = "No disponible";
-                        }
-                        if (web.equals("")) {
-                            web = "No disponible";
-                        }
 
                         existe = true;
                         System.out.println(" DEV :: Poder :: " + resultado.getInt("identifier")
@@ -837,25 +814,6 @@ public class DAO {
                             poder = 8;
                             break;   
                     }
-
-                    if (director.equals("")) {
-                        director = "No disponible";
-                    }
-                    if (nombreInstitucion.equals("")) {
-                        nombreInstitucion = "No disponible";
-                    }             
-                    if (direccion.equals("")) {
-                        direccion = "No disponible";
-                    }
-                    if (telefono.equals("")) {
-                        telefono = "No disponible";
-                    }
-                    if (correo.equals("")) {
-                        correo = "No disponible";
-                    }
-                    if (web.equals("")) {
-                        web = "No disponible";
-                    }
                    
                     existe = true;
                     System.out.println(" DEV :: Institución :: " + resultado.getInt("identifier")
@@ -951,16 +909,27 @@ public class DAO {
         //+ " tree.relation_type = 'Directorio-Tramite') "
         // + " and (c.live is true) and c.mod_date >'" +fecha+ "' order by c.mod_date";
 
-        String query = "select i.identifier, c.text1, c.text_area5, replace(c.text_area8,'*',''), c.text5, c.text4, c.text_area4, c.text_area10, c.mod_date"
-                + " from contentlet c, tree t, inode i"
-                + " where c.structure_inode = 107379"
-                + " and t.parent = i.identifier"
-                + " and c.working = true"
-                + " and c.language_id = 2 "
-                + " and i.inode = c.inode"
-                + " and c.inode = t.child"
-                + " and c.live = true and c.mod_date >'" + fecha + "' order by c.mod_date";
+        /**
+        String query =select i.identifier, c.text1, c.text_area5, c.text_area8, c.text5, c.text4, c.text_area4, c.text_area10, c.mod_date
+                  from contentlet c, tree t, inode i
+                  where c.structure_inode = 107379
+                  and t.parent = i.identifier
+                  and c.working = true
+                  and c.language_id = 2 
+                  and i.inode = c.inode
+                  and c.inode = t.child
+                  and c.live = true and c.mod_date >'2008-01-01' order by c.mod_date*/
+        
+        String query = "select i.identifier, c.text1, c.text_area5, c.text_area8, c.text5, c.text4, c.text_area4, c.text_area10, c.mod_date "+
+                       " from contentlet c inner join inode i on i.inode = c.inode "+ 
+                       " where (c.structure_inode = 107379) "+ 
+                       " and i.identifier in "+
+                       " (select tree.child from tree where "+
+                       " tree.relation_type = 'Directorio-Tramite') "+ 
+                       " and (c.live is true) and c.mod_date >'" +fecha+ "' and c.working = true order by c.mod_date";
                 
+        System.out.println("El valor del query es: " + query);
+        
         try {
             //Iniciando conexion
             conexion = Conexion.iniciarConexion();
@@ -1009,51 +978,21 @@ public class DAO {
                     String nombre = resultado.getString("text1");
                     String direccion = resultado.getString("text_area5");
                     String telefono = resultado.getString("text4");
-                    String requisitos = resultado.getString("replace");
+                    String requisitos = resultado.getString("text_area8");
                     String descripcion = resultado.getString("text_area10");
                     String horarios = resultado.getString("text5");
-                    if (costo.equals("")) {
-                        costo = "No disponible";
-                    } else {
+                    
+                    if (!costo.equals("")) {
                         costo = limpiar.limpiadorEtiquetas(costo);
                     }
 
-                    if (nombre.equals("")) {
-                        nombre = "No disponible";
-                    } else {
-                        nombre = limpiar.limpiadorEtiquetas(nombre);
-                    }
-
-                    if (direccion.equals("")) {
-                        direccion = "No disponible";
-                    } else {
+                    if (!direccion.equals("")) {
                         direccion = limpiar.limpiadorEtiquetas(direccion);
                     }
 
-                    if (telefono.equals("")) {
-                        telefono = "No disponible";
-                    } else {
-                        telefono = limpiar.limpiadorEtiquetas(telefono);
-                    }
-
-                    if (requisitos.equals("")) {
-                        requisitos = "No disponible";
-                    } else {
+                    if (!requisitos.equals("")) {
                         requisitos = limpiar.limpiadorEtiquetas(requisitos);
                     }
-
-                    if (descripcion.equals("")) {
-                        descripcion = "No disponible";
-                    } else {
-                        descripcion = limpiar.limpiadorEtiquetas(descripcion);
-                    }
-
-                    if (horarios.equals("")) {
-                        horarios = "No disponible";
-                    } else {
-                        horarios = limpiar.limpiadorEtiquetas(horarios);
-                    }
-
                     System.out.println(" DEV :: Tramite :: " + resultado.getInt("identifier")
                             + " " + resultado.getString("text1")+ " "+ requisitos);
 
@@ -1065,8 +1004,7 @@ public class DAO {
                             descripcion,
                             costo,
                             requisitos,
-                            resultado.getString("mod_date"),
-                            1);
+                            resultado.getString("mod_date"));
 
 
                     tramites.add(tramite);
