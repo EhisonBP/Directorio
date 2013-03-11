@@ -26,29 +26,27 @@ import ve.gob.cnti.modelo.Poder;
 import ve.gob.cnti.modelo.Tramite;
 
 /**
- * Implementacion de la interfaz ServicioDirectorioEstadoVenezolano
- * para la definicion de las operaciones del Servicio Web.
- * 
- * Los atributos generales del Servicio se definen a continuación:
- *   <li>Nombre: ServicioDirectorioEstadoVenezolano</li>
- *   <li>Endpoint: ServicioDirectorioEstadoVenezolanoImplementacion</li>
- *   <li>Endpoint Interface: {@link ServicioDirectorioEstadoVenezolano}</li>
- *   <li>Target NameSpace: http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano</li>
- * 
- * 
- * Si el usuario desea obtener el listado de Poderes debe 
- * invocar a {@link #listadoPoderes()}
- * 
- * Si el usuario desea obtener el listado de Institucones asociadas 
- * a un Poder en especifico debe invocar a 
- * {@link #listadoInstituciones(int) } 
- * 
- * Si el usuario desea obtener el listado de Tramites asociados 
- * a una Institucion en especifico debe invocar a 
- * {@link #listadoInstituciones(int) } 
- * 
+ * Implementacion de la interfaz ServicioDirectorioEstadoVenezolano para la
+ * definicion de las operaciones del Servicio Web.
+ *
+ * Los atributos generales del Servicio se definen a continuación: <li>Nombre:
+ * ServicioDirectorioEstadoVenezolano</li> <li>Endpoint:
+ * ServicioDirectorioEstadoVenezolanoImplementacion</li> <li>Endpoint Interface:
+ * {@link ServicioDirectorioEstadoVenezolano}</li> <li>Target NameSpace:
+ * http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano</li>
+ *
+ *
+ * Si el usuario desea obtener el listado de Poderes debe invocar a
+ * {@link #listadoPoderes()}
+ *
+ * Si el usuario desea obtener el listado de Institucones asociadas a un Poder
+ * en especifico debe invocar a {@link #listadoInstituciones(int) }
+ *
+ * Si el usuario desea obtener el listado de Tramites asociados a una
+ * Institucion en especifico debe invocar a {@link #listadoInstituciones(int) }
+ *
  * @author Danielle Mariani
- * 
+ *
  */
 @WebService(serviceName = "ServicioDirectorioEstadoVenezolano",
 portName = "ServicioDirectorioEstadoVenezolanoUbicacion",
@@ -64,9 +62,8 @@ public class ServicioDirectorioEstadoVenezolanoImplementacion
      *
      * Operacion del Servicio Web #listarPoderes
      *
-     * Invoca al metodo getPoderes() de la clase {@link DAO}, para dar
-     * respuesta al cliente que genero la solicitud respecto al listado de
-     * poderes.
+     * Invoca al metodo getPoderes() de la clase {@link DAO}, para dar respuesta
+     * al cliente que genero la solicitud respecto al listado de poderes.
      *
      * @return el arreglo que contiene los objetos de tipo Poder.
      * @throws ListarPoderesErrorSistema
@@ -86,8 +83,8 @@ public class ServicioDirectorioEstadoVenezolanoImplementacion
      * respuesta al cliente que genero la solicitud respecto al listado de
      * instituciones.
      *
-     * @param idPoder es el identificador unico del poder, empleado para realizar
-     * la busqueda de instituciones asociadas al mismo.
+     * @param idPoder es el identificador unico del poder, empleado para
+     * realizar la busqueda de instituciones asociadas al mismo.
      * @return el arreglo que contiene los objetos de tipo Institucion.
      * @throws ListarInstitucionesPorPoderErrorSistema
      * @throws ListarInstitucionesPorPoderesErrorAplicacion
@@ -121,18 +118,18 @@ public class ServicioDirectorioEstadoVenezolanoImplementacion
     }
 
     /**
-     * 
+     *
      * Operacion del Servicio Web #listarTramitesPorInstitucion
-     * 
-     * Invoca al metodo getTramites(int) de la clase {@link DAO}, para dar 
-     * respuesta al cliente que genero la solicitud respecto al listado de 
+     *
+     * Invoca al metodo getTramites(int) de la clase {@link DAO}, para dar
+     * respuesta al cliente que genero la solicitud respecto al listado de
      * tramites.
      *
-     * @param idInstitucion es el identificador unico de la institucion, 
+     * @param idInstitucion es el identificador unico de la institucion,
      * empleado para realizar la busqueda de los tramites asociadas a la misma.
      * @return el arreglo que contiene los objetos de tipo Tramite.
      * @throws ListarTramitesPorInstitucionErrorSistema
-     * @throws ListarTramitesPorInstitucionErrorAplicacion 
+     * @throws ListarTramitesPorInstitucionErrorAplicacion
      */
     @Override
     public List<Tramite> listadoTramitesPorFecha(String fecha)
@@ -140,45 +137,53 @@ public class ServicioDirectorioEstadoVenezolanoImplementacion
             ListarTramitesPorFechaErrorAplicacion {
         return DAO.getTramitesPorFecha(fecha);
     }
+
     /**
-     * 
+     *
      * Operacion del Servicio Web #listarTramitesPorInstitucion
-     * 
-     * Invoca al metodo getInstitucionesPorFecha(fecha) de la clase {@link DAO}, para dar 
-     * respuesta al cliente que genero la solicitud respecto al listado de 
-     * instituciones.
-     * 
-     * @param fecha esta va ser el parametro para implementar la busqueda dentro 
+     *
+     * Invoca al metodo getInstitucionesPorFecha(fecha) de la clase {@link DAO},
+     * para dar respuesta al cliente que genero la solicitud respecto al listado
+     * de instituciones.
+     *
+     * @param fecha esta va ser el parametro para implementar la busqueda dentro
      * de las instituciones que sean mayor a la fecha ingresada
      * @return
      * @throws ListarInstitucionesPorFechaErrorSistema
-     * @throws ListarInstitucionesPorFechaErrorAplicacion 
+     * @throws ListarInstitucionesPorFechaErrorAplicacion
      */
     @Override
-    public List<Institucion> listadoInstitucionesPorFecha(final String fecha) 
-            throws ListarInstitucionesPorFechaErrorSistema, 
+    public List<Institucion> listadoInstitucionesPorFecha(final String fecha)
+            throws ListarInstitucionesPorFechaErrorSistema,
             ListarInstitucionesPorFechaErrorAplicacion {
         return DAO.getInstitucionesPorFecha(fecha);
     }
+
     /**
-     * 
+     *
      * @param fecha
      * @return
      * @throws ListarAlcaldiasPorFechaErrorSistema
-     * @throws ListarAlcaldiasPorFechaErrorAplicacion 
+     * @throws ListarAlcaldiasPorFechaErrorAplicacion
      */
     @Override
-    public List<Alcaldia> listadoAlcaldiasPorFechas(final String fecha) 
-            throws ListarAlcaldiasPorFechaErrorSistema, 
+    public List<Alcaldia> listadoAlcaldiasPorFechas(final String fecha)
+            throws ListarAlcaldiasPorFechaErrorSistema,
             ListarAlcaldiasPorFechaErrorAplicacion {
         return DAO.getAlcaldiasPorFecha(fecha);
     }
-    
+
     @Override
-    public List<Operativo> listadoOperativosPorFecha(final String fecha) 
-            throws ListarOperativosPorFechaErrorSistema, 
+    public List<Operativo> listadoOperativosPorFecha(final String fecha)
+            throws ListarOperativosPorFechaErrorSistema,
             ListarOperativosPorFechaErrorAplicacion {
         return DAO.getOperativosPorFecha(fecha);
     }
-   
+
+    @Override
+    public List<Alcaldia> listadoAlcaldiasEliminadas(String fecha)
+            throws ListarAlcaldiasPorFechaErrorSistema,
+            ListarAlcaldiasPorFechaErrorAplicacion {
+        return DAO.getAlcaldiasPorFecha(fecha);
+    }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import ve.gob.cnti.falla.FallasAplicacion;
 import ve.gob.cnti.falla.FallasSistema;
 import ve.gob.cnti.falla.TipoError;
+import ve.gob.cnti.falla.aplicacion.ListarAlcaldiasEliminadasErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarAlcaldiasPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorPoderesErrorAplicacion;
@@ -16,6 +17,7 @@ import ve.gob.cnti.falla.aplicacion.ListarOperativosPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarPoderesErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
+import ve.gob.cnti.falla.sistema.ListarAlcaldiasEliminadasErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarAlcaldiasPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorPoderErrorSistema;
@@ -1181,8 +1183,8 @@ public class DAO {
         }
     }
 
-    public static List<Alcaldia> getAlcaldiasEliminadas(String fecha) throws ListarAlcaldiasPorFechaErrorSistema,
-            ListarAlcaldiasPorFechaErrorAplicacion {
+    public static List<Alcaldia> getAlcaldiasEliminadas(String fecha) throws ListarAlcaldiasEliminadasErrorSistema,
+            ListarAlcaldiasEliminadasErrorAplicacion {
 
         Connection conexion = null;
         Statement sentencia = null;
@@ -1226,7 +1228,7 @@ public class DAO {
             tipoError.setCodigo(FallasSistema.FALLA_2_CODIGO);
             tipoError.setDescripcion(FallasSistema.FALLA_2_DESCRIPCION + " - " + e.getMessage());
             tipoError.setDetallesTecnicos(e.getClass().toString());
-            throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
+            throw new ListarAlcaldiasEliminadasErrorSistema("SQL Exception", tipoError);
         }
 
 
@@ -1239,7 +1241,7 @@ public class DAO {
             tipoError.setCodigo(FallasSistema.FALLA_3_CODIGO);
             tipoError.setDescripcion(FallasSistema.FALLA_3_DESCRIPCION + " - " + e.getMessage());
             tipoError.setDetallesTecnicos(e.getClass().toString());
-            throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
+            throw new ListarAlcaldiasEliminadasErrorSistema("SQL Exception", tipoError);
         }
 
         try {
@@ -1251,7 +1253,7 @@ public class DAO {
             tipoError.setCodigo(FallasSistema.FALLA_4_CODIGO);
             tipoError.setDescripcion(FallasSistema.FALLA_4_DESCRIPCION + " - " + e.getMessage());
             tipoError.setDetallesTecnicos(e.getClass().toString());
-            throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
+            throw new ListarAlcaldiasEliminadasErrorSistema("SQL Exception", tipoError);
         }
 
         if (resultado != null) {
@@ -1281,7 +1283,7 @@ public class DAO {
                     tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_9);
                     tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_9);
                     tipoError.setDetallesTecnicos("Detalles Tecnicos");
-                    throw new ListarAlcaldiasPorFechaErrorAplicacion("Exception", tipoError);
+                    throw new ListarAlcaldiasEliminadasErrorAplicacion("Exception", tipoError);
                 }
 
             } catch (SQLException e) {
@@ -1290,7 +1292,7 @@ public class DAO {
                 tipoError.setCodigo(FallasSistema.FALLA_5_CODIGO);
                 tipoError.setDescripcion(FallasSistema.FALLA_5_DESCRIPCION + " - " + e.getMessage());
                 tipoError.setDetallesTecnicos(e.getClass().toString());
-                throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
+                throw new ListarAlcaldiasEliminadasErrorSistema("SQL Exception", tipoError);
             }
 
             try {
@@ -1301,7 +1303,7 @@ public class DAO {
                 tipoError.setCodigo(FallasSistema.FALLA_6_CODIGO);
                 tipoError.setDescripcion(FallasSistema.FALLA_6_DESCRIPCION + " - " + e.getMessage());
                 tipoError.setDetallesTecnicos(e.getClass().toString());
-                throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
+                throw new ListarAlcaldiasEliminadasErrorSistema("SQL Exception", tipoError);
             }
 
             return alcaldias;
@@ -1312,7 +1314,7 @@ public class DAO {
             tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_9);
             tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_9);
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
-            throw new ListarAlcaldiasPorFechaErrorAplicacion("Exception", tipoError);
+            throw new ListarAlcaldiasEliminadasErrorAplicacion("Exception", tipoError);
         }
     }
 }
