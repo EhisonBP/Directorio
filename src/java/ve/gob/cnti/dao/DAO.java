@@ -1077,15 +1077,14 @@ public class DAO {
         /**
          * Falata Ingresar el query que se va a ejecutar contra la base de datos del DOTCMS
          */
-        String query = "select c.text1, c.text2 "
-                  +"from contentlet c, tree t, inode i "
-                  +"where c.structure_inode = 156654 "
-                  +"and t.parent = i.identifier "
-                  +"and c.working = true "
-                  +"and i.inode = c.inode "
-                  +"and c.inode = t.child "
-                  +"and c.live = true "
-                  +"and c.mod_date >'2008-01-01' order by c.mod_date; ";
+        String query = "select i.identifier, c.text1, c.text2, c.text3, c.date1, c.date2, c.mod_date "
+                  +"from contentlet c, tree t, inode i "  
+                  +"where c.mod_date >'"+ fecha +"' "
+                  +"and c.structure_inode = 156654 "    
+                  +"and i.inode = c.inode "  
+                  +"and c.inode = t.child " 
+                  +"and c.live = true "  
+                  +"and c.working = true order by c.mod_date;";
                 
         try {
             //Iniciando conexion
@@ -1112,7 +1111,6 @@ public class DAO {
         }
 
         try {
-            //Ejecutando el query contra la Base de Datos
             resultado = sentencia.executeQuery(query);
         } catch (SQLException e) {
             //Error ejecutando el query contra la Base de Datos
@@ -1132,20 +1130,17 @@ public class DAO {
                 while (resultado.next()) {
                     existe = true;
                     
-                    String nombre = null;
-                    String direccion = null;
-                    String fechaOperativo = null;
-                    String descripcion = null;
- /**
-                    System.out.println(" DEV :: Tramite :: " + resultado.getInt("identifier")
-                            + " " + resultado.getString("text1")+ " "+ nombre);
-                    */
-                    Operativo operativo = new Operativo(1, 
-                            nombre, 
-                            descripcion, 
-                            fechaOperativo,
-                            direccion, 
-                            "Fecha");
+ 
+                    System.out.println(" DEV :: Operativos :: " + resultado.getInt("identifier")
+                            + " " + resultado.getString("text1")+ " "+ resultado.getString("text2"));
+                    
+                    Operativo operativo = new Operativo(resultado.getInt("identifier"), 
+                            resultado.getString("text1"), 
+                            resultado.getString("text2"), 
+                            resultado.getString("text3"),
+                            resultado.getString("date1"),
+                            resultado.getString("date2"),
+                            resultado.getString("mod_date"));
 
                     operativos.add(operativo);
                 }

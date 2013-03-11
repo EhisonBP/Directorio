@@ -19,31 +19,34 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name="TipoOperativo", propOrder={
         "idOperativo",
         "nombre",
-        "descripcion",
-        "fechaOperativo",
+        "ciudad",
         "direccion",
-        "fechaCreacion"},
+        "fechaInicioOperativo",
+        "fechaFinOperativo",
+        "fecha"},
         namespace="http://www.cnti.gob.ve/schema/directorio/TipoOperativo")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Operativo {
     
     private int idOperativo;
     private String nombre;
-    private String descripcion;
-    private String fechaOperativo;
+    private String ciudad;
+    private String fechaInicioOperativo;
+    private String fechaFinOperativo;
     private String direccion;
-    private String fechaCreacion;
+    private String fecha;
     
     public Operativo (){
     }
     
-    public Operativo(int idOperativo, String nombre, String descripcion, String fechaOperativo, String direccion, String fechaCreacion){
+    public Operativo(int idOperativo, String nombre, String ciudad, String direccion, String fechaInicioOperativo, String fechaFinOperativo, String fecha){
         this.idOperativo = idOperativo;
         this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.fechaOperativo = fechaOperativo;
+        this.ciudad = ciudad;
         this.direccion = direccion;
-        this.fechaCreacion = fechaCreacion;
+        this.fechaInicioOperativo = fechaInicioOperativo;
+        this.fechaFinOperativo = fechaFinOperativo;
+        this.fecha = fecha;
     }
 
     public int getIdOperativo() {
@@ -54,20 +57,12 @@ public class Operativo {
         return nombre;
     }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public String getFechaOperativo() {
-        return fechaOperativo;
-    }
-
     public String getDireccion() {
         return direccion;
     }
 
-    public String getFechaCreacion() {
-        return fechaCreacion;
+    public String getFecha() {
+        return fecha;
     }
 
     public void setIdOperativo(int idOperativo) {
@@ -78,20 +73,36 @@ public class Operativo {
         this.nombre = nombre;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public void setFechaOperativo(String fechaOperativo) {
-        this.fechaOperativo = fechaOperativo;
-    }
-
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
 
-    public void setFechaCreacion(String fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+    
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getFechaInicioOperativo() {
+        return fechaInicioOperativo;
+    }
+
+    public void setFechaInicioOperativo(String fechaInicioOperativo) {
+        this.fechaInicioOperativo = fechaInicioOperativo;
+    }
+
+    public String getFechaFinOperativo() {
+        return fechaFinOperativo;
+    }
+
+    public void setFechaFinOperativo(String fechaFinOperativo) {
+        this.fechaFinOperativo = fechaFinOperativo;
     }
     
 }

@@ -149,7 +149,7 @@ public interface ServicioDirectorioEstadoVenezolano {
             final String fecha)
             throws ListarTramitesPorFechaErrorSistema,
             ListarTramitesPorFechaErrorAplicacion;
-    /**
+    
     @WebMethod(operationName= "listarOperativosPorFecha")
     @WebResult(name="tipoOperativo")
     @Action(input = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarOperativosPorFechaEntrada",
@@ -164,5 +164,5 @@ public interface ServicioDirectorioEstadoVenezolano {
             final String fecha)
             throws ListarOperativosPorFechaErrorSistema,
             ListarOperativosPorFechaErrorAplicacion;
-    */
+    
 }
