@@ -31,19 +31,19 @@ import ve.gob.cnti.modelo.Tramite;
 import ve.gob.cnti.servicio.ServicioDirectorioEstadoVenezolano;
 
 /**
- * Operaciones asociadas a las que posee el servicio web definido en {@link ServicioDirectorioEstadoVenezolano}
+ * Operaciones asociadas a las que posee el servicio web definido en
+ * {@link ServicioDirectorioEstadoVenezolano}
  *
- * Las operaciones empleadas se definen a continuación: <li>Obtener Poderes {@link #getPoderes()}</li>
- * <li>Obtener Instituciones {@link #getInstituciones(int) }</li> <li>Obtener
- * Tramites {@link #getTramites(int) }</li>
+ * Las operaciones empleadas se definen a continuación: <li>Obtener Poderes
+ * {@link #getPoderes()}</li> <li>Obtener Instituciones {@link #getInstituciones(int)
+ * }</li> <li>Obtener Tramites {@link #getTramites(int) }</li>
  *
  *
  * Si el usuario desea obtener el listado de Poderes debe invocar a {@link #getPoderes()
  * }
  *
  * Si el usuario desea obtener el listado de Institucones asociadas a un Poder
- * en especifico debe invocar a
- * {@link #getInstituciones(int) }
+ * en especifico debe invocar a {@link #getInstituciones(int) }
  *
  * Si el usuario desea obtener el listado de Tramites asociados a una
  * Institucion debe invocar a {@link #getTramites(int) }
@@ -55,12 +55,13 @@ public class DAO {
 
     private static final int ID_CATEGORIA_PODER = 123836;
     public static Limpiador limpiar = new Limpiador();
+
     /**
      *
-     * Encargado de listar los objetos tipo {@link Poder}, para ello
-     * debe invocar la clase {@link Conexion} para realizar la conexión
-     * con la base de datos, ejecutar la consulta a la base de datos
-     * y listar la respuesta (de haberla) en un arreglo.
+     * Encargado de listar los objetos tipo {@link Poder}, para ello debe
+     * invocar la clase {@link Conexion} para realizar la conexión con la base
+     * de datos, ejecutar la consulta a la base de datos y listar la respuesta
+     * (de haberla) en un arreglo.
      *
      * @return el arreglo que posee la lista de poderes
      * @throws ListarPoderesErrorSistema
@@ -73,11 +74,11 @@ public class DAO {
         Connection conexion = null;
         Statement sentencia = null;
         ResultSet resultado = null;
-        String query = "select c.inode, c.category_name "+ 
-                "from category c, tree t "+
-                "where c.active = true "+
-                "and t.parent = "+ ID_CATEGORIA_PODER +" "+
-                "and c.inode = t.child ";
+        String query = "select c.inode, c.category_name "
+                + "from category c, tree t "
+                + "where c.active = true "
+                + "and t.parent = " + ID_CATEGORIA_PODER + " "
+                + "and c.inode = t.child ";
 
         try {
             //Iniciando conexion
@@ -175,14 +176,14 @@ public class DAO {
 
     /**
      *
-     * Encargado de listar los objetos tipo {@link Institucion}, para ello
-     * debe invocar la clase {@link Conexion} para realizar la conexión
-     * con la base de datos, ejecutar la consulta a la base de datos
-     * y listar la respuesta (de haberla) en un arreglo.
+     * Encargado de listar los objetos tipo {@link Institucion}, para ello debe
+     * invocar la clase {@link Conexion} para realizar la conexión con la base
+     * de datos, ejecutar la consulta a la base de datos y listar la respuesta
+     * (de haberla) en un arreglo.
      *
      *
-     * @param idPoder identificador unico del poder del cual se desea
-     *      obtener sus instituciones.
+     * @param idPoder identificador unico del poder del cual se desea obtener
+     * sus instituciones.
      * @return el arreglo que posee la lista de instituciones
      * @throws ListarInstitucionesPorPoderErrorSistema
      * @throws ListarInstitucionesPorPoderesErrorAplicacion
@@ -258,12 +259,12 @@ public class DAO {
                     existe = true;
                     System.out.println(" DEV :: Institución :: " + resultado.getInt("inode")
                             + " " + resultado.getString("title"));
-                    Institucion institucion = new Institucion(resultado.getInt("inode"), 
-                                                              resultado.getString("title"), 
-                                                              resultado.getString("text_area2"), 
-                                                              resultado.getString("text6"), 
-                                                              resultado.getString("text5"), 
-                                                              resultado.getString("text8"));
+                    Institucion institucion = new Institucion(resultado.getInt("inode"),
+                            resultado.getString("title"),
+                            resultado.getString("text_area2"),
+                            resultado.getString("text6"),
+                            resultado.getString("text5"),
+                            resultado.getString("text8"));
                     instituciones.add(institucion);
                 }
 
@@ -310,14 +311,14 @@ public class DAO {
     }
 
     /**
-     * Encargado de listar los objetos tipo {@link Tramite}, para ello
-     * debe invocar la clase {@link Conexion} para realizar la conexión
-     * con la base de datos, ejecutar la consulta a la base de datos
-     * y listar la respuesta (de haberla) en un arreglo.
+     * Encargado de listar los objetos tipo {@link Tramite}, para ello debe
+     * invocar la clase {@link Conexion} para realizar la conexión con la base
+     * de datos, ejecutar la consulta a la base de datos y listar la respuesta
+     * (de haberla) en un arreglo.
      *
-
-     * @param idInstitucion identificador unico de la institucion del cual
-     *          se desea obtener sus instituciones.
+     *
+     * @param idInstitucion identificador unico de la institucion del cual se
+     * desea obtener sus instituciones.
      * @return el arreglo que posee la lista de tramites
      * @throws ListarTramitesPorInstitucionErrorSistema
      * @throws ListarTramitesPorInstitucionErrorAplicacion
@@ -448,14 +449,11 @@ public class DAO {
 
     }
 
-
-    /**Metodos Implementados para Android
+    /**
+     * Metodos Implementados para Android
      *
      *
      */
-
-
-   
     /**
      *
      * Encargado de listar los objetos tipo {@link Poder}, para ello debe
@@ -476,30 +474,30 @@ public class DAO {
         ResultSet resultado = null;
         String query = " select ino.identifier, c.title, c.text3, c.text6, c.text5, c.text8, t.parent, c.mod_date "
                 + " from contentlet c, tree t, inode ino "
-                + " where (t.parent = 131910 "  // Distrito Capital
-                + " or t.parent = 131912 "      // Amazonas
-                + " or t.parent = 131914 "      // Anzoategui
-                + " or t.parent = 131915 "      // Apure
-                + " or t.parent = 131916 "      // Aragua
-                + " or t.parent = 131917 "      // Barinas   
-                + " or t.parent = 131918 "      // Bolivar
-                + " or t.parent = 131919 "      // Carabobo
-                + " or t.parent = 131920 "      // Cojedes 
-                + " or t.parent = 131921 "      // Delta Amacuro
-                + " or t.parent = 131922 "      // Falcon 
-                + " or t.parent = 131923 "      // Guarico 
-                + " or t.parent = 131924 "      // Lara
-                + " or t.parent = 131925 "      // Merida
-                + " or t.parent = 131926 "      // Miranda
-                + " or t.parent = 131927 "      // Monagas
-                + " or t.parent = 131928 "      // Nueva Esparta
-                + " or t.parent = 131929 "      // Potuguesa
-                + " or t.parent = 131930 "      // Sucre
-                + " or t.parent = 131931 "      // Tachira
-                + " or t.parent = 131932 "      // Trujillo
-                + " or t.parent = 131933 "      // Vargas 
-                + " or t.parent = 131934 "      // Yaracuy
-                + " or t.parent = 131935)"     // Zulia
+                + " where (t.parent = 131910 " // Distrito Capital
+                + " or t.parent = 131912 " // Amazonas
+                + " or t.parent = 131914 " // Anzoategui
+                + " or t.parent = 131915 " // Apure
+                + " or t.parent = 131916 " // Aragua
+                + " or t.parent = 131917 " // Barinas   
+                + " or t.parent = 131918 " // Bolivar
+                + " or t.parent = 131919 " // Carabobo
+                + " or t.parent = 131920 " // Cojedes 
+                + " or t.parent = 131921 " // Delta Amacuro
+                + " or t.parent = 131922 " // Falcon 
+                + " or t.parent = 131923 " // Guarico 
+                + " or t.parent = 131924 " // Lara
+                + " or t.parent = 131925 " // Merida
+                + " or t.parent = 131926 " // Miranda
+                + " or t.parent = 131927 " // Monagas
+                + " or t.parent = 131928 " // Nueva Esparta
+                + " or t.parent = 131929 " // Potuguesa
+                + " or t.parent = 131930 " // Sucre
+                + " or t.parent = 131931 " // Tachira
+                + " or t.parent = 131932 " // Trujillo
+                + " or t.parent = 131933 " // Vargas 
+                + " or t.parent = 131934 " // Yaracuy
+                + " or t.parent = 131935)" // Zulia
                 + " and c.inode = t.child and c.bool1 = true and c.live = true and c.working = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
                 + " order by c.mod_date";
 
@@ -551,7 +549,7 @@ public class DAO {
                 while (resultado.next()) {
                     try {
                         int estado = resultado.getInt("parent");
-                        switch (estado){
+                        switch (estado) {
                             case 131910:
                                 estado = 1;
                                 break;
@@ -559,76 +557,76 @@ public class DAO {
                                 estado = 2;
                                 break;
                             case 131914:
-                                estado= 3;
+                                estado = 3;
                                 break;
                             case 131915:
-                                estado= 4;
+                                estado = 4;
                                 break;
                             case 131916:
-                                estado= 5;
+                                estado = 5;
                                 break;
                             case 131917:
-                                estado= 6;
+                                estado = 6;
                                 break;
                             case 131918:
-                                estado= 7;
+                                estado = 7;
                                 break;
                             case 131919:
-                                estado= 8;
+                                estado = 8;
                                 break;
                             case 131920:
-                                estado= 9;
+                                estado = 9;
                                 break;
                             case 131921:
-                                estado= 10;
+                                estado = 10;
                                 break;
                             case 131922:
-                                estado= 11;
+                                estado = 11;
                                 break;
                             case 131923:
-                                estado= 12;
+                                estado = 12;
                                 break;
                             case 131924:
-                                estado= 13;
+                                estado = 13;
                                 break;
                             case 131925:
-                                estado= 14;
+                                estado = 14;
                                 break;
                             case 131926:
-                                estado= 15;
+                                estado = 15;
                                 break;
                             case 131927:
-                                estado= 16;
+                                estado = 16;
                                 break;
                             case 131928:
-                                estado= 17;
+                                estado = 17;
                                 break;
                             case 131929:
-                                estado= 18;
+                                estado = 18;
                                 break;
                             case 131930:
-                                estado= 19;
+                                estado = 19;
                                 break;
                             case 131931:
-                                estado= 20;
+                                estado = 20;
                                 break;
                             case 131932:
-                                estado= 21;
+                                estado = 21;
                                 break;
                             case 131933:
-                                estado= 22;
+                                estado = 22;
                                 break;
                             case 131934:
-                                estado= 23;
+                                estado = 23;
                                 break;
                             case 131935:
-                                estado= 24;
+                                estado = 24;
                                 break;
                         }
-                        
+
                         String director = resultado.getString("text3");
-                        String municipio=resultado.getString("title");
-                        String alcaldia=resultado.getString("title");
+                        String municipio = resultado.getString("title");
+                        String alcaldia = resultado.getString("title");
                         String direccion = resultado.getString("text6");
                         String telefono = resultado.getString("text5");
                         String correo = "Correo Electronico";
@@ -726,19 +724,19 @@ public class DAO {
         Statement sentencia = null;
         ResultSet resultado = null;
 
-        String query =  "select ino.identifier," 
-                       +" replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(c.title, 'de la República Bolivariana de Venezuela', ''), 'Gobernación del Estado ', ''), 'Gobernación del ', ''), 'Ministerio del Poder Popular para la ', ''), 'Ministerio del Poder Popular de ', ''), 'Ministerio del Poder Popular del ', ''), 'Ministerio del Poder Popular para el ', ''), 'Ministerio del Poder Popular para los ', ''), 'Ministerio del Poder Popular para las ', ''), 'Ministerio del Poder Popular para ', '')"
-                       +" ,c.title , c.text3, c.text6, c.text5, c.text8, t.parent, c.mod_date"
-                       +" from contentlet c, tree t, inode ino" 
-                       +" where (t.parent = 128987" 
-                       +" or t.parent = 131345" 
-                       +"or t.parent = 131346" 
-                       +"or t.parent = 131347" 
-                       +"or t.parent = 131348" 
-                       +"or t.parent = 131349" 
-                       +"or t.parent = 143210) and c.inode = t.child and c.live = true and c.working = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
-                       +"order by c.mod_date";
-              
+        String query = "select ino.identifier,"
+                + " replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(c.title, 'de la República Bolivariana de Venezuela', ''), 'Gobernación del Estado ', ''), 'Gobernación del ', ''), 'Ministerio del Poder Popular para la ', ''), 'Ministerio del Poder Popular de ', ''), 'Ministerio del Poder Popular del ', ''), 'Ministerio del Poder Popular para el ', ''), 'Ministerio del Poder Popular para los ', ''), 'Ministerio del Poder Popular para las ', ''), 'Ministerio del Poder Popular para ', '')"
+                + " ,c.title , c.text3, c.text6, c.text5, c.text8, t.parent, c.mod_date"
+                + " from contentlet c, tree t, inode ino"
+                + " where (t.parent = 128987"
+                + " or t.parent = 131345"
+                + "or t.parent = 131346"
+                + "or t.parent = 131347"
+                + "or t.parent = 131348"
+                + "or t.parent = 131349"
+                + "or t.parent = 143210) and c.inode = t.child and c.live = true and c.working = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
+                + "order by c.mod_date";
+
         try {
             //Iniciando conexion
             conexion = Conexion.iniciarConexion();
@@ -790,8 +788,8 @@ public class DAO {
                     String correo = "Correo Electronico";
                     String web = resultado.getString("text8");
                     int poder = resultado.getInt("parent");
-                    
-                    switch (poder){
+
+                    switch (poder) {
                         case 131345:
                             poder = 1;
                             break;
@@ -812,12 +810,12 @@ public class DAO {
                             break;
                         case 143210:
                             poder = 8;
-                            break;   
+                            break;
                     }
-                   
+
                     existe = true;
                     System.out.println(" DEV :: Institución :: " + resultado.getInt("identifier")
-                            + " " +resultado.getString("replace"));
+                            + " " + resultado.getString("replace"));
                     Institucion institucion = new Institucion(resultado.getInt("identifier"),
                             nombreInstitucion,
                             nombreSector,
@@ -910,26 +908,23 @@ public class DAO {
         // + " and (c.live is true) and c.mod_date >'" +fecha+ "' order by c.mod_date";
 
         /**
-        String query =select i.identifier, c.text1, c.text_area5, c.text_area8, c.text5, c.text4, c.text_area4, c.text_area10, c.mod_date
-                  from contentlet c, tree t, inode i
-                  where c.structure_inode = 107379
-                  and t.parent = i.identifier
-                  and c.working = true
-                  and c.language_id = 2 
-                  and i.inode = c.inode
-                  and c.inode = t.child
-                  and c.live = true and c.mod_date >'2008-01-01' order by c.mod_date*/
-        
-        String query = "select i.identifier, c.text1, c.text_area5, c.text_area8, c.text5, c.text4, c.text_area4, c.text_area10, c.mod_date "+
-                       " from contentlet c inner join inode i on i.inode = c.inode "+ 
-                       " where (c.structure_inode = 107379) "+ 
-                       " and i.identifier in "+
-                       " (select tree.child from tree where "+
-                       " tree.relation_type = 'Directorio-Tramite') "+ 
-                       " and (c.live is true) and c.mod_date >'" +fecha+ "' and c.working = true order by c.mod_date";
-                
+         * String query =select i.identifier, c.text1, c.text_area5,
+         * c.text_area8, c.text5, c.text4, c.text_area4, c.text_area10,
+         * c.mod_date from contentlet c, tree t, inode i where c.structure_inode
+         * = 107379 and t.parent = i.identifier and c.working = true and
+         * c.language_id = 2 and i.inode = c.inode and c.inode = t.child and
+         * c.live = true and c.mod_date >'2008-01-01' order by c.mod_date
+         */
+        String query = "select i.identifier, c.text1, c.text_area5, c.text_area8, c.text5, c.text4, c.text_area4, c.text_area10, c.mod_date "
+                + " from contentlet c inner join inode i on i.inode = c.inode "
+                + " where (c.structure_inode = 107379) "
+                + " and i.identifier in "
+                + " (select tree.child from tree where "
+                + " tree.relation_type = 'Directorio-Tramite') "
+                + " and (c.live is true) and c.mod_date >'" + fecha + "' and c.working = true order by c.mod_date";
+
         System.out.println("El valor del query es: " + query);
-        
+
         try {
             //Iniciando conexion
             conexion = Conexion.iniciarConexion();
@@ -981,7 +976,7 @@ public class DAO {
                     String requisitos = resultado.getString("text_area8");
                     String descripcion = resultado.getString("text_area10");
                     String horarios = resultado.getString("text5");
-                    
+
                     if (!costo.equals("")) {
                         costo = limpiar.limpiadorEtiquetas(costo);
                     }
@@ -994,7 +989,7 @@ public class DAO {
                         requisitos = limpiar.limpiadorEtiquetas(requisitos);
                     }
                     System.out.println(" DEV :: Tramite :: " + resultado.getInt("identifier")
-                            + " " + resultado.getString("text1")+ " "+ requisitos);
+                            + " " + resultado.getString("text1") + " " + requisitos);
 
                     Tramite tramite = new Tramite(resultado.getInt("identifier"),
                             nombre,
@@ -1050,11 +1045,11 @@ public class DAO {
         }
 
     }
-    
+
     public static List<Operativo> getOperativosPorFecha(String fecha)
             throws ListarOperativosPorFechaErrorSistema,
-            ListarOperativosPorFechaErrorAplicacion{
-        
+            ListarOperativosPorFechaErrorAplicacion {
+
         if (fecha == null) {
             System.out.println("No se ingreso el parametro");
         } else {
@@ -1075,17 +1070,18 @@ public class DAO {
         // + " and (c.live is true) and c.mod_date >'" +fecha+ "' order by c.mod_date";
 
         /**
-         * Falata Ingresar el query que se va a ejecutar contra la base de datos del DOTCMS
+         * Falata Ingresar el query que se va a ejecutar contra la base de datos
+         * del DOTCMS
          */
         String query = "select i.identifier, c.text1, c.text2, c.text3, c.date1, c.date2, c.mod_date "
-                  +"from contentlet c, tree t, inode i "  
-                  +"where c.mod_date >'"+ fecha +"' "
-                  +"and c.structure_inode = 156654 "    
-                  +"and i.inode = c.inode "  
-                  +"and c.inode = t.child " 
-                  +"and c.live = true "  
-                  +"and c.working = true order by c.mod_date;";
-                
+                + "from contentlet c, tree t, inode i "
+                + "where c.mod_date >'" + fecha + "' "
+                + "and c.structure_inode = 156654 "
+                + "and i.inode = c.inode "
+                + "and c.inode = t.child "
+                + "and c.live = true "
+                + "and c.working = true order by c.mod_date;";
+
         try {
             //Iniciando conexion
             conexion = Conexion.iniciarConexion();
@@ -1129,14 +1125,14 @@ public class DAO {
                 boolean existe = false;
                 while (resultado.next()) {
                     existe = true;
-                    
- 
+
+
                     System.out.println(" DEV :: Operativos :: " + resultado.getInt("identifier")
-                            + " " + resultado.getString("text1")+ " "+ resultado.getString("text2"));
-                    
-                    Operativo operativo = new Operativo(resultado.getInt("identifier"), 
-                            resultado.getString("text1"), 
-                            resultado.getString("text2"), 
+                            + " " + resultado.getString("text1") + " " + resultado.getString("text2"));
+
+                    Operativo operativo = new Operativo(resultado.getInt("identifier"),
+                            resultado.getString("text1"),
+                            resultado.getString("text2"),
                             resultado.getString("text3"),
                             resultado.getString("date1"),
                             resultado.getString("date2"),
@@ -1182,6 +1178,141 @@ public class DAO {
             tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_8);
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarOperativosPorFechaErrorAplicacion("Exception", tipoError);
+        }
     }
-    }    
+
+    public static List<Alcaldia> getAlcaldiasEliminadas(String fecha) throws ListarAlcaldiasPorFechaErrorSistema,
+            ListarAlcaldiasPorFechaErrorAplicacion {
+
+        Connection conexion = null;
+        Statement sentencia = null;
+        ResultSet resultado = null;
+        String query = " select ino.identifier, c.title, c.text3, c.text6, c.text5, c.text8, t.parent, c.mod_date "
+                + " from contentlet c, tree t, inode ino "
+                + " where (t.parent = 131910 " // Distrito Capital
+                + " or t.parent = 131912 " // Amazonas
+                + " or t.parent = 131914 " // Anzoategui
+                + " or t.parent = 131915 " // Apure
+                + " or t.parent = 131916 " // Aragua
+                + " or t.parent = 131917 " // Barinas   
+                + " or t.parent = 131918 " // Bolivar
+                + " or t.parent = 131919 " // Carabobo
+                + " or t.parent = 131920 " // Cojedes 
+                + " or t.parent = 131921 " // Delta Amacuro
+                + " or t.parent = 131922 " // Falcon 
+                + " or t.parent = 131923 " // Guarico 
+                + " or t.parent = 131924 " // Lara
+                + " or t.parent = 131925 " // Merida
+                + " or t.parent = 131926 " // Miranda
+                + " or t.parent = 131927 " // Monagas
+                + " or t.parent = 131928 " // Nueva Esparta
+                + " or t.parent = 131929 " // Potuguesa
+                + " or t.parent = 131930 " // Sucre
+                + " or t.parent = 131931 " // Tachira
+                + " or t.parent = 131932 " // Trujillo
+                + " or t.parent = 131933 " // Vargas 
+                + " or t.parent = 131934 " // Yaracuy
+                + " or t.parent = 131935)" // Zulia
+                + " and c.inode = t.child and c.bool1 = true and c.live = true and c.working = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
+                + " order by c.mod_date";
+
+
+        try {
+            //Iniciando conexion
+            conexion = Conexion.iniciarConexion();
+        } catch (SQLException e) {
+            //Error al iniciar conexion
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasSistema.FALLA_2_CODIGO);
+            tipoError.setDescripcion(FallasSistema.FALLA_2_DESCRIPCION + " - " + e.getMessage());
+            tipoError.setDetallesTecnicos(e.getClass().toString());
+            throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
+        }
+
+
+        try {
+            //Inicializando la sentencia sql
+            sentencia = conexion.createStatement();
+        } catch (SQLException e) {
+            //Error inicializando la sentencia sql
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasSistema.FALLA_3_CODIGO);
+            tipoError.setDescripcion(FallasSistema.FALLA_3_DESCRIPCION + " - " + e.getMessage());
+            tipoError.setDetallesTecnicos(e.getClass().toString());
+            throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
+        }
+
+        try {
+            //Ejecutando el query contra la Base de Datos
+            resultado = sentencia.executeQuery(query);
+        } catch (SQLException e) {
+            //Error ejecutando el query contra la Base de Datos
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasSistema.FALLA_4_CODIGO);
+            tipoError.setDescripcion(FallasSistema.FALLA_4_DESCRIPCION + " - " + e.getMessage());
+            tipoError.setDetallesTecnicos(e.getClass().toString());
+            throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
+        }
+
+        if (resultado != null) {
+
+            //Leer respuesta
+            ArrayList<Alcaldia> alcaldias = new ArrayList<Alcaldia>();
+            try {
+                boolean existe = false;
+
+                while (resultado.next()) {
+                    try {
+
+                        existe = true;
+                        System.out.println(" DEV :: Poder :: " + resultado.getInt("identifier")
+                                + " " + resultado.getString("title"));
+
+                        Alcaldia alcaldia = new Alcaldia(resultado.getInt("identifier"), resultado.getString("title"));
+                        alcaldias.add(alcaldia);
+                    } catch (Exception e) {
+                        e.getMessage();
+                    }
+                }
+
+                if (!existe) {
+                    //Respuesta vacia
+                    TipoError tipoError = new TipoError();
+                    tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_9);
+                    tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_9);
+                    tipoError.setDetallesTecnicos("Detalles Tecnicos");
+                    throw new ListarAlcaldiasPorFechaErrorAplicacion("Exception", tipoError);
+                }
+
+            } catch (SQLException e) {
+                //Error al leer respuesta
+                TipoError tipoError = new TipoError();
+                tipoError.setCodigo(FallasSistema.FALLA_5_CODIGO);
+                tipoError.setDescripcion(FallasSistema.FALLA_5_DESCRIPCION + " - " + e.getMessage());
+                tipoError.setDetallesTecnicos(e.getClass().toString());
+                throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
+            }
+
+            try {
+                conexion.close();
+            } catch (SQLException e) {
+                //Error al cerrar conexion con la Base de Datos
+                TipoError tipoError = new TipoError();
+                tipoError.setCodigo(FallasSistema.FALLA_6_CODIGO);
+                tipoError.setDescripcion(FallasSistema.FALLA_6_DESCRIPCION + " - " + e.getMessage());
+                tipoError.setDetallesTecnicos(e.getClass().toString());
+                throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
+            }
+
+            return alcaldias;
+
+        } else {
+            //Respuesta vacia
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_9);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_9);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarAlcaldiasPorFechaErrorAplicacion("Exception", tipoError);
+        }
+    }
 }

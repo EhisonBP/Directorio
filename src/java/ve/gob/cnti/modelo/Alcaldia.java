@@ -6,33 +6,30 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * 
- * Define la estructura del tipo de dato #TipoPoder
- * del esquema del WSDL bajo el 
+ *
+ * Define la estructura del tipo de dato #TipoPoder del esquema del WSDL bajo el
  * namespace http://www.cnti.gob.ve/schema/directorio/TipoPoder
- * 
+ *
  * @author Danielle Mariani
  */
-@XmlRootElement(name="Alcaldia",
-        namespace = "http://www.cnti.gob.ve/schema/directorio/TipoPoder")
+@XmlRootElement(name = "Alcaldia",
+namespace = "http://www.cnti.gob.ve/schema/directorio/TipoPoder")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TipoAlcaldia", propOrder = {
-        "idAlcaldia",
-        "nombreMunicipio",
-        "nombreAlcaldia",
-        "directorAlcaldia",
-        "direccionAlcaldia",
-        "telefonoAlcaldia",
-        "webAlcaldia",
-        "correoAlcaldia",
-        "fecha",
-        "poder",
-        "estado"},
-        namespace = "http://www.cnti.gob.ve/schema/directorio/TipoPoder")
-
-
+    "idAlcaldia",
+    "nombreMunicipio",
+    "nombreAlcaldia",
+    "directorAlcaldia",
+    "direccionAlcaldia",
+    "telefonoAlcaldia",
+    "webAlcaldia",
+    "correoAlcaldia",
+    "fecha",
+    "poder",
+    "estado"},
+namespace = "http://www.cnti.gob.ve/schema/directorio/TipoPoder")
 public class Alcaldia {
-    
+
     private int idAlcaldia;
     private String nombreMunicipio;
     private String nombreAlcaldia;
@@ -45,12 +42,10 @@ public class Alcaldia {
     private int poder;
     private int estado;
 
-
     public Alcaldia() {
     }
 
-    public Alcaldia(int idAlcaldia, String nombreAlcaldia, String nombreMunicipio, String directorAlcaldia, String direccionAlcaldia
-            , String telefonoAlcaldia, String webAlcaldia, String correoAlcaldia, String fecha, int poder, int estado) {
+    public Alcaldia(int idAlcaldia, String nombreAlcaldia, String nombreMunicipio, String directorAlcaldia, String direccionAlcaldia, String telefonoAlcaldia, String webAlcaldia, String correoAlcaldia, String fecha, int poder, int estado) {
         this.idAlcaldia = idAlcaldia;
         this.nombreAlcaldia = nombreAlcaldia;
         this.nombreMunicipio = nombreMunicipio;
@@ -64,7 +59,10 @@ public class Alcaldia {
         this.estado = estado;
     }
 
-
+    public Alcaldia(int idAlcaldia, String nombreAlcaldia) {
+        this.idAlcaldia = idAlcaldia;
+        this.nombreAlcaldia = nombreAlcaldia;
+    }
 
     public String getFecha() {
         return fecha;
@@ -82,7 +80,6 @@ public class Alcaldia {
         this.estado = estado;
     }
 
-
     public long getPoder() {
         return poder;
     }
@@ -90,7 +87,6 @@ public class Alcaldia {
     public void setPoder(int poder) {
         this.poder = poder;
     }
-
 
     public String getCorreoAlcaldia() {
         return correoAlcaldia;
@@ -140,7 +136,6 @@ public class Alcaldia {
         return nombreAlcaldia;
     }
 
-
     public void setIdAlcaldia(int idPoder) {
         this.idAlcaldia = idPoder;
     }
@@ -149,10 +144,10 @@ public class Alcaldia {
         this.nombreAlcaldia = nombreAlcaldia;
     }
 
-
     public String getNombreMunicipio() {
         return nombreMunicipio;
     }
+
     public void setNombreMunicipio(String nombreMunicipio) {
         this.nombreMunicipio = nombreMunicipio;
     }
@@ -161,8 +156,4 @@ public class Alcaldia {
     public String toString() {
         return "alcaldia:" + idAlcaldia + ":" + nombreAlcaldia + ":" + directorAlcaldia;
     }
-    
-    
-    
-    
 }
