@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author Danielle Mariani
  */
 @XmlRootElement(name = "Alcaldia",
-namespace = "http://www.cnti.gob.ve/schema/directorio/TipoPoder")
+namespace = "http://www.cnti.gob.ve/schema/directorio/TipoAlcaldia")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TipoAlcaldia", propOrder = {
     "idAlcaldia",
@@ -27,7 +27,7 @@ namespace = "http://www.cnti.gob.ve/schema/directorio/TipoPoder")
     "fecha",
     "poder",
     "estado"},
-namespace = "http://www.cnti.gob.ve/schema/directorio/TipoPoder")
+namespace = "http://www.cnti.gob.ve/schema/directorio/TipoAlcaldia")
 public class Alcaldia {
 
     private int idAlcaldia;
@@ -59,9 +59,11 @@ public class Alcaldia {
         this.estado = estado;
     }
 
-    public Alcaldia(int idAlcaldia, String nombreAlcaldia) {
+    public Alcaldia(int idAlcaldia, String nombreAlcaldia, int poder, int estado) {
         this.idAlcaldia = idAlcaldia;
         this.nombreAlcaldia = nombreAlcaldia;
+        this.poder = poder;
+        this.estado = estado;
     }
 
     public String getFecha() {

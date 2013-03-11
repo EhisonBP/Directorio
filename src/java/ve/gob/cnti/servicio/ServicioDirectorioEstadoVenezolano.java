@@ -10,6 +10,7 @@ import javax.jws.soap.SOAPBinding.Style;
 import javax.jws.soap.SOAPBinding.Use;
 import javax.xml.ws.Action;
 import javax.xml.ws.FaultAction;
+import ve.gob.cnti.falla.aplicacion.ListarAlcaldiasEliminadasErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarAlcaldiasPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorPoderesErrorAplicacion;
@@ -17,6 +18,7 @@ import ve.gob.cnti.falla.aplicacion.ListarOperativosPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarPoderesErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
+import ve.gob.cnti.falla.sistema.ListarAlcaldiasEliminadasErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarAlcaldiasPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorPoderErrorSistema;
@@ -174,17 +176,17 @@ public interface ServicioDirectorioEstadoVenezolano {
  */
     @WebMethod(operationName = "listarAlcaldiasEliminadas")
     @WebResult(name = "tipoAlcaldia")
-    @Action(input = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarAlcaldiaPorFechaEntrada", 
-            output = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarAlcaldiaPorFechaSalida",
+    @Action(input = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarAlcaldiasEliminadasEntrada", 
+            output = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarAlcaldiasEliminadasSalida",
     fault = {
-        @FaultAction(className = ListarAlcaldiasPorFechaErrorSistema.class,
-        value = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarPoderes/error/ListarAlcaldiasPorFechaErrorSistema"),
-        @FaultAction(className = ListarAlcaldiasPorFechaErrorAplicacion.class,
-        value = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarPoderes/error/ListarAlcaldiasPorFechaErrorAplicacion")
+        @FaultAction(className = ListarAlcaldiasEliminadasErrorSistema.class,
+        value = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarPoderes/error/ListarAlcaldiasEliminadasErrorSistema"),
+        @FaultAction(className = ListarAlcaldiasEliminadasErrorAplicacion.class,
+        value = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarPoderes/error/ListarAlcaldiasEliminadasErrorAplicacion")
     })
     public List<Alcaldia> listadoAlcaldiasEliminadas(@WebParam(name = "fecha")
             final String fecha)
-            throws ListarAlcaldiasPorFechaErrorSistema,
-            ListarAlcaldiasPorFechaErrorAplicacion;
+            throws ListarAlcaldiasEliminadasErrorSistema,
+            ListarAlcaldiasEliminadasErrorAplicacion;
     
 }

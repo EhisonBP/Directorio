@@ -544,7 +544,7 @@ public class DAO {
         if (resultado != null) {
 
             //Leer respuesta
-            ArrayList<Alcaldia> poderes = new ArrayList<Alcaldia>();
+            ArrayList<Alcaldia> alcaldias = new ArrayList<Alcaldia>();
             try {
                 boolean existe = false;
 
@@ -628,7 +628,7 @@ public class DAO {
 
                         String director = resultado.getString("text3");
                         String municipio = resultado.getString("title");
-                        String alcaldia = resultado.getString("title");
+                        String alcal = resultado.getString("title");
                         String direccion = resultado.getString("text6");
                         String telefono = resultado.getString("text5");
                         String correo = "Correo Electronico";
@@ -638,8 +638,8 @@ public class DAO {
                         System.out.println(" DEV :: Poder :: " + resultado.getInt("identifier")
                                 + " " + resultado.getString("title"));
 
-                        Alcaldia poder = new Alcaldia(resultado.getInt("identifier"),
-                                alcaldia,
+                        Alcaldia alcaldia = new Alcaldia(resultado.getInt("identifier"),
+                                alcal,
                                 municipio,
                                 director,
                                 direccion,
@@ -649,7 +649,7 @@ public class DAO {
                                 resultado.getString("mod_date"),
                                 7,
                                 estado);
-                        poderes.add(poder);
+                        alcaldias.add(alcaldia);
                     } catch (Exception e) {
                         e.getMessage();
                     }
@@ -684,7 +684,7 @@ public class DAO {
                 throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
             }
 
-            return poderes;
+            return alcaldias;
 
         } else {
             //Respuesta vacia
@@ -1189,7 +1189,7 @@ public class DAO {
         Connection conexion = null;
         Statement sentencia = null;
         ResultSet resultado = null;
-        String query = " select ino.identifier, c.title, c.text3, c.text6, c.text5, c.text8, t.parent, c.mod_date "
+        String query = " select ino.identifier, c.title, t.parent "
                 + " from contentlet c, tree t, inode ino "
                 + " where (t.parent = 131910 " // Distrito Capital
                 + " or t.parent = 131912 " // Amazonas
@@ -1215,7 +1215,7 @@ public class DAO {
                 + " or t.parent = 131933 " // Vargas 
                 + " or t.parent = 131934 " // Yaracuy
                 + " or t.parent = 131935)" // Zulia
-                + " and c.inode = t.child and c.bool1 = true and c.live = true and c.working = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
+                + " and c.inode = t.child and c.bool1 = true and c.deleted = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
                 + " order by c.mod_date";
 
 
@@ -1270,7 +1270,10 @@ public class DAO {
                         System.out.println(" DEV :: Poder :: " + resultado.getInt("identifier")
                                 + " " + resultado.getString("title"));
 
-                        Alcaldia alcaldia = new Alcaldia(resultado.getInt("identifier"), resultado.getString("title"));
+                        Alcaldia alcaldia = new Alcaldia(resultado.getInt("identifier"), 
+                                resultado.getString("title"), 
+                                resultado.getInt("parent"),
+                                7);
                         alcaldias.add(alcaldia);
                     } catch (Exception e) {
                         e.getMessage();
