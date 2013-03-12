@@ -42,4 +42,8 @@ public class FallasAplicacion {
     public static final String CODIGO_FALLA_9 = "APP509W";
     public static final String DESCRIPCION_FALLA_9 = "No Existen Alcaldias"
             + " eliminadas superiores a la fecha ingresada";
+    
+    public static final String CODIGO_FALLA_10 = "APP510W";
+    public static final String DESCRIPCION_FALLA_10 = "No Existen Instituciones "
+            + " eliminadas superiores a la fecha ingresada";
 }

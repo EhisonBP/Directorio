@@ -69,6 +69,12 @@ public class Institucion {
         this.telefono = telefono;
         this.paginaWeb = web;
     }
+    
+    public Institucion(int idInstitucion, String nombre, int poder){
+        this.idInstitucion = idInstitucion;
+        this.nombreInstitucion = nombre;
+        this.poder = poder;
+    }
 
 
     public int getPoder() {

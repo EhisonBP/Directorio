@@ -11,6 +11,7 @@ import ve.gob.cnti.falla.FallasSistema;
 import ve.gob.cnti.falla.TipoError;
 import ve.gob.cnti.falla.aplicacion.ListarAlcaldiasEliminadasErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarAlcaldiasPorFechaErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarInstitucionesEliminadasErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorPoderesErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarOperativosPorFechaErrorAplicacion;
@@ -19,6 +20,7 @@ import ve.gob.cnti.falla.aplicacion.ListarTramitesPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
 import ve.gob.cnti.falla.sistema.ListarAlcaldiasEliminadasErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarAlcaldiasPorFechaErrorSistema;
+import ve.gob.cnti.falla.sistema.ListarInstitucionesEliminadasErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorPoderErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarOperativosPorFechaErrorSistema;
@@ -1270,8 +1272,8 @@ public class DAO {
                         System.out.println(" DEV :: Poder :: " + resultado.getInt("identifier")
                                 + " " + resultado.getString("title"));
 
-                        Alcaldia alcaldia = new Alcaldia(resultado.getInt("identifier"), 
-                                resultado.getString("title"), 
+                        Alcaldia alcaldia = new Alcaldia(resultado.getInt("identifier"),
+                                resultado.getString("title"),
                                 resultado.getInt("parent"),
                                 7);
                         alcaldias.add(alcaldia);
@@ -1320,4 +1322,126 @@ public class DAO {
             throw new ListarAlcaldiasEliminadasErrorAplicacion("Exception", tipoError);
         }
     }
+
+    /**
+     *
+     * @param fecha
+     * @return
+     * @throws ListarInstitucionesEliminadasErrorSistema
+     * @throws ListarInstitucionesEliminadasErrorAplicacion
+     */
+    public static List<Institucion> getInstitucionesEliminadas(String fecha)
+            throws ListarInstitucionesEliminadasErrorSistema,
+            ListarInstitucionesEliminadasErrorAplicacion {
+
+        if (fecha == null) {
+            System.out.println("No se ingreso el parametro");
+        } else {
+            System.out.println("El valor Ingresado es: " + fecha);
+        }
+
+        Connection conexion = null;
+        Statement sentencia = null;
+        ResultSet resultado = null;
+
+        String query = "select ino.identifier,c.title, t.parent "
+                + " from contentlet c, tree t, inode ino"
+                + " where (t.parent = 128987"
+                + " or t.parent = 131345"
+                + " or t.parent = 131346"
+                + " or t.parent = 131347"
+                + " or t.parent = 131348"
+                + " or t.parent = 131349"
+                + " or t.parent = 143210) and c.inode = t.child and c.deleted = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
+                + " order by c.mod_date";
+        try {
+            //Iniciando conexion
+            conexion = Conexion.iniciarConexion();
+        } catch (SQLException e) {
+            //Error al iniciar conexion
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasSistema.FALLA_2_CODIGO);
+            tipoError.setDescripcion(FallasSistema.FALLA_2_DESCRIPCION + " - " + e.getMessage());
+            tipoError.setDetallesTecnicos(e.getClass().toString());
+            throw new ListarInstitucionesEliminadasErrorSistema("SQL Exception", tipoError);
+        }
+
+        try {
+            //Inicializando la sentencia sql
+            sentencia = conexion.createStatement();
+        } catch (SQLException e) {
+            //Error inicializando la sentencia sql
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasSistema.FALLA_3_CODIGO);
+            tipoError.setDescripcion(FallasSistema.FALLA_3_DESCRIPCION + " - " + e.getMessage());
+            tipoError.setDetallesTecnicos(e.getClass().toString());
+            throw new ListarInstitucionesEliminadasErrorSistema("SQL Exception", tipoError);
+        }
+
+        try {
+            //Ejecutando el query contra la Base de Datos
+            resultado = sentencia.executeQuery(query);
+        } catch (SQLException e) {
+            //Error ejecutando el query contra la Base de Datos
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasSistema.FALLA_4_CODIGO);
+            tipoError.setDescripcion(FallasSistema.FALLA_4_DESCRIPCION + " - " + e.getMessage());
+            tipoError.setDetallesTecnicos(e.getClass().toString());
+            throw new ListarInstitucionesEliminadasErrorSistema("SQL Exception", tipoError);
+        }
+
+
+        if (resultado != null) {
+            //Leer respuesta
+            ArrayList<Institucion> instituciones = new ArrayList<Institucion>();
+            try {
+                boolean existe = false;
+                while (resultado.next()) {
+                    existe = true;
+                    Institucion institucion = new Institucion(resultado.getInt("identifier"),
+                            resultado.getString("title"), resultado.getInt("parent"));
+                    instituciones.add(institucion);
+                }
+                if (!existe) {
+                    //Respuesta vacia
+                    TipoError tipoError = new TipoError();
+                    tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_10);
+                    tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_10);
+                    tipoError.setDetallesTecnicos("Detalles Tecnicos");
+                    throw new ListarInstitucionesEliminadasErrorAplicacion("Exception", tipoError);
+                }
+            } catch (SQLException e) {
+                //Error al leer respuesta
+                TipoError tipoError = new TipoError();
+                tipoError.setCodigo(FallasSistema.FALLA_5_CODIGO);
+                tipoError.setDescripcion(FallasSistema.FALLA_5_DESCRIPCION + " - " + e.getMessage());
+                tipoError.setDetallesTecnicos(e.getClass().toString());
+                throw new ListarInstitucionesEliminadasErrorSistema("SQL Exception", tipoError);
+            }
+
+            try {
+                conexion.close();
+            } catch (SQLException e) {
+                //Error al cerrar conexion con la Base de Datos
+                TipoError tipoError = new TipoError();
+                tipoError.setCodigo(FallasSistema.FALLA_6_CODIGO);
+                tipoError.setDescripcion(FallasSistema.FALLA_6_DESCRIPCION + " - " + e.getMessage());
+                tipoError.setDetallesTecnicos(e.getClass().toString());
+                throw new ListarInstitucionesEliminadasErrorSistema("SQL Exception", tipoError);
+            }
+
+            return instituciones;
+
+        } else {
+            //Respuesta vacia
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_10);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_10);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarInstitucionesEliminadasErrorAplicacion("Exception", tipoError);
+        }
+    }
+    
+    
+    
 }

@@ -7,6 +7,7 @@ import javax.xml.ws.WebServiceContext;
 import ve.gob.cnti.dao.DAO;
 import ve.gob.cnti.falla.aplicacion.ListarAlcaldiasEliminadasErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarAlcaldiasPorFechaErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarInstitucionesEliminadasErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorPoderesErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarOperativosPorFechaErrorAplicacion;
@@ -15,6 +16,7 @@ import ve.gob.cnti.falla.aplicacion.ListarTramitesPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
 import ve.gob.cnti.falla.sistema.ListarAlcaldiasEliminadasErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarAlcaldiasPorFechaErrorSistema;
+import ve.gob.cnti.falla.sistema.ListarInstitucionesEliminadasErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorPoderErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarOperativosPorFechaErrorSistema;
@@ -183,9 +185,16 @@ public class ServicioDirectorioEstadoVenezolanoImplementacion
     }
 
     @Override
-    public List<Alcaldia> listadoAlcaldiasEliminadas(String fecha)
+    public List<Alcaldia> listadoAlcaldiasEliminadas(final String fecha)
             throws ListarAlcaldiasEliminadasErrorSistema,
             ListarAlcaldiasEliminadasErrorAplicacion {
         return DAO.getAlcaldiasEliminadas(fecha);
+    }
+
+    @Override
+    public List<Institucion> listadoInstitucionesEliminadas(final String fecha) 
+            throws ListarInstitucionesEliminadasErrorSistema, 
+            ListarInstitucionesEliminadasErrorAplicacion {
+        return DAO.getInstitucionesEliminadas(fecha);
     }
 }
