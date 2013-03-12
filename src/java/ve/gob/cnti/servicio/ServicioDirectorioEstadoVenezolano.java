@@ -17,6 +17,7 @@ import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorPoderesErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarOperativosPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarPoderesErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarTramitesEliminadosErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
 import ve.gob.cnti.falla.sistema.ListarAlcaldiasEliminadasErrorSistema;
@@ -26,6 +27,7 @@ import ve.gob.cnti.falla.sistema.ListarInstitucionesPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorPoderErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarOperativosPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarPoderesErrorSistema;
+import ve.gob.cnti.falla.sistema.ListarTramitesEliminadosErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarTramitesPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarTramitesPorInstitucionErrorSistema;
 import ve.gob.cnti.modelo.*;
@@ -65,7 +67,13 @@ public interface ServicioDirectorioEstadoVenezolano {
     public List<Poder> listadoPoderes()
             throws ListarPoderesErrorSistema,
             ListarPoderesErrorAplicacion;
-
+/**
+ * 
+ * @param idPoder
+ * @return
+ * @throws ListarInstitucionesPorPoderErrorSistema
+ * @throws ListarInstitucionesPorPoderesErrorAplicacion 
+ */
     @WebMethod(operationName = "listarInstitucionesPorPoderes")
     @WebResult(name = "tipoInstitucion")
     @Action(input = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarInstitucionesPorPoderesEntrada",
@@ -80,7 +88,14 @@ public interface ServicioDirectorioEstadoVenezolano {
             final int idPoder)
             throws ListarInstitucionesPorPoderErrorSistema,
             ListarInstitucionesPorPoderesErrorAplicacion;
-
+    
+    /**
+     * 
+     * @param idInstitucion
+     * @return
+     * @throws ListarTramitesPorInstitucionErrorSistema
+     * @throws ListarTramitesPorInstitucionErrorAplicacion 
+     */
     @WebMethod(operationName = "listarTramitesPorInstitucion")
     @WebResult(name = "tipoTramite")
     @Action(input = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarTramitesPorInstitucionEntrada",
@@ -138,6 +153,13 @@ public interface ServicioDirectorioEstadoVenezolano {
             throws ListarInstitucionesPorFechaErrorSistema,
             ListarInstitucionesPorFechaErrorAplicacion;
 
+    /**
+     * 
+     * @param fecha
+     * @return
+     * @throws ListarTramitesPorFechaErrorSistema
+     * @throws ListarTramitesPorFechaErrorAplicacion 
+     */
     @WebMethod(operationName = "listarTramitesPorFecha")
     @WebResult(name = "tipoTramite")
     @Action(input = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarTramitesPorFechaEntrada",
@@ -153,6 +175,13 @@ public interface ServicioDirectorioEstadoVenezolano {
             throws ListarTramitesPorFechaErrorSistema,
             ListarTramitesPorFechaErrorAplicacion;
 
+    /**
+     * 
+     * @param fecha
+     * @return
+     * @throws ListarOperativosPorFechaErrorSistema
+     * @throws ListarOperativosPorFechaErrorAplicacion 
+     */
     @WebMethod(operationName = "listarOperativosPorFecha")
     @WebResult(name = "tipoOperativo")
     @Action(input = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarOperativosPorFechaEntrada",
@@ -211,4 +240,26 @@ public interface ServicioDirectorioEstadoVenezolano {
             final String fecha)
             throws ListarInstitucionesEliminadasErrorSistema,
             ListarInstitucionesEliminadasErrorAplicacion;
+    
+    /**
+     * 
+     * @param fecha
+     * @return
+     * @throws ListarTramitesEliminadosErrorSistema
+     * @throws ListarTramitesEliminadosErrorAplicacion 
+     */
+    @WebMethod(operationName = "listarTramitesEliminados")
+    @WebResult(name = "tipoTramite")
+    @Action(input = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarTramitesEliminadosEntrada",
+    output = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarTramitesEliminadosSalida",
+    fault = {
+        @FaultAction(className = ListarTramitesEliminadosErrorSistema.class,
+        value = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarTramitesPorInstitucion/error/ListarTramitesEliminadosErrorSistema"),
+        @FaultAction(className = ListarTramitesEliminadosErrorAplicacion.class,
+        value = "http://www.cnti.gob.ve/servicio/ServicioDirectorioEstadoVenezolano/ServicioDirectorioEstadoVenezolanoDefinicion/listarTramitesPorInstitucion/error/ListarTramitesEliminadosErrorAplicacion")
+    })
+    public List<Tramite> listadoTramitesEliminados(@WebParam(name = "fecha")
+            final String fecha)
+            throws ListarTramitesEliminadosErrorSistema,
+            ListarTramitesEliminadosErrorAplicacion;
 }

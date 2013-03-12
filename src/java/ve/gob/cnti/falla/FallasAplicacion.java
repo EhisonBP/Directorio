@@ -46,4 +46,8 @@ public class FallasAplicacion {
     public static final String CODIGO_FALLA_10 = "APP510W";
     public static final String DESCRIPCION_FALLA_10 = "No Existen Instituciones "
             + " eliminadas superiores a la fecha ingresada";
+    
+    public static final String CODIGO_FALLA_11 = "APP511W";
+    public static final String DESCRIPCION_FALLA_11 = "No Existen Tramites"
+            + " eliminados superiores a la fecha ingresada";
 }

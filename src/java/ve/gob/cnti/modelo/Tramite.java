@@ -42,6 +42,11 @@ public class Tramite {
     public Tramite() {
     }
     
+    public Tramite(int idTramite, String nombre) {
+        this.idTramite = idTramite;
+        this.nombreTramite = nombre;
+    }
+    
     public Tramite(int idTramite, String nombreTramite, String telefono, String horarios, String direccion,
              String descripcion, String costo, String requisitos, String fecha){
         this.idTramite = idTramite;

@@ -12,6 +12,7 @@ import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarInstitucionesPorPoderesErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarOperativosPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarPoderesErrorAplicacion;
+import ve.gob.cnti.falla.aplicacion.ListarTramitesEliminadosErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorFechaErrorAplicacion;
 import ve.gob.cnti.falla.aplicacion.ListarTramitesPorInstitucionErrorAplicacion;
 import ve.gob.cnti.falla.sistema.ListarAlcaldiasEliminadasErrorSistema;
@@ -21,6 +22,7 @@ import ve.gob.cnti.falla.sistema.ListarInstitucionesPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarInstitucionesPorPoderErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarOperativosPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarPoderesErrorSistema;
+import ve.gob.cnti.falla.sistema.ListarTramitesEliminadosErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarTramitesPorFechaErrorSistema;
 import ve.gob.cnti.falla.sistema.ListarTramitesPorInstitucionErrorSistema;
 import ve.gob.cnti.modelo.Alcaldia;
@@ -196,5 +198,12 @@ public class ServicioDirectorioEstadoVenezolanoImplementacion
             throws ListarInstitucionesEliminadasErrorSistema, 
             ListarInstitucionesEliminadasErrorAplicacion {
         return DAO.getInstitucionesEliminadas(fecha);
+    }
+
+    @Override
+    public List<Tramite> listadoTramitesEliminados(final String fecha) 
+            throws ListarTramitesEliminadosErrorSistema, 
+            ListarTramitesEliminadosErrorAplicacion {
+        return DAO.getTramitesEliminados(fecha);
     }
 }
