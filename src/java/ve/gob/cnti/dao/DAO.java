@@ -478,39 +478,19 @@ public class DAO {
         Connection conexion = null;
         Statement sentencia = null;
         ResultSet resultado = null;
-        String query = " select ino.identifier, c.title, c.text3, c.text6, c.text5, c.text8, t.parent, c.mod_date "
-                + " from contentlet c, tree t, inode ino "
-                + " where (t.parent = 131910 " // Distrito Capital
-                + " or t.parent = 131912 " // Amazonas
-                + " or t.parent = 131914 " // Anzoategui
-                + " or t.parent = 131915 " // Apure
-                + " or t.parent = 131916 " // Aragua
-                + " or t.parent = 131917 " // Barinas   
-                + " or t.parent = 131918 " // Bolivar
-                + " or t.parent = 131919 " // Carabobo
-                + " or t.parent = 131920 " // Cojedes 
-                + " or t.parent = 131921 " // Delta Amacuro
-                + " or t.parent = 131922 " // Falcon 
-                + " or t.parent = 131923 " // Guarico 
-                + " or t.parent = 131924 " // Lara
-                + " or t.parent = 131925 " // Merida
-                + " or t.parent = 131926 " // Miranda
-                + " or t.parent = 131927 " // Monagas
-                + " or t.parent = 131928 " // Nueva Esparta
-                + " or t.parent = 131929 " // Potuguesa
-                + " or t.parent = 131930 " // Sucre
-                + " or t.parent = 131931 " // Tachira
-                + " or t.parent = 131932 " // Trujillo
-                + " or t.parent = 131933 " // Vargas 
-                + " or t.parent = 131934 " // Yaracuy
-                + " or t.parent = 131935)" // Zulia
-                + " and c.inode = t.child and c.bool1 = true and c.live = true and c.working = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
-                + " order by c.mod_date";
-
+        
+        String query = "select identifier, title, text3, text6, text5, text8, parent, mod_date "
+                  + " from instituciones "
+                  + " where mod_date > '" +fecha+ "' " 
+                  + " order by mod_date ";
+        System.out.println("El valor Ingresado es: " + fecha);
 
         try {
             //Iniciando conexion
+            System.out.println("Conexion se esta abriendo");
             conexion = Conexion.iniciarConexion();
+            System.out.println("Conexion abierta");
+        
         } catch (SQLException e) {
             //Error al iniciar conexion
             TipoError tipoError = new TipoError();
