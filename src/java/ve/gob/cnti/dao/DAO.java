@@ -478,11 +478,12 @@ public class DAO {
         Connection conexion = null;
         Statement sentencia = null;
         ResultSet resultado = null;
-        
+
         String query = "select identifier, title, text3, text6, text5, text8, parent, mod_date "
-                  + " from instituciones "
-                  + " where mod_date > '" +fecha+ "' " 
-                  + " order by mod_date ";
+                + " from alcaldias "
+                + " where mod_date > '" + fecha + "' "
+                + " and live = true "
+                + " order by mod_date ";
         System.out.println("El valor Ingresado es: " + fecha);
 
         try {
@@ -490,7 +491,7 @@ public class DAO {
             System.out.println("Conexion se esta abriendo");
             conexion = Conexion.iniciarConexion();
             System.out.println("Conexion abierta");
-        
+
         } catch (SQLException e) {
             //Error al iniciar conexion
             TipoError tipoError = new TipoError();
@@ -710,18 +711,11 @@ public class DAO {
         Statement sentencia = null;
         ResultSet resultado = null;
 
-        String query = "select ino.identifier,"
-                + " replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(c.title, 'de la República Bolivariana de Venezuela', ''), 'Gobernación del Estado ', ''), 'Gobernación del ', ''), 'Ministerio del Poder Popular para la ', ''), 'Ministerio del Poder Popular de ', ''), 'Ministerio del Poder Popular del ', ''), 'Ministerio del Poder Popular para el ', ''), 'Ministerio del Poder Popular para los ', ''), 'Ministerio del Poder Popular para las ', ''), 'Ministerio del Poder Popular para ', '')"
-                + " ,c.title , c.text3, c.text6, c.text5, c.text8, t.parent, c.mod_date"
-                + " from contentlet c, tree t, inode ino"
-                + " where (t.parent = 128987"
-                + " or t.parent = 131345"
-                + "or t.parent = 131346"
-                + "or t.parent = 131347"
-                + "or t.parent = 131348"
-                + "or t.parent = 131349"
-                + "or t.parent = 143210) and c.inode = t.child and c.live = true and c.working = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
-                + "order by c.mod_date";
+        String query = "select identifier, replace, title, text3, text6, text5, text8, parent, mod_date "
+                  +" from instituciones "
+                  +" where mod_date > '" +fecha+ "'" 
+                  +" and live = true "
+                  +" order by mod_date ";
 
         try {
             //Iniciando conexion
@@ -901,13 +895,11 @@ public class DAO {
          * c.language_id = 2 and i.inode = c.inode and c.inode = t.child and
          * c.live = true and c.mod_date >'2008-01-01' order by c.mod_date
          */
-        String query = "select i.identifier, c.text1, c.text_area5, c.text_area8, c.text5, c.text4, c.text_area4, c.text_area10, c.mod_date "
-                + " from contentlet c inner join inode i on i.inode = c.inode "
-                + " where (c.structure_inode = 107379) "
-                + " and i.identifier in "
-                + " (select tree.child from tree where "
-                + " tree.relation_type = 'Directorio-Tramite') "
-                + " and (c.live is true) and c.mod_date >'" + fecha + "' and c.working = true order by c.mod_date";
+        String query = " select identifier, text1, text_area5, text_area8, text5, text4, text_area4, text_area10, mod_date "
+                + " from tramites "
+                + " where live = true "
+                + " and mod_date > '" + fecha + "' "
+                + " order by mod_date ";
 
         System.out.println("El valor del query es: " + query);
 
@@ -1059,14 +1051,10 @@ public class DAO {
          * Falata Ingresar el query que se va a ejecutar contra la base de datos
          * del DOTCMS
          */
-        String query = "select i.identifier, c.text1, c.text2, c.text3, c.date1, c.date2, c.mod_date "
-                + "from contentlet c, tree t, inode i "
-                + "where c.mod_date >'" + fecha + "' "
-                + "and c.structure_inode = 156654 "
-                + "and i.inode = c.inode "
-                + "and c.inode = t.child "
-                + "and c.live = true "
-                + "and c.working = true order by c.mod_date;";
+        String query = "select identifier, text1, text2, text3, date1, date2, mod_date "
+                + " from operativos "
+                + " where mod_date >'" + fecha + "' "
+                + " order by mod_date; ";
 
         try {
             //Iniciando conexion
@@ -1173,34 +1161,11 @@ public class DAO {
         Connection conexion = null;
         Statement sentencia = null;
         ResultSet resultado = null;
-        String query = " select ino.identifier, c.title, t.parent "
-                + " from contentlet c, tree t, inode ino "
-                + " where (t.parent = 131910 " // Distrito Capital
-                + " or t.parent = 131912 " // Amazonas
-                + " or t.parent = 131914 " // Anzoategui
-                + " or t.parent = 131915 " // Apure
-                + " or t.parent = 131916 " // Aragua
-                + " or t.parent = 131917 " // Barinas   
-                + " or t.parent = 131918 " // Bolivar
-                + " or t.parent = 131919 " // Carabobo
-                + " or t.parent = 131920 " // Cojedes 
-                + " or t.parent = 131921 " // Delta Amacuro
-                + " or t.parent = 131922 " // Falcon 
-                + " or t.parent = 131923 " // Guarico 
-                + " or t.parent = 131924 " // Lara
-                + " or t.parent = 131925 " // Merida
-                + " or t.parent = 131926 " // Miranda
-                + " or t.parent = 131927 " // Monagas
-                + " or t.parent = 131928 " // Nueva Esparta
-                + " or t.parent = 131929 " // Potuguesa
-                + " or t.parent = 131930 " // Sucre
-                + " or t.parent = 131931 " // Tachira
-                + " or t.parent = 131932 " // Trujillo
-                + " or t.parent = 131933 " // Vargas 
-                + " or t.parent = 131934 " // Yaracuy
-                + " or t.parent = 131935)" // Zulia
-                + " and c.inode = t.child and c.bool1 = true and c.deleted = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
-                + " order by c.mod_date";
+        String query = "select identifier, title "
+                + " from alcaldias "
+                + " where mod_date > '" + fecha + "' "
+                + " and deleted = true "
+                + " order by mod_date ";
 
 
         try {
@@ -1255,9 +1220,7 @@ public class DAO {
                                 + " " + resultado.getString("title"));
 
                         Alcaldia alcaldia = new Alcaldia(resultado.getInt("identifier"),
-                                resultado.getString("title"),
-                                resultado.getInt("parent"),
-                                7);
+                                resultado.getString("title"));
                         alcaldias.add(alcaldia);
                     } catch (Exception e) {
                         e.getMessage();
@@ -1327,16 +1290,11 @@ public class DAO {
         Statement sentencia = null;
         ResultSet resultado = null;
 
-        String query = "select ino.identifier,c.title, t.parent "
-                + " from contentlet c, tree t, inode ino"
-                + " where (t.parent = 128987"
-                + " or t.parent = 131345"
-                + " or t.parent = 131346"
-                + " or t.parent = 131347"
-                + " or t.parent = 131348"
-                + " or t.parent = 131349"
-                + " or t.parent = 143210) and c.inode = t.child and c.deleted = true and language_id = 2 and ino.inode = c.inode and c.mod_date > ' " + fecha + " ' "
-                + " order by c.mod_date";
+        String query = "select identifier, title "
+                  +" from instituciones "
+                  +" where mod_date > '" +fecha+ "'" 
+                  +" and deleted = true "
+                  +" order by mod_date ";
         try {
             //Iniciando conexion
             conexion = Conexion.iniciarConexion();
@@ -1382,7 +1340,7 @@ public class DAO {
                 while (resultado.next()) {
                     existe = true;
                     Institucion institucion = new Institucion(resultado.getInt("identifier"),
-                            resultado.getString("title"), resultado.getInt("parent"));
+                            resultado.getString("title"));
                     instituciones.add(institucion);
                 }
                 if (!existe) {
@@ -1439,15 +1397,11 @@ public class DAO {
         Statement sentencia = null;
         ResultSet resultado = null;
 
-        String query = "select i.identifier, c.title "
-                + "from contentlet c, tree t, inode i "
-                + "where c.structure_inode = 107379 "
-                + "and t.parent = i.identifier "
-                + "and c.deleted = true "
-                + "and c.language_id = 2 "
-                + "and i.inode = c.inode "
-                + "and c.inode = t.child "
-                + "and c.mod_date >'" + fecha + "' order by c.mod_date";
+        String query = " select identifier, text1 "
+                + " from tramites "
+                + " where deleted = true "
+                + " and mod_date > '" + fecha + "' "
+                + " order by mod_date ";
 
         System.out.println("El valor del query es: " + query);
 
@@ -1495,9 +1449,9 @@ public class DAO {
                 boolean existe = false;
                 while (resultado.next()) {
                     existe = true;
-                    
+
                     Tramite tramite = new Tramite(resultado.getInt("identifier"),
-                            resultado.getString("title"));
+                            resultado.getString("text1"));
 
 
                     tramites.add(tramite);

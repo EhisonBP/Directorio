@@ -6,32 +6,32 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * 
- * Define la estructura del tipo de dato #TipoInstitucion
- * para su propio archivo XSD en la definicion del esquema del WSDL
- * bajo el namespace http://www.cnti.gob.ve/schema/directorio/TipoInstitucion.
- * 
+ *
+ * Define la estructura del tipo de dato #TipoInstitucion para su propio archivo
+ * XSD en la definicion del esquema del WSDL bajo el namespace
+ * http://www.cnti.gob.ve/schema/directorio/TipoInstitucion.
+ *
  * @author Danielle Mariani
  */
-@XmlRootElement(name="Institucion",
-        namespace = "http://www.cnti.gob.ve/schema/directorio/TipoInstitucion")
+@XmlRootElement(name = "Institucion",
+namespace = "http://www.cnti.gob.ve/schema/directorio/TipoInstitucion")
 @XmlType(name = "TipoInstitucion", propOrder = {
-        "idInstitucion",
-        "director",
-        "nombreSector",
-        "nombreInstitucion",
-        "descripcion",
-        "direccion",
-        "telefono",
-        "paginaWeb",
-        "correoElect",
-        "poder",
-        "fecha"},
-        namespace = "http://www.cnti.gob.ve/schema/directorio/TipoInstitucion")
+    "idInstitucion",
+    "director",
+    "nombreSector",
+    "nombreInstitucion",
+    "descripcion",
+    "direccion",
+    "telefono",
+    "paginaWeb",
+    "correoElect",
+    "poder",
+    "fecha"},
+namespace = "http://www.cnti.gob.ve/schema/directorio/TipoInstitucion")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Institucion {
 
-    private int idInstitucion;
+    private Integer idInstitucion;
     private String nombreInstitucion;
     private String nombreSector;
     private String director;
@@ -40,14 +40,13 @@ public class Institucion {
     private String paginaWeb;
     private String correoElect;
     private String descripcion;
-    private int poder;
+    private Integer poder;
     private String fecha;
 
     public Institucion() {
     }
 
-    public Institucion(int idInstituto, String nombreInstituto, String nombreSector, String director
-            , String direccion, String telefono, String web, String correoElect, int poder,String fecha) {
+    public Institucion(int idInstituto, String nombreInstituto, String nombreSector, String director, String direccion, String telefono, String web, String correoElect, int poder, String fecha) {
         this.idInstitucion = idInstituto;
         this.director = director;
         this.nombreSector = nombreSector;
@@ -59,7 +58,7 @@ public class Institucion {
         this.poder = poder;
         this.fecha = fecha;
     }
-    
+
     public Institucion(int idInstituto, String nombreInstituto,
             String descripcion, String direccion, String telefono, String web) {
         this.idInstitucion = idInstituto;
@@ -69,61 +68,26 @@ public class Institucion {
         this.telefono = telefono;
         this.paginaWeb = web;
     }
-    
-    public Institucion(int idInstitucion, String nombre, int poder){
+
+    public Institucion(int idInstitucion, String nombre) {
         this.idInstitucion = idInstitucion;
         this.nombreInstitucion = nombre;
-        this.poder = poder;
     }
 
-
-    public int getPoder() {
-        return poder;
-    }
-
-    public void setPoder(int poder) {
-        this.poder = poder;
-    }
-
-    public String getDirector() {
-        return director;
-    }
-
-    public void setDirector(String director) {
-        this.director = director;
-    }
-
-    public String getCorreoElect() {
-        return correoElect;
-    }
-
-    public void setCorreoElect(String correoElect) {
-        this.correoElect = correoElect;
-    }
-
-
-    public String getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public int getIdInstitucion() {
+    public Integer getIdInstitucion() {
         return idInstitucion;
     }
 
-    public void setIdInstitucion(int idInstituto) {
-        this.idInstitucion = idInstituto;
+    public void setIdInstitucion(Integer idInstitucion) {
+        this.idInstitucion = idInstitucion;
+    }
+
+    public String getNombreInstitucion() {
+        return nombreInstitucion;
+    }
+
+    public void setNombreInstitucion(String nombreInstitucion) {
+        this.nombreInstitucion = nombreInstitucion;
     }
 
     public String getNombreSector() {
@@ -134,14 +98,22 @@ public class Institucion {
         this.nombreSector = nombreSector;
     }
 
-    public String getNombreInstitucion() {
-        return nombreInstitucion;
+    public String getDirector() {
+        return director;
     }
 
-    public void setNombreInstitucion(String nombreInstituto) {
-        this.nombreInstitucion = nombreInstituto;
+    public void setDirector(String director) {
+        this.director = director;
     }
-    
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
     public String getTelefono() {
         return telefono;
     }
@@ -150,24 +122,48 @@ public class Institucion {
         this.telefono = telefono;
     }
 
-    public String getPaginatWeb() {
+    public String getPaginaWeb() {
         return paginaWeb;
     }
 
-    public void setPaginaWeb(String web) {
-        this.paginaWeb = web;
+    public void setPaginaWeb(String paginaWeb) {
+        this.paginaWeb = paginaWeb;
     }
 
-    @Override
-    public String toString() {
-        return "instituto:" + idInstitucion + ":" + nombreInstitucion + ":" + director;
+    public String getCorreoElect() {
+        return correoElect;
     }
-    
+
+    public void setCorreoElect(String correoElect) {
+        this.correoElect = correoElect;
+    }
+
     public String getDescripcion() {
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public Integer getPoder() {
+        return poder;
+    }
+
+    public void setPoder(Integer poder) {
+        this.poder = poder;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    @Override
+    public String toString() {
+        return "instituto:" + idInstitucion + ":" + nombreInstitucion + ":" + director;
     }
 }

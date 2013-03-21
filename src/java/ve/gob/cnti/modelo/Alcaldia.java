@@ -30,7 +30,7 @@ namespace = "http://www.cnti.gob.ve/schema/directorio/TipoAlcaldia")
 namespace = "http://www.cnti.gob.ve/schema/directorio/TipoAlcaldia")
 public class Alcaldia {
 
-    private int idAlcaldia;
+    private Integer idAlcaldia;
     private String nombreMunicipio;
     private String nombreAlcaldia;
     private String directorAlcaldia;
@@ -39,8 +39,8 @@ public class Alcaldia {
     private String webAlcaldia;
     private String correoAlcaldia;
     private String fecha;
-    private int poder;
-    private int estado;
+    private Integer poder;
+    private Integer estado;
 
     public Alcaldia() {
     }
@@ -59,35 +59,65 @@ public class Alcaldia {
         this.estado = estado;
     }
 
-    public Alcaldia(int idAlcaldia, String nombreAlcaldia, int poder, int estado) {
+    public Alcaldia(int idAlcaldia, String nombreAlcaldia) {
         this.idAlcaldia = idAlcaldia;
         this.nombreAlcaldia = nombreAlcaldia;
-        this.poder = poder;
-        this.estado = estado;
     }
 
-    public String getFecha() {
-        return fecha;
+    public Integer getIdAlcaldia() {
+        return idAlcaldia;
     }
 
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
+    public void setIdAlcaldia(int idAlcaldia) {
+        this.idAlcaldia = idAlcaldia;
     }
 
-    public long getEstado() {
-        return estado;
+    public String getNombreMunicipio() {
+        return nombreMunicipio;
     }
 
-    public void setEstado(int estado) {
-        this.estado = estado;
+    public void setNombreMunicipio(String nombreMunicipio) {
+        this.nombreMunicipio = nombreMunicipio;
     }
 
-    public long getPoder() {
-        return poder;
+    public String getNombreAlcaldia() {
+        return nombreAlcaldia;
     }
 
-    public void setPoder(int poder) {
-        this.poder = poder;
+    public void setNombreAlcaldia(String nombreAlcaldia) {
+        this.nombreAlcaldia = nombreAlcaldia;
+    }
+
+    public String getDirectorAlcaldia() {
+        return directorAlcaldia;
+    }
+
+    public void setDirectorAlcaldia(String directorAlcaldia) {
+        this.directorAlcaldia = directorAlcaldia;
+    }
+
+    public String getDireccionAlcaldia() {
+        return direccionAlcaldia;
+    }
+
+    public void setDireccionAlcaldia(String direccionAlcaldia) {
+        this.direccionAlcaldia = direccionAlcaldia;
+    }
+
+    public String getTelefonoAlcaldia() {
+        return telefonoAlcaldia;
+    }
+
+    public void setTelefonoAlcaldia(String telefonoAlcaldia) {
+        this.telefonoAlcaldia = telefonoAlcaldia;
+    }
+
+    public String getWebAlcaldia() {
+        return webAlcaldia;
+    }
+
+    public void setWebAlcaldia(String webAlcaldia) {
+        this.webAlcaldia = webAlcaldia;
     }
 
     public String getCorreoAlcaldia() {
@@ -98,60 +128,28 @@ public class Alcaldia {
         this.correoAlcaldia = correoAlcaldia;
     }
 
-    public String geWebAlcaldia() {
-        return webAlcaldia;
+    public String getFecha() {
+        return fecha;
     }
 
-    public void setWebAlcaldia(String web) {
-        this.webAlcaldia = web;
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 
-    public String getTelefonoAlcaldiaLcaldia() {
-        return telefonoAlcaldia;
+    public Integer getPoder() {
+        return poder;
     }
 
-    public void setTelefonoAlcaldia(String telefonoAlcaldia) {
-        this.telefonoAlcaldia = telefonoAlcaldia;
+    public void setPoder(Integer poder) {
+        this.poder = poder;
     }
 
-    public String getDireccionALcaldia() {
-        return direccionAlcaldia;
+    public Integer getEstado() {
+        return estado;
     }
 
-    public void setDireccionAlcaldia(String direccionAlcaldia) {
-        this.direccionAlcaldia = direccionAlcaldia;
-    }
-
-    public String getDirectorALcaldia() {
-        return directorAlcaldia;
-    }
-
-    public void setDirectorAlcaldia(String director) {
-        this.directorAlcaldia = director;
-    }
-
-    public long getIdAlcaldia() {
-        return idAlcaldia;
-    }
-
-    public String getNombreAlcaldia() {
-        return nombreAlcaldia;
-    }
-
-    public void setIdAlcaldia(int idPoder) {
-        this.idAlcaldia = idPoder;
-    }
-
-    public void setNombreAlcaldia(String nombreAlcaldia) {
-        this.nombreAlcaldia = nombreAlcaldia;
-    }
-
-    public String getNombreMunicipio() {
-        return nombreMunicipio;
-    }
-
-    public void setNombreMunicipio(String nombreMunicipio) {
-        this.nombreMunicipio = nombreMunicipio;
+    public void setEstado(Integer estado) {
+        this.estado = estado;
     }
 
     @Override
