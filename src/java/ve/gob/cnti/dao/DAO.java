@@ -59,7 +59,6 @@ import ve.gob.cnti.servicio.ServicioDirectorioEstadoVenezolano;
  */
 public class DAO {
 
-    private static final int ID_CATEGORIA_PODER = 123836;
     public static Limpiador limpiar = new Limpiador();
 
     /**
@@ -80,16 +79,14 @@ public class DAO {
         Connection conexion = null;
         Statement sentencia = null;
         ResultSet resultado = null;
-        String query = "select c.inode, c.category_name "
-                + "from category c, tree t "
-                + "where c.active = true "
-                + "and t.parent = " + ID_CATEGORIA_PODER + " "
-                + "and c.inode = t.child ";
-
+        String query = "select inode, category_name from poderes";
+        System.out.println("Entrando al metodo de poderes");
         try {
             //Iniciando conexion
             conexion = Conexion.iniciarConexion();
+            System.out.println("Conexion exitosa");
         } catch (SQLException e) {
+            System.out.println("Erro en la COnexion");
             //Error al iniciar conexion
             TipoError tipoError = new TipoError();
             tipoError.setCodigo(FallasSistema.FALLA_2_CODIGO);
@@ -102,6 +99,7 @@ public class DAO {
         try {
             //Inicializando la sentencia sql
             sentencia = conexion.createStatement();
+            System.out.println("Conexion exitosa2");
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
             TipoError tipoError = new TipoError();
@@ -114,6 +112,7 @@ public class DAO {
         try {
             //Ejecutando el query contra la Base de Datos
             resultado = sentencia.executeQuery(query);
+            System.out.println("Conexion exitosa3");
         } catch (SQLException e) {
             //Error ejecutando el query contra la Base de Datos
             TipoError tipoError = new TipoError();
@@ -203,12 +202,7 @@ public class DAO {
         Connection conexion = null;
         Statement sentencia = null;
         ResultSet resultado = null;
-//        String query = "select c.inode, c.title, c.text_area2 "
-//                + "from \"public\".contentlet c, \"public\".tree t "
-//                + "where t.parent = " + idPoder + " and c.inode = t.child";
-        String query = "select c.inode, c.title, c.text_area2, c.text6, c.text5, text8 "
-                + "from \"public\".contentlet c, \"public\".tree t "
-                + "where t.parent = " + idPoder + " and c.inode = t.child and c.live = true";
+        String query;
 
         if (idPoder <= 0) {
             //Parametro invalido
@@ -219,9 +213,19 @@ public class DAO {
             throw new ListarInstitucionesPorPoderesErrorAplicacion("Exception", tipoError);
         }
 
+        if (idPoder != 128988) {
+            query = "select identifier, title, text_area2, text6, text5, text8 "
+                    + " from instituciones "
+                    + " where parent = " + idPoder + " and live = true";
+        } else {
+            query = "select identifier, title, text_area2, text6, text5, text8 "
+                    + " from alcaldias where live = true order by parent ";
+        }
+
         try {
             //Iniciando conexion
             conexion = Conexion.iniciarConexion();
+            System.out.println("Conexion exitosa");
         } catch (SQLException e) {
             //Error al iniciar conexion
             TipoError tipoError = new TipoError();
@@ -234,6 +238,7 @@ public class DAO {
         try {
             //Inicializando la sentencia sql
             sentencia = conexion.createStatement();
+            System.out.println("Conexion exitosa2");
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
             TipoError tipoError = new TipoError();
@@ -246,6 +251,7 @@ public class DAO {
         try {
             //Ejecutando el query contra la Base de Datos
             resultado = sentencia.executeQuery(query);
+            System.out.println("Conexion exitosa3");
         } catch (SQLException e) {
             //Error ejecutando el query contra la Base de Datos
             TipoError tipoError = new TipoError();
@@ -263,9 +269,9 @@ public class DAO {
                 boolean existe = false;
                 while (resultado.next()) {
                     existe = true;
-                    System.out.println(" DEV :: Institución :: " + resultado.getInt("inode")
+                    System.out.println(" DEV :: Institución :: " + resultado.getInt("identifier")
                             + " " + resultado.getString("title"));
-                    Institucion institucion = new Institucion(resultado.getInt("inode"),
+                    Institucion institucion = new Institucion(resultado.getInt("identifier"),
                             resultado.getString("title"),
                             resultado.getString("text_area2"),
                             resultado.getString("text6"),
@@ -712,10 +718,10 @@ public class DAO {
         ResultSet resultado = null;
 
         String query = "select identifier, replace, title, text3, text6, text5, text8, parent, mod_date "
-                  +" from instituciones "
-                  +" where mod_date > '" +fecha+ "'" 
-                  +" and live = true "
-                  +" order by mod_date ";
+                + " from instituciones "
+                + " where mod_date > '" + fecha + "'"
+                + " and live = true "
+                + " order by mod_date ";
 
         try {
             //Iniciando conexion
@@ -1291,10 +1297,10 @@ public class DAO {
         ResultSet resultado = null;
 
         String query = "select identifier, title "
-                  +" from instituciones "
-                  +" where mod_date > '" +fecha+ "'" 
-                  +" and deleted = true "
-                  +" order by mod_date ";
+                + " from instituciones "
+                + " where mod_date > '" + fecha + "'"
+                + " and deleted = true "
+                + " order by mod_date ";
         try {
             //Iniciando conexion
             conexion = Conexion.iniciarConexion();
