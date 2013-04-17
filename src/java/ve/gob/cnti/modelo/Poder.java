@@ -6,23 +6,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * 
- * Define la estructura del tipo de dato #TipoPoder
- * del esquema del WSDL bajo el 
+ *
+ * Define la estructura del tipo de dato #TipoPoder del esquema del WSDL bajo el
  * namespace http://www.cnti.gob.ve/schema/directorio/TipoPoder
- * 
+ *
  * @author Danielle Mariani
  */
-@XmlRootElement(name="Poder",
-        namespace = "http://www.cnti.gob.ve/schema/directorio/TipoPoder")
+@XmlRootElement(name = "Poder",
+namespace = "http://www.cnti.gob.ve/schema/directorio/TipoPoder")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TipoPoder", propOrder = {
-        "idPoder",
-        "nombrePoder",
-        "descripcion"},
-        namespace = "http://www.cnti.gob.ve/schema/directorio/TipoPoder")
+    "idPoder",
+    "nombrePoder",
+    "descripcion"},
+namespace = "http://www.cnti.gob.ve/schema/directorio/TipoPoder")
 public class Poder {
-    
+
     private long idPoder;
     private String nombrePoder;
     private String descripcion;
@@ -30,9 +29,10 @@ public class Poder {
     public Poder() {
     }
 
-    public Poder(long idPoder, String nombrePoder) {
+    public Poder(long idPoder, String nombrePoder, String descripcion) {
         this.idPoder = idPoder;
         this.nombrePoder = nombrePoder;
+        this.descripcion = descripcion;
     }
 
     public String getDescripcion() {
@@ -63,8 +63,4 @@ public class Poder {
     public String toString() {
         return "poder:" + idPoder + ":" + nombrePoder + ":" + descripcion;
     }
-    
-    
-    
-    
 }
