@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author Danielle Mariani
  */
 @XmlRootElement(name = "Institucion",
-namespace = "http://www.cnti.gob.ve/schema/directorio/TipoInstitucion")
+        namespace = "http://www.cnti.gob.ve/schema/directorio/TipoInstitucion")
 @XmlType(name = "TipoInstitucion", propOrder = {
     "idInstitucion",
     "director",
@@ -24,10 +24,9 @@ namespace = "http://www.cnti.gob.ve/schema/directorio/TipoInstitucion")
     "direccion",
     "telefono",
     "paginaWeb",
-    "correoElect",
     "poder",
     "fecha"},
-namespace = "http://www.cnti.gob.ve/schema/directorio/TipoInstitucion")
+        namespace = "http://www.cnti.gob.ve/schema/directorio/TipoInstitucion")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Institucion {
 
@@ -38,7 +37,6 @@ public class Institucion {
     private String direccion;
     private String telefono;
     private String paginaWeb;
-    private String correoElect;
     private String descripcion;
     private Integer poder;
     private String fecha;
@@ -46,7 +44,7 @@ public class Institucion {
     public Institucion() {
     }
 
-    public Institucion(int idInstituto, String nombreInstituto, String nombreSector, String director, String direccion, String telefono, String web, String correoElect, int poder, String fecha) {
+    public Institucion(int idInstituto, String nombreInstituto, String nombreSector, String director, String direccion, String telefono, String web, int poder, String fecha) {
         this.idInstitucion = idInstituto;
         this.director = director;
         this.nombreSector = nombreSector;
@@ -54,14 +52,14 @@ public class Institucion {
         this.direccion = direccion;
         this.telefono = telefono;
         this.paginaWeb = web;
-        this.correoElect = correoElect;
         this.poder = poder;
         this.fecha = fecha;
     }
 
-    public Institucion(int idInstituto, String nombreInstituto,
+    public Institucion(int idInstituto, String nombreInstituto, String director,
             String descripcion, String direccion, String telefono, String web) {
         this.idInstitucion = idInstituto;
+        this.director = director;
         this.nombreInstitucion = nombreInstituto;
         this.descripcion = descripcion;
         this.direccion = direccion;
@@ -128,14 +126,6 @@ public class Institucion {
 
     public void setPaginaWeb(String paginaWeb) {
         this.paginaWeb = paginaWeb;
-    }
-
-    public String getCorreoElect() {
-        return correoElect;
-    }
-
-    public void setCorreoElect(String correoElect) {
-        this.correoElect = correoElect;
     }
 
     public String getDescripcion() {

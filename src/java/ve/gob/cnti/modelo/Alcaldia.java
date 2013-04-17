@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author Danielle Mariani
  */
 @XmlRootElement(name = "Alcaldia",
-namespace = "http://www.cnti.gob.ve/schema/directorio/TipoAlcaldia")
+        namespace = "http://www.cnti.gob.ve/schema/directorio/TipoAlcaldia")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TipoAlcaldia", propOrder = {
     "idAlcaldia",
@@ -23,11 +23,10 @@ namespace = "http://www.cnti.gob.ve/schema/directorio/TipoAlcaldia")
     "direccionAlcaldia",
     "telefonoAlcaldia",
     "webAlcaldia",
-    "correoAlcaldia",
     "fecha",
     "poder",
     "estado"},
-namespace = "http://www.cnti.gob.ve/schema/directorio/TipoAlcaldia")
+        namespace = "http://www.cnti.gob.ve/schema/directorio/TipoAlcaldia")
 public class Alcaldia {
 
     private Integer idAlcaldia;
@@ -37,7 +36,6 @@ public class Alcaldia {
     private String direccionAlcaldia;
     private String telefonoAlcaldia;
     private String webAlcaldia;
-    private String correoAlcaldia;
     private String fecha;
     private Integer poder;
     private Integer estado;
@@ -45,7 +43,7 @@ public class Alcaldia {
     public Alcaldia() {
     }
 
-    public Alcaldia(int idAlcaldia, String nombreAlcaldia, String nombreMunicipio, String directorAlcaldia, String direccionAlcaldia, String telefonoAlcaldia, String webAlcaldia, String correoAlcaldia, String fecha, int poder, int estado) {
+    public Alcaldia(int idAlcaldia, String nombreAlcaldia, String nombreMunicipio, String directorAlcaldia, String direccionAlcaldia, String telefonoAlcaldia, String webAlcaldia, String fecha, int poder, int estado) {
         this.idAlcaldia = idAlcaldia;
         this.nombreAlcaldia = nombreAlcaldia;
         this.nombreMunicipio = nombreMunicipio;
@@ -53,7 +51,6 @@ public class Alcaldia {
         this.direccionAlcaldia = direccionAlcaldia;
         this.telefonoAlcaldia = telefonoAlcaldia;
         this.webAlcaldia = webAlcaldia;
-        this.correoAlcaldia = correoAlcaldia;
         this.fecha = fecha;
         this.poder = poder;
         this.estado = estado;
@@ -118,14 +115,6 @@ public class Alcaldia {
 
     public void setWebAlcaldia(String webAlcaldia) {
         this.webAlcaldia = webAlcaldia;
-    }
-
-    public String getCorreoAlcaldia() {
-        return correoAlcaldia;
-    }
-
-    public void setCorreoAlcaldia(String correoAlcaldia) {
-        this.correoAlcaldia = correoAlcaldia;
     }
 
     public String getFecha() {
