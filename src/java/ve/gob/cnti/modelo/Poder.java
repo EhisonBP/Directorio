@@ -17,26 +17,20 @@ namespace = "http://www.cnti.gob.ve/schema/directorio/TipoPoder")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TipoPoder", propOrder = {
     "idPoder",
-    "nombrePoder",
-    "descripcion"},
+    "nombrePoder"},
 namespace = "http://www.cnti.gob.ve/schema/directorio/TipoPoder")
 public class Poder {
 
     private long idPoder;
     private String nombrePoder;
-    private String descripcion;
 
     public Poder() {
     }
 
-    public Poder(long idPoder, String nombrePoder, String descripcion) {
+    public Poder(long idPoder, String nombrePoder) {
         this.idPoder = idPoder;
         this.nombrePoder = nombrePoder;
-        this.descripcion = descripcion;
-    }
 
-    public String getDescripcion() {
-        return descripcion;
     }
 
     public long getIdPoder() {
@@ -45,10 +39,6 @@ public class Poder {
 
     public String getNombrePoder() {
         return nombrePoder;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 
     public void setIdPoder(long idPoder) {
@@ -61,6 +51,6 @@ public class Poder {
 
     @Override
     public String toString() {
-        return "poder:" + idPoder + ":" + nombrePoder + ":" + descripcion;
+        return "poder:" + idPoder + ":" + nombrePoder;
     }
 }

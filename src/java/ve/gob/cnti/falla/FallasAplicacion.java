@@ -10,7 +10,8 @@ package ve.gob.cnti.falla;
 public class FallasAplicacion {
 
     public static final String CODIGO_FALLA_1 = "APP501E";
-    public static final String DESCRIPCION_FALLA_1 = "Argumento Invalido";
+    public static final String DESCRIPCION_FALLA_1 = "Argumento Invalido: Solo "
+            + "debe ingresar datos de tipo numerico mayores a 0";
     
     public static final String CODIGO_FALLA_2 = "APP502W";
     public static final String DESCRIPCION_FALLA_2 = "No existen poderes";
@@ -50,4 +51,9 @@ public class FallasAplicacion {
     public static final String CODIGO_FALLA_11 = "APP511W";
     public static final String DESCRIPCION_FALLA_11 = "No Existen Tramites"
             + " eliminados superiores a la fecha ingresada";
+    
+    public static final String CODIGO_FALLA_12 = "APP5012E";
+    public static final String DESCRIPCION_FALLA_12 = "Argumento Invalido: no puede enviar consulta en blanco y debe "
+            + "de ingresar datos de tipo caracter con en forma de fecha, Ejemplo: 2010-01-01";
+
 }

@@ -79,7 +79,7 @@ public class DAO {
         Connection conexion = null;
         Statement sentencia = null;
         ResultSet resultado = null;
-        String query = "select inode, category, text_area1_name from poderes";
+        String query = "select inode, category_name from poderes";
         System.out.println("Entrando al metodo de poderes");
         try {
             //Iniciando conexion
@@ -132,9 +132,7 @@ public class DAO {
                     existe = true;
                     System.out.println(" DEV :: Poder :: " + resultado.getInt("inode")
                             + " " + resultado.getString("category_name"));
-                    Poder poder = new Poder(resultado.getInt("inode"),
-                            resultado.getString("category_name"),
-                            resultado.getString("text_area1"));
+                    Poder poder = new Poder(resultado.getInt("inode"), resultado.getString("category_name"));
                     poderes.add(poder);
                 }
 
@@ -352,6 +350,16 @@ public class DAO {
         Connection conexion = null;
         Statement sentencia = null;
         ResultSet resultado = null;
+
+        if (idInstitucion <= 0) {
+            //Parametro invalido
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_1);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_1);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarTramitesPorInstitucionErrorAplicacion("Exception", tipoError);
+        }
+
 //        String query = "select c.inode, c.title, c.text4, c.text_area1, c.text_area5, c.text_area7, c.text_area8, c.text_area9, c.bool2 from \"public\".inode i, \"public\".tree t, \"public\".inode i2, \"public\".contentlet c "
 //                + " where i.inode = " + idInstitucion
 //                + " and t.child = i.identifier"
@@ -359,7 +367,7 @@ public class DAO {
 //                + " and i2.identifier = t.parent"
 //                + " and c.inode = i2.inode"
 //                + " and c.live is true";
-        String query = "select i.identifier, c.text1, c.text4, c.text5, c.text_area5, c.text_area8, "
+        String query = "select i.identifier, c.title, c.text4, c.text5, c.text_area5, c.text_area8, "
                 + " (select c.title from contentlet c, inode ino, tree t where c.structure_inode = 123910 and ino.identifier = " + idInstitucion + " and c.live = true and c.inode = t.child and ino.inode = c.inode and ino.identifier = t.parent) as nombre_institucion"
                 + " from  contentlet c inner join inode i on i.inode = c.inode"
                 + " where c.structure_inode = 107379"
@@ -421,7 +429,7 @@ public class DAO {
                 while (resultado.next()) {
                     existe = true;
                     System.out.println(" DEV :: Tramite :: " + resultado.getInt("identifier")
-                            + " " + resultado.getString("text1"));
+                            + " " + resultado.getString("title"));
 
                     String direccion = resultado.getString("text_area5");
                     if (!direccion.equals("")) {
@@ -433,12 +441,8 @@ public class DAO {
                         requisitos = limpiar.limpiadorEtiquetas(requisitos);
                     }
 
-                    String nombre = resultado.getString("text1");
-                    if (!nombre.equals("")) {
-                        nombre = limpiar.limpiadorEtiquetas(nombre);
-                    }
                     Tramite tramite = new Tramite(resultado.getInt("identifier"),
-                            nombre,
+                            resultado.getString("title"),
                             resultado.getString("text4"),
                             resultado.getString("text5"),
                             direccion,
@@ -511,6 +515,28 @@ public class DAO {
         Connection conexion = null;
         Statement sentencia = null;
         ResultSet resultado = null;
+
+        fecha = fecha.trim();
+        if (fecha.equals("")) {
+            //Parametro invalido el campo se encuentra vacio
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_12);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarAlcaldiasPorFechaErrorAplicacion("Exception", tipoError);
+        }
+
+
+        if (fecha.length() != 10 || fecha.charAt(4) != '-' || fecha.charAt(7) != '-') {
+            //Parametro invalido el campo se encuentra vacio
+            System.out.println("Entrando a la validacion de cantidad de caracteres " + fecha.length() + ": " + fecha.charAt(4) + " :" + fecha.charAt(7));
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_12);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarAlcaldiasPorFechaErrorAplicacion("Exception", tipoError);
+
+        }
 
         String query = "select identifier, title, text3, text6, text5, text8, parent, mod_date "
                 + " from alcaldias "
@@ -745,6 +771,28 @@ public class DAO {
         Statement sentencia = null;
         ResultSet resultado = null;
 
+        fecha = fecha.trim();
+        if (fecha.equals("")) {
+            //Parametro invalido el campo se encuentra vacio
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_12);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarInstitucionesPorFechaErrorAplicacion("Exception", tipoError);
+        }
+
+
+        if (fecha.length() != 10 || fecha.charAt(4) != '-' || fecha.charAt(7) != '-') {
+            //Parametro invalido el campo se encuentra vacio
+            System.out.println("Entrando a la validacion de cantidad de caracteres " + fecha.length() + ": " + fecha.charAt(4) + " :" + fecha.charAt(7));
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_12);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarInstitucionesPorFechaErrorAplicacion("Exception", tipoError);
+
+        }
+
         String query = "select identifier, nombre_resumen, title, text3, text6, text5, text8, parent, mod_date "
                 + " from instituciones"
                 + " where mod_date > '" + fecha + "'"
@@ -900,10 +948,31 @@ public class DAO {
             System.out.println("El valor Ingresado es: " + fecha);
         }
 
+        fecha = fecha.trim();
+        if (fecha.equals("")) {
+            //Parametro invalido el campo se encuentra vacio
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_12);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarTramitesPorFechaErrorAplicacion("Exception", tipoError);
+        }
+
+
+        if (fecha.length() != 10 || fecha.charAt(4) != '-' || fecha.charAt(7) != '-') {
+            //Parametro invalido el campo se encuentra vacio
+            System.out.println("Entrando a la validacion de cantidad de caracteres " + fecha.length() + ": " + fecha.charAt(4) + " :" + fecha.charAt(7));
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_12);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarTramitesPorFechaErrorAplicacion("Exception", tipoError);
+
+        }
+
         Connection conexion = null;
         Statement sentencia = null;
         ResultSet resultado = null;
-
 
         String query = " select identifier, text1, text_area5, text_area8, text5, text4, text_area10, mod_date "
                 + " from tramites "
@@ -1052,6 +1121,28 @@ public class DAO {
          * Falata Ingresar el query que se va a ejecutar contra la base de datos
          * del DOTCMS
          */
+        fecha = fecha.trim();
+        if (fecha.equals("")) {
+            //Parametro invalido el campo se encuentra vacio
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_12);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarOperativosPorFechaErrorAplicacion("Exception", tipoError);
+        }
+
+
+        if (fecha.length() != 10 || fecha.charAt(4) != '-' || fecha.charAt(7) != '-') {
+            //Parametro invalido el campo se encuentra vacio
+            System.out.println("Entrando a la validacion de cantidad de caracteres " + fecha.length() + ": " + fecha.charAt(4) + " :" + fecha.charAt(7));
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_12);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarOperativosPorFechaErrorAplicacion("Exception", tipoError);
+
+        }
+
         String query = "select identifier, text1, text2, text3, date1, date2, mod_date "
                 + " from operativos "
                 + " where mod_date >'" + fecha + "' "
@@ -1162,6 +1253,29 @@ public class DAO {
         Connection conexion = null;
         Statement sentencia = null;
         ResultSet resultado = null;
+
+        fecha = fecha.trim();
+        if (fecha.equals("")) {
+            //Parametro invalido el campo se encuentra vacio
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_12);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarAlcaldiasEliminadasErrorAplicacion("Exception", tipoError);
+        }
+
+
+        if (fecha.length() != 10 || fecha.charAt(4) != '-' || fecha.charAt(7) != '-') {
+            //Parametro invalido el campo se encuentra vacio
+            System.out.println("Entrando a la validacion de cantidad de caracteres " + fecha.length() + ": " + fecha.charAt(4) + " :" + fecha.charAt(7));
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_12);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarAlcaldiasEliminadasErrorAplicacion("Exception", tipoError);
+
+        }
+
         String query = "select identifier, title "
                 + " from alcaldias "
                 + " where mod_date > '" + fecha + "' "
@@ -1291,6 +1405,28 @@ public class DAO {
         Statement sentencia = null;
         ResultSet resultado = null;
 
+        fecha = fecha.trim();
+        if (fecha.equals("")) {
+            //Parametro invalido el campo se encuentra vacio
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_12);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarInstitucionesEliminadasErrorAplicacion("Exception", tipoError);
+        }
+
+
+        if (fecha.length() != 10 || fecha.charAt(4) != '-' || fecha.charAt(7) != '-') {
+            //Parametro invalido el campo se encuentra vacio
+            System.out.println("Entrando a la validacion de cantidad de caracteres " + fecha.length() + ": " + fecha.charAt(4) + " :" + fecha.charAt(7));
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_12);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarInstitucionesEliminadasErrorAplicacion("Exception", tipoError);
+
+        }
+
         String query = "select identifier, title "
                 + " from instituciones "
                 + " where mod_date > '" + fecha + "'"
@@ -1397,6 +1533,28 @@ public class DAO {
         Connection conexion = null;
         Statement sentencia = null;
         ResultSet resultado = null;
+
+        fecha = fecha.trim();
+        if (fecha.equals("")) {
+            //Parametro invalido el campo se encuentra vacio
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_12);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarTramitesEliminadosErrorAplicacion("Exception", tipoError);
+        }
+
+
+        if (fecha.length() != 10 || fecha.charAt(4) != '-' || fecha.charAt(7) != '-') {
+            //Parametro invalido el campo se encuentra vacio
+            System.out.println("Entrando a la validacion de cantidad de caracteres " + fecha.length() + ": " + fecha.charAt(4) + " :" + fecha.charAt(7));
+            TipoError tipoError = new TipoError();
+            tipoError.setCodigo(FallasAplicacion.CODIGO_FALLA_12);
+            tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
+            tipoError.setDetallesTecnicos("Detalles Tecnicos");
+            throw new ListarTramitesEliminadosErrorAplicacion("Exception", tipoError);
+
+        }
 
         String query = " select identifier, text1 "
                 + " from tramites "
