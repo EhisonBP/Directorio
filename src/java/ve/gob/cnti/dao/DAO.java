@@ -680,7 +680,11 @@ public class DAO {
                         if (!nAlcaldia.equals("")) {
                             nAlcaldia = limpiar.nombreAlcaldia(nAlcaldia);
                         }
-
+                        
+                        String director = resultado.getString("text3");
+                        if (director.equals("")){
+                            director = "Información no disponible";
+                        }
                         existe = true;
                         System.out.println(" DEV :: Poder :: " + resultado.getInt("identifier")
                                 + " " + resultado.getString("title"));
@@ -688,7 +692,7 @@ public class DAO {
                         Alcaldia alcaldia = new Alcaldia(resultado.getInt("identifier"),
                                 nAlcaldia,
                                 municipio,
-                                resultado.getString("text3"),
+                                director,
                                 resultado.getString("text6"),
                                 resultado.getString("text5"),
                                 resultado.getString("text8"),
