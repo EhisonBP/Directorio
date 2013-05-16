@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.jsoup.Jsoup;
 import ve.gob.cnti.falla.FallasAplicacion;
 import ve.gob.cnti.falla.FallasSistema;
 import ve.gob.cnti.falla.TipoError;
@@ -274,7 +275,7 @@ public class DAO {
 
                     String descripcion = resultado.getString("text_area2");
                     if (!descripcion.equals("")) {
-                        descripcion = limpiar.limpiadorEtiquetas(descripcion);
+                        descripcion = Jsoup.parse(descripcion).text().trim();
                     }
 
                     Institucion institucion = new Institucion(resultado.getInt("identifier"),
@@ -433,12 +434,12 @@ public class DAO {
 
                     String direccion = resultado.getString("text_area5");
                     if (!direccion.equals("")) {
-                        direccion = limpiar.limpiadorEtiquetas(direccion);
+                        direccion = Jsoup.parse(direccion).text().trim();
                     }
 
                     String requisitos = resultado.getString("text_area8");
                     if (!requisitos.equals("")) {
-                        requisitos = limpiar.limpiadorEtiquetas(requisitos);
+                        requisitos = Jsoup.parse(requisitos).text().trim();
                     }
 
                     Tramite tramite = new Tramite(resultado.getInt("identifier"),
