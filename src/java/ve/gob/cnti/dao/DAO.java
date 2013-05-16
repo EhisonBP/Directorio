@@ -1030,25 +1030,68 @@ public class DAO {
 
                     String direccion = resultado.getString("text_area5");
                     String requisitos = resultado.getString("text_area8");
-                    // String descripcion = resultado.getString("text_area10");
+                    String descripcion = resultado.getString("text_area10");
+                    String titulo = resultado.getString("text1");
+                    String telefono = resultado.getString("text4");
+                    String horarios = resultado.getString("text5");
 
+                    System.out.println("Cumpliendo la validacion de horarios = " + horarios);
+                    if (!horarios.equals("")) {
+                        horarios = Jsoup.parse(horarios).text();
+                    } else {
+                        horarios = "Información no disponible";
+                    }
+
+                    System.out.println("Cumpliendo la validacion de telefono = " + telefono);
+                    if (!telefono.equals("")) {
+                        telefono = Jsoup.parse(telefono).text();
+                    } else {
+                        telefono = "Información no disponible";
+                    }
+
+                    System.out.println("Cumpliendo la validacion de direccion = " + direccion);
                     if (!direccion.equals("")) {
-                        direccion = limpiar.limpiadorEtiquetas(direccion);
+                        direccion = Jsoup.parse(direccion).text();
+                    } else {
+                        direccion = "Información no disponible";
                     }
 
+                    System.out.println("Cumpliendo la validacion de requisitos = " + requisitos);
                     if (!requisitos.equals("")) {
-                        requisitos = limpiar.limpiadorEtiquetas(requisitos);
+                        requisitos = Jsoup.parse(requisitos).text();
+                    } else {
+                        requisitos = "Información no disponible";
                     }
+
+                    System.out.println("Cumpliendo la validacion de titulo = " + titulo);
+                    if (!titulo.equals("")) {
+                        titulo = Jsoup.parse(titulo).text();
+                    } else {
+                        titulo = "Información no disponible";
+                    }
+
+                    System.out.println("Cumpliendo la validacion de descripcion = " + descripcion);
+                    if (descripcion == null) {
+                        descripcion = "Información no disponible";
+                    } else {
+                        if (!descripcion.equals("")) {
+                            descripcion = Jsoup.parse(titulo).text();
+                        } else {
+                            descripcion = "Información no disponible";
+
+                        }
+                    }
+
 
                     System.out.println(" DEV :: Tramite :: " + resultado.getInt("identifier")
                             + " " + resultado.getString("text1") + " " + requisitos);
 
                     Tramite tramite = new Tramite(resultado.getInt("identifier"),
-                            resultado.getString("text1"),
-                            resultado.getString("text4"),
-                            resultado.getString("text5"),
+                            titulo,
+                            telefono,
+                            horarios,
                             direccion,
-                            resultado.getString("text_area10"),
+                            descripcion,
                             requisitos,
                             resultado.getString("mod_date"));
                     tramites.add(tramite);
