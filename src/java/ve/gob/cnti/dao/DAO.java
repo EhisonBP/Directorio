@@ -1,9 +1,9 @@
 package ve.gob.cnti.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import org.jsoup.Jsoup;
@@ -78,7 +78,7 @@ public class DAO {
 
 
         Connection conexion = null;
-        Statement sentencia = null;
+        PreparedStatement sentencia = null;
         ResultSet resultado = null;
         String query = "select inode, category_name from poderes";
         System.out.println("Entrando al metodo de poderes");
@@ -99,7 +99,7 @@ public class DAO {
 
         try {
             //Inicializando la sentencia sql
-            sentencia = conexion.createStatement();
+            sentencia = conexion.prepareStatement(query);
             System.out.println("Conexion exitosa2");
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
@@ -112,10 +112,11 @@ public class DAO {
 
         try {
             //Ejecutando el query contra la Base de Datos
-            resultado = sentencia.executeQuery(query);
+            resultado = sentencia.executeQuery();
             System.out.println("Conexion exitosa3");
         } catch (SQLException e) {
             //Error ejecutando el query contra la Base de Datos
+            System.out.println(e.toString());
             TipoError tipoError = new TipoError();
             tipoError.setCodigo(FallasSistema.FALLA_4_CODIGO);
             tipoError.setDescripcion(FallasSistema.FALLA_4_DESCRIPCION + " - " + e.getMessage());
@@ -201,7 +202,7 @@ public class DAO {
         System.out.println(" DEV :: Listar Instituciones");
 
         Connection conexion = null;
-        Statement sentencia = null;
+        PreparedStatement sentencia = null;
         ResultSet resultado = null;
         String query;
 
@@ -238,7 +239,7 @@ public class DAO {
 
         try {
             //Inicializando la sentencia sql
-            sentencia = conexion.createStatement();
+            sentencia = conexion.prepareStatement(query);
             System.out.println("Conexion exitosa2");
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
@@ -251,7 +252,7 @@ public class DAO {
 
         try {
             //Ejecutando el query contra la Base de Datos
-            resultado = sentencia.executeQuery(query);
+            resultado = sentencia.executeQuery();
             System.out.println("Conexion exitosa3");
         } catch (SQLException e) {
             //Error ejecutando el query contra la Base de Datos
@@ -349,7 +350,7 @@ public class DAO {
 
 
         Connection conexion = null;
-        Statement sentencia = null;
+        PreparedStatement sentencia = null;
         ResultSet resultado = null;
 
         if (idInstitucion <= 0) {
@@ -399,7 +400,7 @@ public class DAO {
 
         try {
             //Inicializando la sentencia sql
-            sentencia = conexion.createStatement();
+            sentencia = conexion.prepareStatement(query);
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
             TipoError tipoError = new TipoError();
@@ -411,7 +412,7 @@ public class DAO {
 
         try {
             //Ejecutando el query contra la Base de Datos
-            resultado = sentencia.executeQuery(query);
+            resultado = sentencia.executeQuery();
         } catch (SQLException e) {
             //Error ejecutando el query contra la Base de Datos
             TipoError tipoError = new TipoError();
@@ -514,7 +515,7 @@ public class DAO {
 
 
         Connection conexion = null;
-        Statement sentencia = null;
+        PreparedStatement sentencia = null;
         ResultSet resultado = null;
 
         fecha = fecha.trim();
@@ -564,7 +565,7 @@ public class DAO {
 
         try {
             //Inicializando la sentencia sql
-            sentencia = conexion.createStatement();
+            sentencia = conexion.prepareStatement(query);
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
             TipoError tipoError = new TipoError();
@@ -576,7 +577,7 @@ public class DAO {
 
         try {
             //Ejecutando el query contra la Base de Datos
-            resultado = sentencia.executeQuery(query);
+            resultado = sentencia.executeQuery();
         } catch (SQLException e) {
             //Error ejecutando el query contra la Base de Datos
             TipoError tipoError = new TipoError();
@@ -779,7 +780,7 @@ public class DAO {
         }
 
         Connection conexion = null;
-        Statement sentencia = null;
+        PreparedStatement sentencia = null;
         ResultSet resultado = null;
 
         fecha = fecha.trim();
@@ -824,7 +825,7 @@ public class DAO {
 
         try {
             //Inicializando la sentencia sql
-            sentencia = conexion.createStatement();
+            sentencia = conexion.prepareStatement(query);
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
             TipoError tipoError = new TipoError();
@@ -836,7 +837,7 @@ public class DAO {
 
         try {
             //Ejecutando el query contra la Base de Datos
-            resultado = sentencia.executeQuery(query);
+            resultado = sentencia.executeQuery();
         } catch (SQLException e) {
             //Error ejecutando el query contra la Base de Datos
             TipoError tipoError = new TipoError();
@@ -982,7 +983,7 @@ public class DAO {
         }
 
         Connection conexion = null;
-        Statement sentencia = null;
+        PreparedStatement sentencia = null;
         ResultSet resultado = null;
 
         String query = " select identifier, text1, text_area5, text_area8, text5, text4, text_area10, mod_date "
@@ -1007,7 +1008,7 @@ public class DAO {
 
         try {
             //Inicializando la sentencia sql
-            sentencia = conexion.createStatement();
+            sentencia = conexion.prepareStatement(query);
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
             TipoError tipoError = new TipoError();
@@ -1019,7 +1020,7 @@ public class DAO {
 
         try {
             //Ejecutando el query contra la Base de Datos
-            resultado = sentencia.executeQuery(query);
+            resultado = sentencia.executeQuery();
         } catch (SQLException e) {
             //Error ejecutando el query contra la Base de Datos
             TipoError tipoError = new TipoError();
@@ -1159,7 +1160,7 @@ public class DAO {
         }
 
         Connection conexion = null;
-        Statement sentencia = null;
+        PreparedStatement sentencia = null;
         ResultSet resultado = null;
 //      Considerar eliminar el relation.type y considerar usarlo cuando se quiere saber a cuál institución pertenece
 
@@ -1216,7 +1217,7 @@ public class DAO {
 
         try {
             //Inicializando la sentencia sql
-            sentencia = conexion.createStatement();
+            sentencia = conexion.prepareStatement(query);
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
             TipoError tipoError = new TipoError();
@@ -1227,7 +1228,7 @@ public class DAO {
         }
 
         try {
-            resultado = sentencia.executeQuery(query);
+            resultado = sentencia.executeQuery();
         } catch (SQLException e) {
             //Error ejecutando el query contra la Base de Datos
             TipoError tipoError = new TipoError();
@@ -1305,7 +1306,7 @@ public class DAO {
             ListarAlcaldiasEliminadasErrorAplicacion {
 
         Connection conexion = null;
-        Statement sentencia = null;
+        PreparedStatement sentencia = null;
         ResultSet resultado = null;
 
         fecha = fecha.trim();
@@ -1352,7 +1353,7 @@ public class DAO {
 
         try {
             //Inicializando la sentencia sql
-            sentencia = conexion.createStatement();
+            sentencia = conexion.prepareStatement(query);
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
             TipoError tipoError = new TipoError();
@@ -1364,7 +1365,7 @@ public class DAO {
 
         try {
             //Ejecutando el query contra la Base de Datos
-            resultado = sentencia.executeQuery(query);
+            resultado = sentencia.executeQuery();
         } catch (SQLException e) {
             //Error ejecutando el query contra la Base de Datos
             TipoError tipoError = new TipoError();
@@ -1456,7 +1457,7 @@ public class DAO {
         }
 
         Connection conexion = null;
-        Statement sentencia = null;
+        PreparedStatement sentencia = null;
         ResultSet resultado = null;
 
         fecha = fecha.trim();
@@ -1500,7 +1501,7 @@ public class DAO {
 
         try {
             //Inicializando la sentencia sql
-            sentencia = conexion.createStatement();
+            sentencia = conexion.prepareStatement(query);
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
             TipoError tipoError = new TipoError();
@@ -1512,7 +1513,7 @@ public class DAO {
 
         try {
             //Ejecutando el query contra la Base de Datos
-            resultado = sentencia.executeQuery(query);
+            resultado = sentencia.executeQuery();
         } catch (SQLException e) {
             //Error ejecutando el query contra la Base de Datos
             TipoError tipoError = new TipoError();
@@ -1585,7 +1586,7 @@ public class DAO {
         }
 
         Connection conexion = null;
-        Statement sentencia = null;
+        PreparedStatement sentencia = null;
         ResultSet resultado = null;
 
         fecha = fecha.trim();
@@ -1632,7 +1633,7 @@ public class DAO {
 
         try {
             //Inicializando la sentencia sql
-            sentencia = conexion.createStatement();
+            sentencia = conexion.prepareStatement(query);
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
             TipoError tipoError = new TipoError();
@@ -1644,7 +1645,7 @@ public class DAO {
 
         try {
             //Ejecutando el query contra la Base de Datos
-            resultado = sentencia.executeQuery(query);
+            resultado = sentencia.executeQuery();
         } catch (SQLException e) {
             //Error ejecutando el query contra la Base de Datos
             TipoError tipoError = new TipoError();
