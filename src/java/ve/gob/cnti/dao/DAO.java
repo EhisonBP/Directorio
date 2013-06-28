@@ -1,6 +1,7 @@
 package ve.gob.cnti.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -59,7 +60,7 @@ import ve.gob.cnti.servicio.ServicioDirectorioEstadoVenezolano;
  *
  */
 public class DAO {
-
+    
     public static Limpiador limpiar = new Limpiador();
 
     /**
@@ -75,8 +76,8 @@ public class DAO {
      */
     public static List<Poder> getPoderes() throws ListarPoderesErrorSistema,
             ListarPoderesErrorAplicacion {
-
-
+        
+        
         Connection conexion = null;
         PreparedStatement sentencia = null;
         ResultSet resultado = null;
@@ -95,8 +96,8 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarPoderesErrorSistema("SQL Exception", tipoError);
         }
-
-
+        
+        
         try {
             //Inicializando la sentencia sql
             sentencia = conexion.prepareStatement(query);
@@ -109,7 +110,7 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarPoderesErrorSistema("SQL Exception", tipoError);
         }
-
+        
         try {
             //Ejecutando el query contra la Base de Datos
             resultado = sentencia.executeQuery();
@@ -123,7 +124,7 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarPoderesErrorSistema("SQL Exception", tipoError);
         }
-
+        
         if (resultado != null) {
 
             //Leer respuesta
@@ -137,7 +138,7 @@ public class DAO {
                     Poder poder = new Poder(resultado.getInt("inode"), resultado.getString("category_name"));
                     poderes.add(poder);
                 }
-
+                
                 if (!existe) {
                     //Respuesta vacia
                     TipoError tipoError = new TipoError();
@@ -146,7 +147,7 @@ public class DAO {
                     tipoError.setDetallesTecnicos("Detalles Tecnicos");
                     throw new ListarPoderesErrorSistema("Exception", tipoError);
                 }
-
+                
             } catch (SQLException e) {
                 //Error al leer respuesta
                 TipoError tipoError = new TipoError();
@@ -155,7 +156,7 @@ public class DAO {
                 tipoError.setDetallesTecnicos(e.getClass().toString());
                 throw new ListarPoderesErrorSistema("SQL Exception", tipoError);
             }
-
+            
             try {
                 conexion.close();
             } catch (SQLException e) {
@@ -166,9 +167,9 @@ public class DAO {
                 tipoError.setDetallesTecnicos(e.getClass().toString());
                 throw new ListarPoderesErrorSistema("SQL Exception", tipoError);
             }
-
+            
             return poderes;
-
+            
         } else {
             //Respuesta vacia
             TipoError tipoError = new TipoError();
@@ -177,8 +178,8 @@ public class DAO {
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarPoderesErrorSistema("Exception", tipoError);
         }
-
-
+        
+        
     }
 
     /**
@@ -198,14 +199,14 @@ public class DAO {
     public static List<Institucion> getInstitucionesPorPoderes(int idPoder)
             throws ListarInstitucionesPorPoderErrorSistema,
             ListarInstitucionesPorPoderesErrorAplicacion {
-
+        
         System.out.println(" DEV :: Listar Instituciones");
-
+        
         Connection conexion = null;
         PreparedStatement sentencia = null;
         ResultSet resultado = null;
         String query;
-
+        
         if (idPoder <= 0) {
             //Parametro invalido
             TipoError tipoError = new TipoError();
@@ -214,16 +215,16 @@ public class DAO {
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarInstitucionesPorPoderesErrorAplicacion("Exception", tipoError);
         }
-
+        
         if (idPoder != 128988) {
             query = "select identifier, title, text_area2, text6, text5, text8, text3 "
                     + " from instituciones "
-                    + " where parent = " + idPoder + " and live = true";
+                    + " where parent = ? and live = true";
         } else {
             query = "select identifier, title, text_area2, text6, text5, text8 ,text3 "
                     + " from alcaldias where live = true order by parent ";
         }
-
+        
         try {
             //Iniciando conexion
             conexion = Conexion.iniciarConexion();
@@ -236,10 +237,13 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarInstitucionesPorPoderErrorSistema("SQL Exception", tipoError);
         }
-
+        
         try {
             //Inicializando la sentencia sql
             sentencia = conexion.prepareStatement(query);
+            if (idPoder != 128988) {
+                sentencia.setInt(1, idPoder);
+            }
             System.out.println("Conexion exitosa2");
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
@@ -249,7 +253,7 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarInstitucionesPorPoderErrorSistema("SQL Exception", tipoError);
         }
-
+        
         try {
             //Ejecutando el query contra la Base de Datos
             resultado = sentencia.executeQuery();
@@ -262,8 +266,8 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarInstitucionesPorPoderErrorSistema("SQL Exception", tipoError);
         }
-
-
+        
+        
         if (resultado != null) {
             //Leer respuesta
             ArrayList<Institucion> instituciones = new ArrayList<Institucion>();
@@ -273,12 +277,12 @@ public class DAO {
                     existe = true;
                     System.out.println(" DEV :: Institución :: " + resultado.getInt("identifier")
                             + " " + resultado.getString("title"));
-
+                    
                     String descripcion = resultado.getString("text_area2");
                     if (!descripcion.equals("")) {
                         descripcion = Jsoup.parse(descripcion).text().trim();
                     }
-
+                    
                     Institucion institucion = new Institucion(resultado.getInt("identifier"),
                             resultado.getString("title"),
                             resultado.getString("text3"),
@@ -288,7 +292,7 @@ public class DAO {
                             resultado.getString("text8"));
                     instituciones.add(institucion);
                 }
-
+                
                 if (!existe) {
                     //Respuesta vacia
                     TipoError tipoError = new TipoError();
@@ -305,7 +309,7 @@ public class DAO {
                 tipoError.setDetallesTecnicos(e.getClass().toString());
                 throw new ListarInstitucionesPorPoderErrorSistema("SQL Exception", tipoError);
             }
-
+            
             try {
                 conexion.close();
             } catch (SQLException e) {
@@ -316,9 +320,9 @@ public class DAO {
                 tipoError.setDetallesTecnicos(e.getClass().toString());
                 throw new ListarInstitucionesPorPoderErrorSistema("SQL Exception", tipoError);
             }
-
+            
             return instituciones;
-
+            
         } else {
             //Respuesta vacia
             TipoError tipoError = new TipoError();
@@ -327,8 +331,8 @@ public class DAO {
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarInstitucionesPorPoderesErrorAplicacion("Exception", tipoError);
         }
-
-
+        
+        
     }
 
     /**
@@ -347,12 +351,12 @@ public class DAO {
     public static List<Tramite> getTramitesPorInstitucion(int idInstitucion)
             throws ListarTramitesPorInstitucionErrorSistema,
             ListarTramitesPorInstitucionErrorAplicacion {
-
-
+        
+        
         Connection conexion = null;
         PreparedStatement sentencia = null;
         ResultSet resultado = null;
-
+        
         if (idInstitucion <= 0) {
             //Parametro invalido
             TipoError tipoError = new TipoError();
@@ -374,9 +378,9 @@ public class DAO {
                 + " from  contentlet c inner join inode i on i.inode = c.inode"
                 + " where c.structure_inode = 107379"
                 + " and i.identifier in "
-                + " (select tree.child from tree where tree.parent = " + idInstitucion + " and (tree.relation_type = 'Directorio-Tramite')) "
+                + " (select tree.child from tree where tree.parent = ? and (tree.relation_type = 'Directorio-Tramite')) "
                 + " and c.live = true;";
-
+        
         if (idInstitucion <= 0) {
             //Parametro invalido
             TipoError tipoError = new TipoError();
@@ -385,7 +389,7 @@ public class DAO {
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarTramitesPorInstitucionErrorAplicacion("Exception", tipoError);
         }
-
+        
         try {
             //Iniciando conexion
             conexion = Conexion.iniciarConexion();
@@ -397,10 +401,11 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarTramitesPorInstitucionErrorSistema("SQL Exception", tipoError);
         }
-
+        
         try {
             //Inicializando la sentencia sql
             sentencia = conexion.prepareStatement(query);
+            sentencia.setInt(1, idInstitucion);
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
             TipoError tipoError = new TipoError();
@@ -409,7 +414,7 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarTramitesPorInstitucionErrorSistema("SQL Exception", tipoError);
         }
-
+        
         try {
             //Ejecutando el query contra la Base de Datos
             resultado = sentencia.executeQuery();
@@ -421,7 +426,7 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarTramitesPorInstitucionErrorSistema("SQL Exception", tipoError);
         }
-
+        
         if (resultado != null) {
 
             //Leer respuesta
@@ -432,17 +437,17 @@ public class DAO {
                     existe = true;
                     System.out.println(" DEV :: Tramite :: " + resultado.getInt("identifier")
                             + " " + resultado.getString("title"));
-
+                    
                     String direccion = resultado.getString("text_area5");
                     if (!direccion.equals("")) {
                         direccion = Jsoup.parse(direccion).text().trim();
                     }
-
+                    
                     String requisitos = resultado.getString("text_area8");
                     if (!requisitos.equals("")) {
                         requisitos = Jsoup.parse(requisitos).text().trim();
                     }
-
+                    
                     Tramite tramite = new Tramite(resultado.getInt("identifier"),
                             resultado.getString("title"),
                             resultado.getString("text4"),
@@ -452,7 +457,7 @@ public class DAO {
                             resultado.getString("nombre_institucion"));
                     tramites.add(tramite);
                 }
-
+                
                 if (!existe) {
                     //Respuesta vacia
                     TipoError tipoError = new TipoError();
@@ -469,7 +474,7 @@ public class DAO {
                 tipoError.setDetallesTecnicos(e.getClass().toString());
                 throw new ListarTramitesPorInstitucionErrorSistema("SQL Exception", tipoError);
             }
-
+            
             try {
                 conexion.close();
             } catch (SQLException e) {
@@ -480,9 +485,9 @@ public class DAO {
                 tipoError.setDetallesTecnicos(e.getClass().toString());
                 throw new ListarTramitesPorInstitucionErrorSistema("SQL Exception", tipoError);
             }
-
+            
             return tramites;
-
+            
         } else {
             //Respuesta vacia
             TipoError tipoError = new TipoError();
@@ -491,7 +496,7 @@ public class DAO {
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarTramitesPorInstitucionErrorAplicacion("Exception", tipoError);
         }
-
+        
     }
 
     /**
@@ -512,12 +517,12 @@ public class DAO {
      */
     public static List<Alcaldia> getAlcaldiasPorFecha(String fecha) throws ListarAlcaldiasPorFechaErrorSistema,
             ListarAlcaldiasPorFechaErrorAplicacion {
-
-
+        
+        
         Connection conexion = null;
         PreparedStatement sentencia = null;
         ResultSet resultado = null;
-
+        
         fecha = fecha.trim();
         if (fecha.equals("")) {
             //Parametro invalido el campo se encuentra vacio
@@ -527,8 +532,8 @@ public class DAO {
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarAlcaldiasPorFechaErrorAplicacion("Exception", tipoError);
         }
-
-
+        
+        
         if (fecha.length() != 10 || fecha.charAt(4) != '-' || fecha.charAt(7) != '-') {
             //Parametro invalido el campo se encuentra vacio
             System.out.println("Entrando a la validacion de cantidad de caracteres " + fecha.length() + ": " + fecha.charAt(4) + " :" + fecha.charAt(7));
@@ -537,22 +542,23 @@ public class DAO {
             tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarAlcaldiasPorFechaErrorAplicacion("Exception", tipoError);
-
+            
         }
-
+        
+        Date a = Date.valueOf(fecha);
         String query = "select identifier, title, text3, text6, text5, text8, parent, mod_date "
                 + " from alcaldias "
-                + " where mod_date > '" + fecha + "' "
+                + " where mod_date > ? "
                 + " and live = true "
                 + " order by mod_date ";
         System.out.println("El valor Ingresado es: " + fecha);
-
+        
         try {
             //Iniciando conexion
             System.out.println("Conexion se esta abriendo");
             conexion = Conexion.iniciarConexion();
             System.out.println("Conexion abierta");
-
+            
         } catch (SQLException e) {
             //Error al iniciar conexion
             TipoError tipoError = new TipoError();
@@ -561,11 +567,12 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
         }
-
-
+        
+        
         try {
             //Inicializando la sentencia sql
             sentencia = conexion.prepareStatement(query);
+            sentencia.setDate(1, a);
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
             TipoError tipoError = new TipoError();
@@ -574,7 +581,7 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
         }
-
+        
         try {
             //Ejecutando el query contra la Base de Datos
             resultado = sentencia.executeQuery();
@@ -586,14 +593,14 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
         }
-
+        
         if (resultado != null) {
 
             //Leer respuesta
             ArrayList<Alcaldia> alcaldias = new ArrayList<Alcaldia>();
             try {
                 boolean existe = false;
-
+                
                 while (resultado.next()) {
                     try {
                         int estado = resultado.getInt("parent");
@@ -671,31 +678,31 @@ public class DAO {
                                 estado = 24;
                                 break;
                         }
-
+                        
                         String municipio = resultado.getString("title");
                         if (!municipio.equals("")) {
                             municipio = limpiar.nombreMunicipio(municipio);
                         }
-
+                        
                         String nAlcaldia = resultado.getString("title");
                         if (!nAlcaldia.equals("")) {
                             nAlcaldia = limpiar.nombreAlcaldia(nAlcaldia);
                         }
-
+                        
                         String director = resultado.getString("text3");
                         if (director.equals("")) {
                             director = "Información no disponible";
                         }
-
+                        
                         String web = resultado.getString("text8");
                         if (web.equals("")) {
                             web = "Información no disponible";
                         }
-
+                        
                         existe = true;
                         System.out.println(" DEV :: Poder :: " + resultado.getInt("identifier")
                                 + " " + resultado.getString("title"));
-
+                        
                         Alcaldia alcaldia = new Alcaldia(resultado.getInt("identifier"),
                                 nAlcaldia,
                                 municipio,
@@ -711,7 +718,7 @@ public class DAO {
                         e.getMessage();
                     }
                 }
-
+                
                 if (!existe) {
                     //Respuesta vacia
                     TipoError tipoError = new TipoError();
@@ -720,7 +727,7 @@ public class DAO {
                     tipoError.setDetallesTecnicos("Detalles Tecnicos");
                     throw new ListarAlcaldiasPorFechaErrorAplicacion("Exception", tipoError);
                 }
-
+                
             } catch (SQLException e) {
                 //Error al leer respuesta
                 TipoError tipoError = new TipoError();
@@ -729,7 +736,7 @@ public class DAO {
                 tipoError.setDetallesTecnicos(e.getClass().toString());
                 throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
             }
-
+            
             try {
                 conexion.close();
             } catch (SQLException e) {
@@ -740,9 +747,9 @@ public class DAO {
                 tipoError.setDetallesTecnicos(e.getClass().toString());
                 throw new ListarAlcaldiasPorFechaErrorSistema("SQL Exception", tipoError);
             }
-
+            
             return alcaldias;
-
+            
         } else {
             //Respuesta vacia
             TipoError tipoError = new TipoError();
@@ -751,8 +758,8 @@ public class DAO {
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarAlcaldiasPorFechaErrorAplicacion("Exception", tipoError);
         }
-
-
+        
+        
     }
 
     /**
@@ -772,17 +779,17 @@ public class DAO {
     public static List<Institucion> getInstitucionesPorFecha(String fecha)
             throws ListarInstitucionesPorFechaErrorSistema,
             ListarInstitucionesPorFechaErrorAplicacion {
-
+        
         if (fecha == null) {
             System.out.println("No se ingreso el parametro");
         } else {
             System.out.println("El valor Ingresado es: " + fecha);
         }
-
+        
         Connection conexion = null;
         PreparedStatement sentencia = null;
         ResultSet resultado = null;
-
+        
         fecha = fecha.trim();
         if (fecha.equals("")) {
             //Parametro invalido el campo se encuentra vacio
@@ -792,8 +799,8 @@ public class DAO {
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarInstitucionesPorFechaErrorAplicacion("Exception", tipoError);
         }
-
-
+        
+        
         if (fecha.length() != 10 || fecha.charAt(4) != '-' || fecha.charAt(7) != '-') {
             //Parametro invalido el campo se encuentra vacio
             System.out.println("Entrando a la validacion de cantidad de caracteres " + fecha.length() + ": " + fecha.charAt(4) + " :" + fecha.charAt(7));
@@ -802,15 +809,16 @@ public class DAO {
             tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarInstitucionesPorFechaErrorAplicacion("Exception", tipoError);
-
+            
         }
-
+        
+        Date a = Date.valueOf(fecha);
         String query = "select identifier, nombre_resumen, title, text3, text6, text5, text8, parent, mod_date "
                 + " from instituciones"
-                + " where mod_date > '" + fecha + "'"
+                + " where mod_date > ? "
                 + " and live = true "
                 + " order by mod_date;";
-
+        
         try {
             //Iniciando conexion
             conexion = Conexion.iniciarConexion();
@@ -822,10 +830,11 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarInstitucionesPorFechaErrorSistema("SQL Exception", tipoError);
         }
-
+        
         try {
             //Inicializando la sentencia sql
             sentencia = conexion.prepareStatement(query);
+            sentencia.setDate(1, a);
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
             TipoError tipoError = new TipoError();
@@ -834,7 +843,7 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarInstitucionesPorFechaErrorSistema("SQL Exception", tipoError);
         }
-
+        
         try {
             //Ejecutando el query contra la Base de Datos
             resultado = sentencia.executeQuery();
@@ -846,8 +855,8 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarInstitucionesPorFechaErrorSistema("SQL Exception", tipoError);
         }
-
-
+        
+        
         if (resultado != null) {
             //Leer respuesta
             ArrayList<Institucion> instituciones = new ArrayList<Institucion>();
@@ -855,7 +864,7 @@ public class DAO {
                 boolean existe = false;
                 while (resultado.next()) {
                     int poder = resultado.getInt("parent");
-
+                    
                     switch (poder) {
                         case 131345:
                             poder = 1;
@@ -879,7 +888,7 @@ public class DAO {
                             poder = 8;
                             break;
                     }
-
+                    
                     existe = true;
                     System.out.println(" DEV :: Institución :: " + resultado.getInt("identifier")
                             + " " + resultado.getString("nombre_resumen"));
@@ -894,7 +903,7 @@ public class DAO {
                             resultado.getString("mod_date"));
                     instituciones.add(institucion);
                 }
-
+                
                 if (!existe) {
                     //Respuesta vacia
                     TipoError tipoError = new TipoError();
@@ -911,7 +920,7 @@ public class DAO {
                 tipoError.setDetallesTecnicos(e.getClass().toString());
                 throw new ListarInstitucionesPorFechaErrorSistema("SQL Exception", tipoError);
             }
-
+            
             try {
                 conexion.close();
             } catch (SQLException e) {
@@ -922,9 +931,9 @@ public class DAO {
                 tipoError.setDetallesTecnicos(e.getClass().toString());
                 throw new ListarInstitucionesPorFechaErrorSistema("SQL Exception", tipoError);
             }
-
+            
             return instituciones;
-
+            
         } else {
             //Respuesta vacia
             TipoError tipoError = new TipoError();
@@ -933,8 +942,8 @@ public class DAO {
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarInstitucionesPorFechaErrorAplicacion("Exception", tipoError);
         }
-
-
+        
+        
     }
 
     /**
@@ -953,13 +962,13 @@ public class DAO {
     public static List<Tramite> getTramitesPorFecha(String fecha)
             throws ListarTramitesPorFechaErrorSistema,
             ListarTramitesPorFechaErrorAplicacion {
-
+        
         if (fecha == null) {
             System.out.println("No se ingreso el parametro");
         } else {
             System.out.println("El valor Ingresado es: " + fecha);
         }
-
+        
         fecha = fecha.trim();
         if (fecha.equals("")) {
             //Parametro invalido el campo se encuentra vacio
@@ -969,8 +978,8 @@ public class DAO {
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarTramitesPorFechaErrorAplicacion("Exception", tipoError);
         }
-
-
+        
+        
         if (fecha.length() != 10 || fecha.charAt(4) != '-' || fecha.charAt(7) != '-') {
             //Parametro invalido el campo se encuentra vacio
             System.out.println("Entrando a la validacion de cantidad de caracteres " + fecha.length() + ": " + fecha.charAt(4) + " :" + fecha.charAt(7));
@@ -979,24 +988,26 @@ public class DAO {
             tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarTramitesPorFechaErrorAplicacion("Exception", tipoError);
-
+            
         }
-
+        
+        Date a = Date.valueOf(fecha);
         Connection conexion = null;
         PreparedStatement sentencia = null;
         ResultSet resultado = null;
-
+        
         String query = " select identifier, text1, text_area5, text_area8, text5, text4, text_area10, mod_date "
                 + " from tramites "
                 + " where live = true "
-                + " and mod_date > '" + fecha + "' "
+                + " and mod_date > ? "
                 + " order by mod_date ";
-
+        
         System.out.println("El valor del query es: " + query);
-
+        
         try {
             //Iniciando conexion
             conexion = Conexion.iniciarConexion();
+            System.out.println("VAlidacion 1");
         } catch (SQLException e) {
             //Error al iniciar conexion
             TipoError tipoError = new TipoError();
@@ -1005,23 +1016,28 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarTramitesPorFechaErrorSistema("SQL Exception", tipoError);
         }
-
+        
         try {
             //Inicializando la sentencia sql
             sentencia = conexion.prepareStatement(query);
+            sentencia.setDate(1, a);
+            System.out.println("VAlidacion 2");
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
+            System.out.println(e.toString());
             TipoError tipoError = new TipoError();
             tipoError.setCodigo(FallasSistema.FALLA_3_CODIGO);
             tipoError.setDescripcion(FallasSistema.FALLA_3_DESCRIPCION + " - " + e.getMessage());
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarTramitesPorFechaErrorSistema("SQL Exception", tipoError);
         }
-
+        
         try {
             //Ejecutando el query contra la Base de Datos
             resultado = sentencia.executeQuery();
+            System.out.println("VAlidacion 2");
         } catch (SQLException e) {
+            System.out.println(e.toString());
             //Error ejecutando el query contra la Base de Datos
             TipoError tipoError = new TipoError();
             tipoError.setCodigo(FallasSistema.FALLA_4_CODIGO);
@@ -1029,7 +1045,7 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarTramitesPorFechaErrorSistema("SQL Exception", tipoError);
         }
-
+        
         if (resultado != null) {
 
             //Leer respuesta
@@ -1038,49 +1054,49 @@ public class DAO {
                 boolean existe = false;
                 while (resultado.next()) {
                     existe = true;
-
+                    
                     String direccion = resultado.getString("text_area5");
                     String requisitos = resultado.getString("text_area8");
                     String descripcion = resultado.getString("text_area10");
                     String titulo = resultado.getString("text1");
                     String telefono = resultado.getString("text4");
                     String horarios = resultado.getString("text5");
-
+                    
                     System.out.println("Cumpliendo la validacion de horarios = " + horarios);
                     if (!horarios.equals("")) {
                         horarios = Jsoup.parse(horarios).text();
                     } else {
                         horarios = "Información no disponible";
                     }
-
+                    
                     System.out.println("Cumpliendo la validacion de telefono = " + telefono);
                     if (!telefono.equals("")) {
                         telefono = Jsoup.parse(telefono).text();
                     } else {
                         telefono = "Información no disponible";
                     }
-
+                    
                     System.out.println("Cumpliendo la validacion de direccion = " + direccion);
                     if (!direccion.equals("")) {
                         direccion = Jsoup.parse(direccion).text();
                     } else {
                         direccion = "Información no disponible";
                     }
-
+                    
                     System.out.println("Cumpliendo la validacion de requisitos = " + requisitos);
                     if (!requisitos.equals("")) {
                         requisitos = Jsoup.parse(requisitos).text();
                     } else {
                         requisitos = "Información no disponible";
                     }
-
+                    
                     System.out.println("Cumpliendo la validacion de titulo = " + titulo);
                     if (!titulo.equals("")) {
                         titulo = Jsoup.parse(titulo).text();
                     } else {
                         titulo = "Información no disponible";
                     }
-
+                    
                     System.out.println("Cumpliendo la validacion de descripcion = " + descripcion);
                     if (descripcion == null) {
                         descripcion = "Información no disponible";
@@ -1089,14 +1105,14 @@ public class DAO {
                             descripcion = Jsoup.parse(titulo).text();
                         } else {
                             descripcion = "Información no disponible";
-
+                            
                         }
                     }
-
-
+                    
+                    
                     System.out.println(" DEV :: Tramite :: " + resultado.getInt("identifier")
                             + " " + resultado.getString("text1") + " " + requisitos);
-
+                    
                     Tramite tramite = new Tramite(resultado.getInt("identifier"),
                             titulo,
                             telefono,
@@ -1107,7 +1123,7 @@ public class DAO {
                             resultado.getString("mod_date"));
                     tramites.add(tramite);
                 }
-
+                
                 if (!existe) {
                     //Respuesta vacia
                     TipoError tipoError = new TipoError();
@@ -1124,7 +1140,7 @@ public class DAO {
                 tipoError.setDetallesTecnicos(e.getClass().toString());
                 throw new ListarTramitesPorFechaErrorSistema("SQL Exception", tipoError);
             }
-
+            
             try {
                 conexion.close();
             } catch (SQLException e) {
@@ -1137,7 +1153,7 @@ public class DAO {
             }
             System.out.println("Lista enviada con exito");
             return tramites;
-
+            
         } else {
             //Respuesta vacia
             TipoError tipoError = new TipoError();
@@ -1146,19 +1162,19 @@ public class DAO {
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarTramitesPorFechaErrorAplicacion("Exception", tipoError);
         }
-
+        
     }
-
+    
     public static List<Operativo> getOperativosPorFecha(String fecha)
             throws ListarOperativosPorFechaErrorSistema,
             ListarOperativosPorFechaErrorAplicacion {
-
+        
         if (fecha == null) {
             System.out.println("No se ingreso el parametro");
         } else {
             System.out.println("El valor Ingresado es: " + fecha);
         }
-
+        
         Connection conexion = null;
         PreparedStatement sentencia = null;
         ResultSet resultado = null;
@@ -1185,8 +1201,8 @@ public class DAO {
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarOperativosPorFechaErrorAplicacion("Exception", tipoError);
         }
-
-
+        
+        
         if (fecha.length() != 10 || fecha.charAt(4) != '-' || fecha.charAt(7) != '-') {
             //Parametro invalido el campo se encuentra vacio
             System.out.println("Entrando a la validacion de cantidad de caracteres " + fecha.length() + ": " + fecha.charAt(4) + " :" + fecha.charAt(7));
@@ -1195,14 +1211,15 @@ public class DAO {
             tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarOperativosPorFechaErrorAplicacion("Exception", tipoError);
-
+            
         }
-
+        
+        Date a = Date.valueOf(fecha);
         String query = "select identifier, text1, text2, text3, date1, date2, mod_date "
                 + " from operativos "
-                + " where mod_date >'" + fecha + "' "
+                + " where mod_date > ? "
                 + " order by mod_date; ";
-
+        
         try {
             //Iniciando conexion
             conexion = Conexion.iniciarConexion();
@@ -1214,10 +1231,11 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarOperativosPorFechaErrorSistema("SQL Exception", tipoError);
         }
-
+        
         try {
             //Inicializando la sentencia sql
             sentencia = conexion.prepareStatement(query);
+            sentencia.setDate(1, a);
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
             TipoError tipoError = new TipoError();
@@ -1226,7 +1244,7 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarOperativosPorFechaErrorSistema("SQL Exception", tipoError);
         }
-
+        
         try {
             resultado = sentencia.executeQuery();
         } catch (SQLException e) {
@@ -1237,7 +1255,7 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarOperativosPorFechaErrorSistema("SQL Exception", tipoError);
         }
-
+        
         if (resultado != null) {
 
             //Leer respuesta
@@ -1246,11 +1264,11 @@ public class DAO {
                 boolean existe = false;
                 while (resultado.next()) {
                     existe = true;
-
-
+                    
+                    
                     System.out.println(" DEV :: Operativos :: " + resultado.getInt("identifier")
                             + " " + resultado.getString("text1") + " " + resultado.getString("text2"));
-
+                    
                     Operativo operativo = new Operativo(resultado.getInt("identifier"),
                             resultado.getString("text1"),
                             resultado.getString("text2"),
@@ -1258,10 +1276,10 @@ public class DAO {
                             resultado.getString("date1"),
                             resultado.getString("date2"),
                             resultado.getString("mod_date"));
-
+                    
                     operativos.add(operativo);
                 }
-
+                
                 if (!existe) {
                     //Respuesta vacia
                     TipoError tipoError = new TipoError();
@@ -1278,7 +1296,7 @@ public class DAO {
                 tipoError.setDetallesTecnicos(e.getClass().toString());
                 throw new ListarOperativosPorFechaErrorSistema("SQL Exception", tipoError);
             }
-
+            
             try {
                 conexion.close();
             } catch (SQLException e) {
@@ -1291,7 +1309,7 @@ public class DAO {
             }
             System.out.println("Lista enviada con exito");
             return operativos;
-
+            
         } else {
             //Respuesta vacia
             TipoError tipoError = new TipoError();
@@ -1301,14 +1319,14 @@ public class DAO {
             throw new ListarOperativosPorFechaErrorAplicacion("Exception", tipoError);
         }
     }
-
+    
     public static List<Alcaldia> getAlcaldiasEliminadas(String fecha) throws ListarAlcaldiasEliminadasErrorSistema,
             ListarAlcaldiasEliminadasErrorAplicacion {
-
+        
         Connection conexion = null;
         PreparedStatement sentencia = null;
         ResultSet resultado = null;
-
+        
         fecha = fecha.trim();
         if (fecha.equals("")) {
             //Parametro invalido el campo se encuentra vacio
@@ -1318,8 +1336,8 @@ public class DAO {
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarAlcaldiasEliminadasErrorAplicacion("Exception", tipoError);
         }
-
-
+        
+        
         if (fecha.length() != 10 || fecha.charAt(4) != '-' || fecha.charAt(7) != '-') {
             //Parametro invalido el campo se encuentra vacio
             System.out.println("Entrando a la validacion de cantidad de caracteres " + fecha.length() + ": " + fecha.charAt(4) + " :" + fecha.charAt(7));
@@ -1328,16 +1346,17 @@ public class DAO {
             tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarAlcaldiasEliminadasErrorAplicacion("Exception", tipoError);
-
+            
         }
-
+        
+        Date a = Date.valueOf(fecha);
         String query = "select identifier, title "
                 + " from alcaldias "
-                + " where mod_date > '" + fecha + "' "
+                + " where mod_date > ? "
                 + " and deleted = true "
                 + " order by mod_date ";
-
-
+        
+        
         try {
             //Iniciando conexion
             conexion = Conexion.iniciarConexion();
@@ -1349,11 +1368,12 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarAlcaldiasEliminadasErrorSistema("SQL Exception", tipoError);
         }
-
-
+        
+        
         try {
             //Inicializando la sentencia sql
             sentencia = conexion.prepareStatement(query);
+            sentencia.setDate(1, a);
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
             TipoError tipoError = new TipoError();
@@ -1362,7 +1382,7 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarAlcaldiasEliminadasErrorSistema("SQL Exception", tipoError);
         }
-
+        
         try {
             //Ejecutando el query contra la Base de Datos
             resultado = sentencia.executeQuery();
@@ -1374,21 +1394,21 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarAlcaldiasEliminadasErrorSistema("SQL Exception", tipoError);
         }
-
+        
         if (resultado != null) {
 
             //Leer respuesta
             ArrayList<Alcaldia> alcaldias = new ArrayList<Alcaldia>();
             try {
                 boolean existe = false;
-
+                
                 while (resultado.next()) {
                     try {
-
+                        
                         existe = true;
                         System.out.println(" DEV :: Poder :: " + resultado.getInt("identifier")
                                 + " " + resultado.getString("title"));
-
+                        
                         Alcaldia alcaldia = new Alcaldia(resultado.getInt("identifier"),
                                 resultado.getString("title"));
                         alcaldias.add(alcaldia);
@@ -1396,7 +1416,7 @@ public class DAO {
                         e.getMessage();
                     }
                 }
-
+                
                 if (!existe) {
                     //Respuesta vacia
                     TipoError tipoError = new TipoError();
@@ -1405,7 +1425,7 @@ public class DAO {
                     tipoError.setDetallesTecnicos("Detalles Tecnicos");
                     throw new ListarAlcaldiasEliminadasErrorAplicacion("Exception", tipoError);
                 }
-
+                
             } catch (SQLException e) {
                 //Error al leer respuesta
                 TipoError tipoError = new TipoError();
@@ -1414,7 +1434,7 @@ public class DAO {
                 tipoError.setDetallesTecnicos(e.getClass().toString());
                 throw new ListarAlcaldiasEliminadasErrorSistema("SQL Exception", tipoError);
             }
-
+            
             try {
                 conexion.close();
             } catch (SQLException e) {
@@ -1425,9 +1445,9 @@ public class DAO {
                 tipoError.setDetallesTecnicos(e.getClass().toString());
                 throw new ListarAlcaldiasEliminadasErrorSistema("SQL Exception", tipoError);
             }
-
+            
             return alcaldias;
-
+            
         } else {
             //Respuesta vacia
             TipoError tipoError = new TipoError();
@@ -1449,17 +1469,17 @@ public class DAO {
     public static List<Institucion> getInstitucionesEliminadas(String fecha)
             throws ListarInstitucionesEliminadasErrorSistema,
             ListarInstitucionesEliminadasErrorAplicacion {
-
+        
         if (fecha == null) {
             System.out.println("No se ingreso el parametro");
         } else {
             System.out.println("El valor Ingresado es: " + fecha);
         }
-
+        
         Connection conexion = null;
         PreparedStatement sentencia = null;
         ResultSet resultado = null;
-
+        
         fecha = fecha.trim();
         if (fecha.equals("")) {
             //Parametro invalido el campo se encuentra vacio
@@ -1469,8 +1489,8 @@ public class DAO {
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarInstitucionesEliminadasErrorAplicacion("Exception", tipoError);
         }
-
-
+        
+        
         if (fecha.length() != 10 || fecha.charAt(4) != '-' || fecha.charAt(7) != '-') {
             //Parametro invalido el campo se encuentra vacio
             System.out.println("Entrando a la validacion de cantidad de caracteres " + fecha.length() + ": " + fecha.charAt(4) + " :" + fecha.charAt(7));
@@ -1479,12 +1499,13 @@ public class DAO {
             tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarInstitucionesEliminadasErrorAplicacion("Exception", tipoError);
-
+            
         }
-
+        
+        Date a = Date.valueOf(fecha);
         String query = "select identifier, title "
                 + " from instituciones "
-                + " where mod_date > '" + fecha + "'"
+                + " where mod_date > ? "
                 + " and deleted = true "
                 + " order by mod_date ";
         try {
@@ -1498,10 +1519,11 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarInstitucionesEliminadasErrorSistema("SQL Exception", tipoError);
         }
-
+        
         try {
             //Inicializando la sentencia sql
             sentencia = conexion.prepareStatement(query);
+            sentencia.setDate(1, a);
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
             TipoError tipoError = new TipoError();
@@ -1510,7 +1532,7 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarInstitucionesEliminadasErrorSistema("SQL Exception", tipoError);
         }
-
+        
         try {
             //Ejecutando el query contra la Base de Datos
             resultado = sentencia.executeQuery();
@@ -1522,8 +1544,8 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarInstitucionesEliminadasErrorSistema("SQL Exception", tipoError);
         }
-
-
+        
+        
         if (resultado != null) {
             //Leer respuesta
             ArrayList<Institucion> instituciones = new ArrayList<Institucion>();
@@ -1551,7 +1573,7 @@ public class DAO {
                 tipoError.setDetallesTecnicos(e.getClass().toString());
                 throw new ListarInstitucionesEliminadasErrorSistema("SQL Exception", tipoError);
             }
-
+            
             try {
                 conexion.close();
             } catch (SQLException e) {
@@ -1562,9 +1584,9 @@ public class DAO {
                 tipoError.setDetallesTecnicos(e.getClass().toString());
                 throw new ListarInstitucionesEliminadasErrorSistema("SQL Exception", tipoError);
             }
-
+            
             return instituciones;
-
+            
         } else {
             //Respuesta vacia
             TipoError tipoError = new TipoError();
@@ -1574,21 +1596,21 @@ public class DAO {
             throw new ListarInstitucionesEliminadasErrorAplicacion("Exception", tipoError);
         }
     }
-
+    
     public static List<Tramite> getTramitesEliminados(String fecha)
             throws ListarTramitesEliminadosErrorSistema,
             ListarTramitesEliminadosErrorAplicacion {
-
+        
         if (fecha == null) {
             System.out.println("No se ingreso el parametro");
         } else {
             System.out.println("El valor Ingresado es: " + fecha);
         }
-
+        
         Connection conexion = null;
         PreparedStatement sentencia = null;
         ResultSet resultado = null;
-
+        
         fecha = fecha.trim();
         if (fecha.equals("")) {
             //Parametro invalido el campo se encuentra vacio
@@ -1598,8 +1620,8 @@ public class DAO {
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarTramitesEliminadosErrorAplicacion("Exception", tipoError);
         }
-
-
+        
+        
         if (fecha.length() != 10 || fecha.charAt(4) != '-' || fecha.charAt(7) != '-') {
             //Parametro invalido el campo se encuentra vacio
             System.out.println("Entrando a la validacion de cantidad de caracteres " + fecha.length() + ": " + fecha.charAt(4) + " :" + fecha.charAt(7));
@@ -1608,17 +1630,18 @@ public class DAO {
             tipoError.setDescripcion(FallasAplicacion.DESCRIPCION_FALLA_12);
             tipoError.setDetallesTecnicos("Detalles Tecnicos");
             throw new ListarTramitesEliminadosErrorAplicacion("Exception", tipoError);
-
+            
         }
-
+        
+        Date a = Date.valueOf(fecha);
         String query = " select identifier, text1 "
                 + " from tramites "
                 + " where deleted = true "
-                + " and mod_date > '" + fecha + "' "
+                + " and mod_date > ? "
                 + " order by mod_date ";
-
+        
         System.out.println("El valor del query es: " + query);
-
+        
         try {
             //Iniciando conexion
             conexion = Conexion.iniciarConexion();
@@ -1630,10 +1653,11 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarTramitesEliminadosErrorSistema("SQL Exception", tipoError);
         }
-
+        
         try {
             //Inicializando la sentencia sql
             sentencia = conexion.prepareStatement(query);
+            sentencia.setDate(1, a);
         } catch (SQLException e) {
             //Error inicializando la sentencia sql
             TipoError tipoError = new TipoError();
@@ -1642,7 +1666,7 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarTramitesEliminadosErrorSistema("SQL Exception", tipoError);
         }
-
+        
         try {
             //Ejecutando el query contra la Base de Datos
             resultado = sentencia.executeQuery();
@@ -1654,7 +1678,7 @@ public class DAO {
             tipoError.setDetallesTecnicos(e.getClass().toString());
             throw new ListarTramitesEliminadosErrorSistema("SQL Exception", tipoError);
         }
-
+        
         if (resultado != null) {
 
             //Leer respuesta
@@ -1663,14 +1687,14 @@ public class DAO {
                 boolean existe = false;
                 while (resultado.next()) {
                     existe = true;
-
+                    
                     Tramite tramite = new Tramite(resultado.getInt("identifier"),
                             resultado.getString("text1"));
-
-
+                    
+                    
                     tramites.add(tramite);
                 }
-
+                
                 if (!existe) {
                     //Respuesta vacia
                     TipoError tipoError = new TipoError();
@@ -1687,7 +1711,7 @@ public class DAO {
                 tipoError.setDetallesTecnicos(e.getClass().toString());
                 throw new ListarTramitesEliminadosErrorSistema("SQL Exception", tipoError);
             }
-
+            
             try {
                 conexion.close();
             } catch (SQLException e) {
@@ -1700,7 +1724,7 @@ public class DAO {
             }
             System.out.println("Lista enviada con exito");
             return tramites;
-
+            
         } else {
             //Respuesta vacia
             TipoError tipoError = new TipoError();
